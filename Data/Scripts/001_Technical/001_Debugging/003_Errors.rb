@@ -4,6 +4,12 @@
 class Reset < Exception
 end
 
+class Object
+  alias full_inspect inspect
+
+  def inspect; to_s; end
+end
+
 def pbGetExceptionMessage(e,_script="")
   emessage = e.message.dup
   emessage.force_encoding(Encoding::UTF_8)

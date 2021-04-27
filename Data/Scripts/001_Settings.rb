@@ -325,6 +325,13 @@ module Settings
 
   #=============================================================================
 
+  # The scale to zoom the front sprite of a Pokemon. (1 for no scaling)
+  FRONT_BATTLER_SPRITE_SCALE    = 2
+  # The scale to zoom the back sprite of a Pokemon. (1 for no scaling)
+  BACK_BATTLER_SPRITE_SCALE     = 3
+
+  #=============================================================================
+
   # An array of available languages in the game, and their corresponding message
   # file in the Data folder. Edit only if you have 2 or more languages to choose
   # from.

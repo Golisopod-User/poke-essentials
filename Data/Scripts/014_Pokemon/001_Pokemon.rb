@@ -80,6 +80,10 @@ class Pokemon
   attr_accessor :fused
   # @return [Integer] this Pokémon's personal ID
   attr_accessor :personalID
+  # @return [Integer] the damage dealt to the Pokémon before fainting in battle
+  attr_accessor :damage_done
+  # @return [Integer] the critical hits scored by the Pokémon before fainting in battle
+  attr_accessor :critical_hits
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -175,6 +179,12 @@ class Pokemon
     @level = nil
   end
 
+  # Sets this Pokémon's Exp. Points wothout changing the level
+  # @param value [Integer] new experience points
+  def setExp(value)
+    @exp = value
+  end
+
   # @return [Boolean] whether this Pokémon is an egg
   def egg?
     return @steps_to_hatch > 0
@@ -209,7 +219,10 @@ class Pokemon
   # @param value [Integer] new HP value
   def hp=(value)
     @hp = value.clamp(0, @totalhp)
-    heal_status if @hp == 0
+    if @hp == 0
+      heal_status
+      @damage_done = 0
+    end
   end
 
   # Sets this Pokémon's status. See {GameData::Status} for all possible status effects.
@@ -913,13 +926,23 @@ class Pokemon
     }
   end
 
+  # Checks whether this Pokemon can evolve because of certain conditions after a battle
+  # @param other_pkmn [Pokemon] the other Pokémon involved in the trade
+  # @return [Symbol, nil] the ID of the species to evolve into
+  def check_evolution_after_battle
+    return check_evolution_internal { |pkmn, new_species, method, parameter|
+      success = GameData::Evolution.get(method).call_on_battle(pkmn, parameter)
+      next (success) ? new_species : nil
+    }
+  end
+
   # Called after this Pokémon evolves, to remove its held item (if the evolution
   # required it to have a held item) or duplicate this Pokémon (Shedinja only).
   # @param new_species [Pokemon] the species that this Pokémon evolved into
   def action_after_evolution(new_species)
     species_data.get_evolutions(true).each do |evo|   # [new_species, method, parameter, boolean]
       next if evo[3]   # Prevolution
-      break if GameData::Evolution.get(method).call_after_evolution(self, evo[0], evo[2], new_species)
+      break if GameData::Evolution.get(evo[1]).call_after_evolution(self, evo[0], evo[2], new_species)
     end
   end
 
@@ -1093,6 +1116,8 @@ class Pokemon
     @personalID       = rand(2 ** 16) | rand(2 ** 16) << 16
     @hp               = 1
     @totalhp          = 1
+    @damage_done      = 0
+    @critical_hits    = 0
     calc_stats
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)

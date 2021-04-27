@@ -605,8 +605,8 @@
 590,TOXICSPIKES,Toxic Spikes,104,0,POISON,Status,0,20,0,FoeSide,0,c,"The user lays a trap of poison spikes at the foe's feet. They poison foes that switch into battle."
 591,TOXICTHREAD,Toxic Thread,159,0,POISON,Status,100,20,0,NearOther,0,bce,"The user shoots poisonous threads to poison the target and lower the target's Speed stat."
 592,VENOMDRENCH,Venom Drench,140,0,POISON,Status,100,20,0,AllNearFoes,0,bc,"Foes are drenched in an odd liquid that lowers the Attack, Sp. Atk, and Speed of poisoned Pokémon."
-593,CORROSIVEGAS,Corrosive Gas,201,0,POISON,Status,100,40,0,AllNearOthers,0,,"The user surrounds everything around it with highly acidic gas and melts away items they hold."
-594,SHELLSIDEARM,Shell Side Arm,187,90,POISON,Special,100,10,25,NearOther,0,bef,"Inflicts physical or special damage, whichever will be more effective. May poison the target."
+593,CORROSIVEGAS,Corrosive Gas,18F,0,POISON,Status,100,40,0,AllNearOthers,0,,"The user surrounds everything around it with highly acidic gas and melts away items they hold."
+594,SHELLSIDEARM,Shell Side Arm,187,90,POISON,Special,20,10,25,NearOther,0,bef,"Inflicts physical or special damage, whichever will be more effective. May poison the target."
 #-------------------------------
 595,PRISMATICLASER,Prismatic Laser,0C2,160,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user shoots powerful lasers using the power of a prism. The user can't move on the next turn."
 596,PSYCHOBOOST,Psycho Boost,03F,140,PSYCHIC,Special,90,5,0,NearOther,0,bef,"The user attacks the target at full power. The attack's recoil harshly reduces the user's Sp. Atk stat."
@@ -670,7 +670,7 @@
 654,WONDERROOM,Wonder Room,124,0,PSYCHIC,Status,0,10,0,BothSides,-7,e,"The user creates a bizarre area in which Pokémon's Defense and Sp. Def stats are swapped for 5 turns."
 655,MAGICPOWDER,Magic Powder,197,0,PSYCHIC,Status,100,20,0,NearOther,0,bcel,"The user scatters a cloud of magic powder that changes the target to Psychic type."
 656,EXPANDINGFORCE,Expanding Force,190,80,PSYCHIC,Special,100,20,0,AllNearOthers,0,bef,"Attacks with its psychic power. Power increases and damages all opponents on Psychic Terrain."
-657,EERIESPELL,Eerie Spell,210,90,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user casts a horrible spell on the opponent. This removes 3 PP from their last used move."
+657,EERIESPELL,Eerie Spell,198,90,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user casts a horrible spell on the opponent. This removes 3 PP from their last used move."
 658,FREEZINGGLARE,Freezing Glare,00C,90,PSYCHIC,Special,100,10,10,NearOther,0,ef,"The user shoots its psychic power from its eyes to attack. This may also leave the target frozen."
 #-------------------------------
 659,HEADSMASH,Head Smash,0FC,150,ROCK,Physical,80,5,0,NearOther,0,abef,"The user attacks the foe with a hazardous, full-power headbutt. The user also takes terrible damage."

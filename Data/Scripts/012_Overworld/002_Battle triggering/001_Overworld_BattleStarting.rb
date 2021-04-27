@@ -107,7 +107,18 @@ def pbPrepareBattle(battle)
   battle.showAnims = ($PokemonSystem.battlescene==0)
   battle.showAnims = battleRules["battleAnims"] if !battleRules["battleAnims"].nil?
   # Terrain
-  battle.defaultTerrain = battleRules["defaultTerrain"] if !battleRules["defaultTerrain"].nil?
+  if battleRules["defaultTerrain"].nil?
+    if Settings::SWSH_FOG_IN_BATTLES
+      case $game_screen.weather_type
+      when :Storm
+        battle.defaultTerrain = :Electric
+      when :Fog
+        battle.defaultTerrain = :Misty
+      end
+    else
+      battle.defaultTerrain = battleRules["defaultTerrain"]
+    end
+  end
   # Weather
   if battleRules["defaultWeather"].nil?
     case GameData::Weather.get($game_screen.weather_type).category
@@ -119,6 +130,8 @@ def pbPrepareBattle(battle)
       battle.defaultWeather = :Sandstorm
     when :Sun
       battle.defaultWeather = :Sun
+    when :Fog
+      battle.defaultWeather = :Fog if !Settings::SWSH_FOG_IN_BATTLES
     end
   else
     battle.defaultWeather = battleRules["defaultWeather"]
@@ -543,6 +556,20 @@ def pbAfterBattle(decision,canLose)
     pkmn.statusCount = 0 if pkmn.status == :POISON   # Bad poison becomes regular
     pkmn.makeUnmega
     pkmn.makeUnprimal
+    if pkmn.isSpecies?(:ZACIAN) || pkmn.isSpecies?(:ZAMAZENTA) && @form == 1
+      for i in 0...pkmn.moves.length
+        if pkmn.moves[i].id == :IRONHEAD && pkmn.moves[i].pp < 5
+          pkmn.moves[i].pp *= 3
+        end
+      end
+    end
+    newspecies = pkmn.check_evolution_after_battle
+    if newspecies
+      evo = PokemonEvolutionScene.new
+      evo.pbStartScreen(pkmn,newspecies)
+      evo.pbEvolution(false)
+      evo.pbEndScreen
+    end
   end
   if $PokemonGlobal.partner
     $Trainer.heal_party
