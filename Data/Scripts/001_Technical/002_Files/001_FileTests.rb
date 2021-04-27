@@ -1,4 +1,70 @@
 #===============================================================================
+#  Reads files of certain format from a directory
+#===============================================================================
+class Dir
+  #-----------------------------------------------------------------------------
+  #  Reads all files in a directory
+  #-----------------------------------------------------------------------------
+  def self.get(dir, filters = "*", full = true)
+    files = []
+    filters = [filters] if !filters.is_a?(Array)
+    self.chdir(dir) do
+      for filter in filters
+        self.glob(filter){ |f| files.push(full ? (dir + "/" + f) : f) }
+      end
+    end
+    return files.sort
+  end
+  #-----------------------------------------------------------------------------
+  #  Generates entire file/folder tree from a certain directory
+  #-----------------------------------------------------------------------------
+  def self.all(dir, filters = "*", full = true)
+    # sets variables for starting
+    files = []
+    subfolders = []
+    for file in self.get(dir, filters, full)
+      # engages in recursion to read the entire file tree
+      if self.safe?(file)   # Is a directory
+        subfolders += self.all(file, filters, full)
+      else   # Is a file
+        files += [file]
+      end
+    end
+    # returns all found files
+    return files + subfolders
+  end
+  #-----------------------------------------------------------------------------
+  #  Checks for existing directory, gets around accents
+  #-----------------------------------------------------------------------------
+  def self.safe?(dir)
+    return false if !FileTest.directory?(dir)
+    ret = false
+    self.chdir(dir) { ret = true } rescue nil
+    return ret
+  end
+  #-----------------------------------------------------------------------------
+end
+
+
+
+#===============================================================================
+#  extensions for file class
+#===============================================================================
+class File
+  #-----------------------------------------------------------------------------
+  #  Checks for existing file, gets around accents
+  #-----------------------------------------------------------------------------
+  def self.safe?(file)
+    ret = false
+    self.open(file, 'rb') { ret = true } rescue nil
+    return ret
+  end
+  #-----------------------------------------------------------------------------
+end
+
+
+
+#===============================================================================
 # Checking for files and directories
 #===============================================================================
 # Works around a problem with FileTest.directory if directory contains accent marks
