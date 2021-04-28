@@ -2173,7 +2173,7 @@ class PokeBattle_Move_164 < PokeBattle_Move_163
     spAtkStage = user.stages[:SPECIAL_ATTACK]+6
     realSpAtk  = (spAtk.to_f*stageMul[spAtkStage]/stageDiv[spAtkStage]).floor
     # Determine move's category
-    @calcCategory = (realAtk>realSpAtk) ? 0 : 1
+    @calcCategory = (realAtk > realSpAtk) ? 0 : 1
   end
 end
 

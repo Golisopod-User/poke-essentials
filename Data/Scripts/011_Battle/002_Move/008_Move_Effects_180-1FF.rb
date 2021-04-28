@@ -161,6 +161,7 @@ class PokeBattle_Move_187 < PokeBattle_Move_005
   def specialMove?(thisType=nil);  return (@calcCategory==1); end
 
   def pbOnStartUse(user,targets)
+    return false if !targets.is_a?(Array)
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
     defense      = targets[0].defense
@@ -170,9 +171,7 @@ class PokeBattle_Move_187 < PokeBattle_Move_005
     spdefStage   = targets[0].stages[:SPDEF]+6
     realSpdef    = (spdef.to_f*stageMul[spdefStage]/stageDiv[spdefStage]).floor
     # Determine move's category
-    return @calcCategory = 0 if realDefense<realSpdef
-    return @calcCategory = 1 if realDefense>=realSpdef
-    if @id == :WONDERROOM; end
+    @calcCategory = (realDefense < realSpdef) ? 0 : 1
   end
 end
 
