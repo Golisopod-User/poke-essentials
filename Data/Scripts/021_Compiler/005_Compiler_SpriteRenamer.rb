@@ -56,6 +56,8 @@ module Compiler
       else
         prefix = (name[/b/]) ? "Back/" : "Front/"
       end
+    elsif default_prefix == "Icons/"
+      prefix = "Icons shiny/" if name[/s/] && !name[/shadow/]
     end
     if name[/000/]
       species = "000"
@@ -70,7 +72,7 @@ module Compiler
       gmax = "_gmax" if name[/_gmax/]
       if name[/egg/]
         prefix = "Eggs/"
-        crack = "_icon" if default_prefix == "Icons/"
+        crack = "_icon" if default_prefix == "Icons/" || default_prefix == "Icons shiny/"
         crack = "_cracks" if name[/eggCracks/]
       end
     end
