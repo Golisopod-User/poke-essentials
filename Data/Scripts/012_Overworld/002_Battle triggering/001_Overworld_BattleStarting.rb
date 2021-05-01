@@ -101,10 +101,10 @@ def pbPrepareBattle(battle)
   # Whether the player gains/loses money at the end of the battle (default: true)
   battle.moneyGain = battleRules["moneyGain"] if !battleRules["moneyGain"].nil?
   # Whether the player is able to switch when an opponent's Pokémon faints
-  battle.switchStyle = ($PokemonSystem.battlestyle==0)
+  battle.switchStyle = ($PokemonSystem.battlestyle == 0)
   battle.switchStyle = battleRules["switchStyle"] if !battleRules["switchStyle"].nil?
   # Whether battle animations are shown
-  battle.showAnims = ($PokemonSystem.battlescene==0)
+  battle.showAnims = ($PokemonSystem.battlescene == 0)
   battle.showAnims = battleRules["battleAnims"] if !battleRules["battleAnims"].nil?
   # Terrain
   if battleRules["defaultTerrain"].nil?
