@@ -640,7 +640,7 @@ GameData::Evolution.register({
   :id            => :CriticalHits,
   :parameter     => Integer,
   :on_battle_proc => proc { |pkmn, parameter|
-    ret = pkmn.critical_hits == parameter
+    ret = pkmn.critical_hits >= parameter
     pkmn.critical_hits = 0
     next ret
   }
@@ -650,7 +650,6 @@ GameData::Evolution.register({
   :id            => :DamageDone,
   :parameter     => Integer,
   :on_battle_proc => proc { |pkmn, parameter|
-    ret = pkmn.damage_done == parameter
-    next ret
+    next pkmn.damage_done >= parameter
   }
 })
