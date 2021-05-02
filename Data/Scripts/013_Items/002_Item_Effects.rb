@@ -1067,7 +1067,7 @@ ItemHandlers::UseOnPokemon.add(:NSOLARIZER,proc { |item,pkmn,scene|
     scene.pbDisplay(_INTL("You have no room to separate the Pokémon."))
     next false
   end
-  pkmn.form  = 0
+  pkmn.form = 0
   $Trainer.party[$Trainer.party.length] = pkmn.fused
   pkmn.fused = nil
   scene.pbHardRefresh
