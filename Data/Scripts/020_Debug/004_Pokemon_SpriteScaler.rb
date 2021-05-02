@@ -220,11 +220,28 @@ class EBSBitmapWrapper
   end
   #-----------------------------------------------------------------------------
 end
-#===============================================================================
-#  Aliases old PokemonBitmap generating functions and creates new ones,
-#  utilizing the new BitmapWrapper
-#===============================================================================
+
+#-----------------------------------------------------------------------------
+#  new method for finding emptiness of top of bitmap
+#-----------------------------------------------------------------------------
+def findTop(bitmap)
+  return 0 if !bitmap
+  for i in 1..bitmap.height
+    for j in 0..bitmap.width-1
+      return i if bitmap.get_pixel(j,bitmap.height-i).alpha>0
+    end
+  end
+  return 0
+end
+
+#-----------------------------------------------------------------------------
+#  aliasing the old Pokemon Sprite Functions and fixing UI overflow issues
+#-----------------------------------------------------------------------------
 if !defined?(EliteBattle)
+
+  #-----------------------------------------------------------------------------
+  #  All Pokemon Sprite files now return EBSBitmapWrapper
+  #-----------------------------------------------------------------------------
   module GameData
     class Species
       def self.front_sprite_bitmap(species, form = 0, gender = 0, shiny = false, shadow = false)
@@ -244,42 +261,9 @@ if !defined?(EliteBattle)
     end
   end
 
-  class PokemonPokedexInfo_Scene
-    def pbUpdateDummyPokemon
-      @species = @dexlist[@index][0]
-      @gender, @form = $Trainer.pokedex.last_form_seen(@species)
-      species_data = GameData::Species.get_species_form(@species, @form)
-      @sprites["infosprite"].setSpeciesBitmap(@species,@gender,@form)
-      if @sprites["formfront"]
-        @sprites["formfront"].setSpeciesBitmap(@species,@gender,@form)
-      end
-      if @sprites["formback"]
-        @sprites["formback"].setSpeciesBitmap(@species,@gender,@form,false,false,true)
-        @sprites["formback"].y = 256
-        @sprites["formback"].y += species_data.back_sprite_y * 2
-        if Settings::BACK_BATTLER_SPRITE_SCALE > Settings::FRONT_BATTLER_SPRITE_SCALE
-          @sprites["formback"].zoom_x = (Settings::FRONT_BATTLER_SPRITE_SCALE/Settings::BACK_BATTLER_SPRITE_SCALE)
-          @sprites["formback"].zoom_y = (Settings::FRONT_BATTLER_SPRITE_SCALE/Settings::BACK_BATTLER_SPRITE_SCALE)
-        end
-      end
-      if @sprites["formicon"]
-        @sprites["formicon"].pbSetParams(@species,@gender,@form)
-      end
-    end
-  end
-
-  def findTop(bitmap)
-    return 0 if !bitmap
-    for i in 1..bitmap.height
-      for j in 0..bitmap.width-1
-        return i if bitmap.get_pixel(j,bitmap.height-i).alpha>0
-      end
-    end
-    return 0
-  end
-
-
-
+  #-----------------------------------------------------------------------------
+  #  Accounting for sprite scale in the sprite positioner
+  #-----------------------------------------------------------------------------
   class SpritePositioner
     def pbAutoPosition
       species_data = GameData::Species.get(@species)
@@ -305,6 +289,9 @@ if !defined?(EliteBattle)
     end
   end
 
+  #-----------------------------------------------------------------------------
+  #  Accounting for sprite scale in the sprite positioner
+  #-----------------------------------------------------------------------------
   def pbAutoPositionAll
     GameData::Species.each do |sp|
       Graphics.update if sp.id_number % 50 == 0
@@ -332,6 +319,80 @@ if !defined?(EliteBattle)
     GameData::Species.save
     Compiler.write_pokemon
     Compiler.write_pokemon_forms
+  end
+
+  #-----------------------------------------------------------------------------
+  #  Adding Box constraints to the Pokemon Sprite Bitmap
+  #-----------------------------------------------------------------------------
+  class PokemonSprite < SpriteWrapper
+    def constrict(amt, deanimate = true)
+      @_iconbitmap.constrict = amt if @_iconbitmap.respond_to?(:constrict)
+      @_iconbitmap.setSpeed(0) if @_iconbitmap.respond_to?(:setSpeed) && deanimate
+      @_iconbitmap.deanimate if @_iconbitmap.respond_to?(:deanimate) && deanimate
+    end
+  end
+
+  #-----------------------------------------------------------------------------
+  #  fix misalignment and add box constraints in Pokedex Menu
+  #-----------------------------------------------------------------------------
+  class PokemonPokedexInfo_Scene
+    alias pbUpdateDummyPokemon_gen8 pbUpdateDummyPokemon unless self.method_defined?(:pbUpdateDummyPokemon_gen8)
+    def pbUpdateDummyPokemon
+      pbUpdateDummyPokemon_gen8
+      @sprites["infosprite"].constrict(208)
+      @sprites["formfront"].constrict(200) if @sprites["formfront"]
+      if @sprites["formback"]
+        @sprites["formback"].constrict(200)
+        @sprites["formback"].setOffset(PictureOrigin::Center)
+        @sprites["formback"].y = @sprites["formfront"].y if @sprites["formfront"]
+        if Settings::BACK_BATTLER_SPRITE_SCALE > Settings::FRONT_BATTLER_SPRITE_SCALE
+          @sprites["formback"].zoom_x = (Settings::FRONT_BATTLER_SPRITE_SCALE/Settings::BACK_BATTLER_SPRITE_SCALE)
+          @sprites["formback"].zoom_y = (Settings::FRONT_BATTLER_SPRITE_SCALE/Settings::BACK_BATTLER_SPRITE_SCALE)
+        end
+      end
+    end
+  end
+
+  #-----------------------------------------------------------------------------
+  #  Adding Box constraints to the Pokemon Sprite Bitmap in Pokedex info
+  #-----------------------------------------------------------------------------
+  class PokemonPokedex_Scene
+    alias setIconBitmap_gen8 setIconBitmap unless self.method_defined?(:setIconBitmap_gen8)
+    def setIconBitmap(*args)
+      setIconBitmap_gen8(*args)
+      @sprites["icon"].constrict(224)
+    end
+  end
+
+
+  #-----------------------------------------------------------------------------
+  #  Adding Box constraints to the Pokemon Sprite Bitmap in Storage Menu
+  #-----------------------------------------------------------------------------
+  class PokemonStorageScene
+    alias pbUpdateOverlay_gen8 pbUpdateOverlay unless self.method_defined?(:pbUpdateOverlay_gen8)
+    def pbUpdateOverlay(*args)
+      pbUpdateOverlay_gen8(*args)
+      @sprites["pokemon"].constrict(168)
+    end
+  end
+
+  #-----------------------------------------------------------------------------
+  #  Adding Box constraints to the Pokemon Sprite Bitmap in Summary Screen
+  #-----------------------------------------------------------------------------
+  class PokemonSummary_Scene
+    #-----------------------------------------------------------------------------
+    #  restrains the sprite from overflowing out of the sprite area
+    #-----------------------------------------------------------------------------
+    alias pbStartScene_gen8 pbStartScene unless self.method_defined?(:pbStartScene_gen8)
+    def pbStartScene(*args)
+      ret = pbStartScene_gen8(*args)
+      @sprites["pokemon"].constrict(164, false)
+    end
+    alias pbChangePokemon_gen8 pbChangePokemon unless self.method_defined?(:pbChangePokemon_gen8)
+    def pbChangePokemon
+      pbChangePokemon_gen8
+      @sprites["pokemon"].constrict(164, false)
+    end
   end
 end
 
