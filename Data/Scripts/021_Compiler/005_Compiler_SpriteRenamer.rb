@@ -72,7 +72,7 @@ module Compiler
       gmax = "_gmax" if name[/_gmax/]
       if name[/egg/]
         prefix = "Eggs/"
-        crack = "_icon" if default_prefix == "Icons/" || default_prefix == "Icons shiny/"
+        crack = "_icon" if default_prefix == "Icons/"
         crack = "_cracks" if name[/eggCracks/]
       end
     end
