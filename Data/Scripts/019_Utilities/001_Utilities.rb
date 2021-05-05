@@ -89,19 +89,19 @@ end
 
 # Unused
 def hasConst?(mod,constant)
-  return false if !mod || nil_or_empty?(constant)
+  return false if !mod || constant.nil?
   return mod.const_defined?(constant.to_sym) rescue false
 end
 
 # Unused
 def getConst(mod,constant)
-  return nil if !mod || nil_or_empty?(constant)
+  return nil if !mod || constant.nil?
   return mod.const_get(constant.to_sym) rescue nil
 end
 
 # Unused
 def getID(mod,constant)
-  return nil if !mod || nil_or_empty?(constant)
+  return nil if !mod || constant.nil?
   if constant.is_a?(Symbol) || constant.is_a?(String)
     if (mod.const_defined?(constant.to_sym) rescue false)
       return mod.const_get(constant.to_sym) rescue 0
@@ -456,7 +456,7 @@ def pbMoveTutorChoose(move,movelist=nil,bymachine=false,oneusemachine=false)
         pbMessage(_INTL("{1} can't learn {2}.",pokemon.name,movename)) { screen.pbUpdate }
       else
         if pbLearnMove(pokemon,move,false,bymachine) { screen.pbUpdate }
-          pokemon.add_first_move(move) if oneusemachine
+          pkmn.add_first_move(move) if oneusemachine
           ret = true
           break
         end
