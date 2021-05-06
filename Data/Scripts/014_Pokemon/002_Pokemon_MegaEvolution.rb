@@ -6,7 +6,7 @@ class Pokemon
   def getMegaForm
     ret = 0
     GameData::Species.each do |data|
-      next if data.species != @species
+      next if data.species != @species || data.unmega_form != form_simple
       if data.mega_stone && hasItem?(data.mega_stone)
         ret = data.form
         break
@@ -15,7 +15,6 @@ class Pokemon
         break
       end
     end
-    ret = getSpecificMegaForm if hasSpecificMegaForm?
     return ret   # form number, or 0 if no accessible Mega form
   end
 
@@ -23,7 +22,6 @@ class Pokemon
     ret = -1
     if mega?
       ret = species_data.unmega_form
-      ret = getSpecificUnmegaForm if hasSpecificUnmegaForm?
     end
     return ret
   end
@@ -80,32 +78,5 @@ class Pokemon
     if !v.nil?;    self.form = v
     elsif primal?; self.form = 0
     end
-  end
-end
-
-#===============================================================================
-# Form Specific Mega Evolution
-# To prevent Galarian Slowbro from Mega Evolving
-#===============================================================================
-class Pokemon
-  def hasSpecificMegaForm?
-    v = MultipleForms.call("getSpecificMegaForm",self)
-    return !v.nil?
-  end
-
-  def getSpecificMegaForm
-    v = MultipleForms.call("getSpecificMegaForm",self)
-    return v if v.is_a?(Numeric)
-  end
-
-  def hasSpecificUnmegaForm?
-    v = MultipleForms.call("getSpecificUnmegaForm",self)
-    return !v.nil?
-  end
-
-  def getSpecificUnmegaForm
-    v = MultipleForms.call("getSpecificUnmegaForm",self)
-    v = self.form if !v || v<0
-    return v if v.is_a?(Numeric)
   end
 end

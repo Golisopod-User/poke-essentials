@@ -194,18 +194,6 @@ MultipleForms.register(:PIKACHU,{
   }
 })
 
-MultipleForms.register(:SLOWBRO,{
-  "getSpecificMegaForm" => proc { |pkmn|
-    next 2 if (pkmn.form == 0 && pkmn.hasItem?(:SLOWBRONITE))
-    next
-  },
-  "getSpecificUnmegaForm" => proc { |pkmn|
-    next 0 if pkmn.form == 2
-    next
-  }
-})
-
-
 MultipleForms.register(:UNOWN,{
   "getFormOnCreation" => proc { |pkmn|
     next rand(28)
