@@ -2,8 +2,9 @@
 #-------------------------------
 [CAMPER,Liam]
 LoseText = "A very good battle, indeed!"
-Pokemon = DIGLETT,10
-Pokemon = BONSLY,11
+Pokemon = ZOROARK,10
+Pokemon = DIGLETT,11
+    Form = 1
 #-------------------------------
 [LEADER_Brock,Brock]
 Items = FULLRESTORE,FULLRESTORE
