@@ -695,9 +695,12 @@ MultipleForms.register(:CALYREX,{
   "onSetForm" => proc { |pkmn,form,oldForm|
     case form
     when 0   # Normal
-      exclusiveMoves = [:TACKLE, :TAILWHIP, :DOUBLEKICK, :AVALANCHE, :HEX, :STOMP, :TORMENT, :CONFUSERAY,
-         :MIST, :HAZE, :ICICLECRASH, :SHADOWBALL, :TAKEDOWN, :IRONDEFENSE, :AGILITY, :THRASH, :TAUNT, :DISABLE,
-          :DOUBLEEDGE, :SWORDSDANCE, :NASTYPLOT, :GLACIALLANCE, :ASTRALBARRAGE]
+      exclusiveMoves = [
+        :TACKLE, :TAILWHIP, :DOUBLEKICK, :AVALANCHE, :HEX, :STOMP, :TORMENT,
+        :CONFUSERAY, :MIST, :HAZE, :ICICLECRASH, :SHADOWBALL, :TAKEDOWN,
+        :IRONDEFENSE, :AGILITY, :THRASH, :TAUNT, :DISABLE, :DOUBLEEDGE,
+        :SWORDSDANCE, :NASTYPLOT, :GLACIALLANCE, :ASTRALBARRAGE
+      ]
       pkmn.moves.each_with_index do |move,i|
         next if !move
         if exclusiveMoves.include?(move.id)
@@ -705,7 +708,7 @@ MultipleForms.register(:CALYREX,{
           pkmn.pbDeleteMoveAtIndex(i)
         end
       end
-      pkmn.pbLearnMove(:CONFUSION) if pkmn.numMoves==0
+      pkmn.pbLearnMove(:CONFUSION) if pkmn.numMoves == 0
     when 1   # Ice Rider
       pbLearnMove(pkmn,:GLACIALLANCE,true) if GameData::Move.exists?(:GLACIALLANCE)
     when 2   # Black
