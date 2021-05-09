@@ -509,5 +509,6 @@ class PokeBattle_Move
   #=============================================================================
   # Priority Calculation
   #=============================================================================
+  # Returns a value to offset priority of a move by
   def pbChangePriority(user); return 0; end
 end
