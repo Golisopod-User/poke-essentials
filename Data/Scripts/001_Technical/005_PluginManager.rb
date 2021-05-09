@@ -210,6 +210,8 @@ module PluginManager
       when :dependencies   # Plugin dependencies
         dependencies = value
         dependencies = [dependencies] if !dependencies.is_a?(Array) || !dependencies[0].is_a?(Array)
+        # Ignore v19 Hotfixes as those mess with Gen 8 Changes
+        next if dep.include?("v19 Hotfixes")
         for dep in value
           if dep.is_a?(String)   # "plugin name"
             if !self.installed?(dep)
@@ -579,6 +581,8 @@ module PluginManager
         # clean the name to a simple string
         dname = dname[0] if dname.is_a?(Array) && dname.length == 2
         dname = dname[1] if dname.is_a?(Array) && dname.length == 3
+        # Ignore v19 Hotfixes as those mess with Gen 8 Changes
+        next if dname == "v19 Hotfixes"
         # catch missing dependency
         self.error("Plugin '#{o}' requires plugin '#{dname}' to work properly.") if !order.include?(dname)
         # skip if already sorted
