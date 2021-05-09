@@ -210,9 +210,9 @@ module PluginManager
       when :dependencies   # Plugin dependencies
         dependencies = value
         dependencies = [dependencies] if !dependencies.is_a?(Array) || !dependencies[0].is_a?(Array)
-        # Ignore v19 Hotfixes as those mess with Gen 8 Changes
-        next if dep.include?("v19 Hotfixes")
         for dep in value
+          # Ignore v19 Hotfixes as those mess with Gen 8 Changes
+          next if dep.include?("v19 Hotfixes")
           if dep.is_a?(String)   # "plugin name"
             if !self.installed?(dep)
               self.error("Plugin '#{name}' requires plugin '#{dep}' to be installed above it.")
