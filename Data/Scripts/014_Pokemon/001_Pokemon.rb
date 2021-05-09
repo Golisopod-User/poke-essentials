@@ -97,7 +97,7 @@ class Pokemon
   MAX_MOVES     = 4
 
   def inspect
-    str = self.to_s.chop
+    str = super.chop
     str << format(' %s Lv.%s>', @species, @level.to_s || '???')
     return str
   end
