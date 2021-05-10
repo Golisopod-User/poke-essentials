@@ -6,10 +6,9 @@ class EBSBitmapWrapper
   #-----------------------------------------------------------------------------
   #  class constructor
   #-----------------------------------------------------------------------------
-  def initialize(file, scale = Settings::FRONT_BATTLER_SPRITE_SCALE, skip = 2)
+  def initialize(file, scale = Settings::FRONT_BATTLER_SPRITE_SCALE, skip = 1)
     # failsafe checks
     raise "filename is nil" if file.nil?
-    raise ".gif files are not supported!" if File.extname(file) == ".gif"
     #---------------------------------------------------------------------------
     @scale = scale
     @constrict = nil
