@@ -261,6 +261,18 @@ module SpriteRenamer
     if pbConfirmMessage("Rename all trainer charsets? This will also edit map data to change events' charsets accordingly.")
       convert_trainer_sprites("Graphics/Characters/")
       # Edit all maps to replace used charsets
+      newPlayerMeta = []
+      for i in 0...8
+        metadata = GameData::Metadata.get_player(i)
+        if metadata
+          newMeta = metadata.clone
+          newMeta[1] = "trainer_#{metadata[0]}"
+          newPlayerMeta.push(newMeta)
+        else
+          newPlayerMeta.push(nil)
+        end
+      end
+      echoln(newPlayerMeta)
       mapData = Compiler::MapData.new
       t = Time.now.to_i
       Graphics.update
@@ -289,7 +301,35 @@ module SpriteRenamer
       end
     end
     pbMessage(_INTL("All found sprites and icons were renamed and moved."))
-    pbMessage(_INTL("Some map data was edited. Close and reopen RPG Maker XP to see the changes.")) if any_changed
+    if any_changed
+      metadata = GameData::Metadata.get
+      metadata_hash = {
+        :id                 => 0,
+        :home               => metadata.home,
+        :wild_battle_BGM    => metadata.wild_battle_BGM,
+        :trainer_battle_BGM => metadata.trainer_battle_BGM,
+        :wild_victory_ME    => metadata.wild_victory_ME,
+        :trainer_victory_ME => metadata.trainer_victory_ME,
+        :wild_capture_ME    => metadata.wild_capture_ME,
+        :surf_BGM           => metadata.surf_BGM,
+        :bicycle_BGM        => metadata.bicycle_BGM,
+        :player_A           => newPlayerMeta[0],
+        :player_B           => newPlayerMeta[1],
+        :player_C           => newPlayerMeta[2],
+        :player_D           => newPlayerMeta[3],
+        :player_E           => newPlayerMeta[4],
+        :player_F           => newPlayerMeta[5],
+        :player_G           => newPlayerMeta[6],
+        :player_H           => newPlayerMeta[7]
+      }
+      # Add metadata's data to records
+      GameData::Metadata.register(metadata_hash)
+      GameData::Metadata.save
+      Compiler.write_metadata
+      pbMessage(_INTL("Some map data was edited. Close and reopen RPG Maker XP to see the changes."))
+      pbMessage(_INTL("Since all Trainer charsets have been renamed, it is possible that the charset name in the metadata.txt. for the PlayerA, PlayerB etc, no longer matches the file name in Graphics/ Characters."))
+      pbMessage(_INTL("If that is the case, please make sure to rectify this, else you will get an error upon closing and reopening RPG Maker XP."))
+    end
     pbUpdateVehicle if $game_player
   end
 end

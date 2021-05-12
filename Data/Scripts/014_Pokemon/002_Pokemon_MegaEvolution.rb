@@ -19,11 +19,7 @@ class Pokemon
   end
 
   def getUnmegaForm
-    ret = -1
-    if mega?
-      ret = species_data.unmega_form
-    end
-    return ret
+    return ((mega?) ? species_data.unmega_form : -1)
   end
 
   def hasMegaForm?

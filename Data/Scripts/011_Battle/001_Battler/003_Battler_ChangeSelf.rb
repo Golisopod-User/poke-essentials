@@ -125,7 +125,7 @@ class PokeBattle_Battler
       @type2 = newType[1] || newType[0]
       @effects[PBEffects::Type3] = newType3
     else
-      newType = GameData::Item.get(newType).id
+      newType = GameData::Type.get(newType).id
       @type1 = newType
       @type2 = newType
       @effects[PBEffects::Type3] = nil

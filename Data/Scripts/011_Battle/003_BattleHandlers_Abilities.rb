@@ -1767,23 +1767,22 @@ BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
 
 BattleHandlers::TargetAbilityOnHit.add(:GULPMISSILE,
   proc { |ability,user,target,move,battle|
-    next if target.form==0
-    if target.isSpecies?(:CRAMORANT)
-      battle.pbShowAbilitySplash(target)
-      gulpform=target.form
-      target.form = 0
-      battle.scene.pbChangePokemon(target,target.pokemon)
-      battle.scene.pbDamageAnimation(user)
-      if user.takesIndirectDamage?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
-        user.pbReduceHP(user.totalhp/4,false)
-      end
-      if gulpform==1
-        user.pbLowerStatStageByAbility(:DEFENSE,1,target,false)
-      elsif gulpform==2
-        msg = nil
-        user.pbParalyze(target,msg)
-      end
-      battle.pbHideAbilitySplash(target)
+    next if !target.isSpecies?(:CRAMORANT)
+    next if target.form == 0
+    battle.pbShowAbilitySplash(target)
+    oldForm = target.form
+    target.pbChangeForm(0,"")
+    battle.pbHideAbilitySplash(target)
+    if oldForm == 1
+      battle.pbCommonAnimation("CramorantGulp",user,target)
+    elsif oldForm == 2
+      battle.pbCommonAnimation("CramorantGorge",user,target)
+    end
+    user.pbReduceHP(user.totalhp/4) if user.takesIndirectDamage?(true)
+    if oldForm == 1
+      user.pbLowerStatStageByAbility(:DEFENSE,1,target,false)
+    elsif oldForm == 2
+      user.pbParalyze(target,"")
     end
   }
 )
@@ -2208,26 +2207,11 @@ BattleHandlers::EOREffectAbility.add(:SPEEDBOOST,
   }
 )
 
-BattleHandlers::EOREffectAbility.add(:BALLFETCH,
-  proc { |ability,battler,battle|
-    if battler.effects[PBEffects::BallFetch]!=0 && battler.item<=0
-      ball = battler.effects[PBEffects::BallFetch]
-      battler.item = ball
-      battler.setInitialItem(battler.item)
-      PBDebug.log("[Ability triggered] #{battler.pbThis}'s Ball Fetch found #{GameData::Item.get(ball).name}")
-      battle.pbShowAbilitySplash(battler) if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1} found a {2}!",battler.pbThis,GameData::Item.get(ball).name))
-      battler.effects[PBEffects::BallFetch]=0
-      battle.pbHideAbilitySplash(battler) if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-    end
-  }
-)
-
 BattleHandlers::EOREffectAbility.add(:HUNGERSWITCH,
   proc { |ability,battler,battle|
     if battler.isSpecies?(:MORPEKO)
       battle.pbShowAbilitySplash(battler)
-      battler.form=(battler.form==0) ? 1 : 0
+      battler.form = (battler.form == 0) ? 1 : 0
       battler.pbUpdate(true)
       battle.scene.pbChangePokemon(battler,battler.pokemon)
       battle.pbDisplay(_INTL("{1} transformed!",battler.pbThis))
@@ -2282,6 +2266,19 @@ BattleHandlers::EORGainItemAbility.add(:PICKUP,
     battle.pbDisplay(_INTL("{1} found one {2}!",battler.pbThis,battler.itemName))
     battle.pbHideAbilitySplash(battler)
     battler.pbHeldItemTriggerCheck
+  }
+)
+
+BattleHandlers::EORGainItemAbility.add(:BALLFETCH,
+  proc { |ability,battler,battle|
+    next if battler.item
+    next if !battler.effects[PBEffects::BallFetch]
+    battler.item = battler.effects[PBEffects::BallFetch]
+    battler.effects[PBEffects::BallFetch] = nil
+    PBDebug.log("[Ability triggered] #{battler.pbThis}'s Ball Fetch found #{GameData::Item.get(battler.item).name}")
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} found a {2}!",battler.pbThis,GameData::Item.get(battler.item).name))
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

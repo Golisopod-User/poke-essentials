@@ -2529,13 +2529,14 @@ class PokeBattle_Move_075 < PokeBattle_Move
   end
 
   def pbEffectAfterAllHits(user,target)
-    if !target.damageState.unaffected && !target.damageState.protected &&
-	  !target.damageState.missed && user.isSpecies(:CRAMORANT) &&
-      user.ability == :GULPMISSILE && user.form == 0
-      newForm = 2
-      newForm = 1 if user.hp > (user.totalhp/2)
-      pbChangeForm(newForm,"")
-    end
+    return if target.damageState.unaffected ||
+              target.damageState.protected ||
+              target.damageState.missed
+    return if !user.isSpecies?(:CRAMORANT) ||
+              user.ability != :GULPMISSILE ||
+              user.form != 0
+    newForm = (user.hp > (user.totalhp/2)) ? 1 : 2
+    pbChangeForm(newForm,"")
   end
 end
 

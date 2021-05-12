@@ -449,11 +449,18 @@ class PokeBattle_Battler
         # NOTE: If a multi-hit move becomes disabled partway through doing those
         #       hits (e.g. by Cursed Body), the rest of the hits continue as
         #       normal.
-        # All targets are fainted
         # Don't stop using the move if Dragon Darts could still hit something
-        break if !targets.any? { |t| !t.fainted? } unless move.function == "17C" &&
-                                                          realNumHits < numHits &&
-                                                          !@battle.pbAllFainted?(user.idxOpposingSide)
+        if move.function == "17C" && realNumHits < numHits
+          endMove = true
+          @battle.eachBattler do |b|
+            next if b == self
+            endMove = false
+          end
+          break if endMove
+        else
+          # All targets are fainted
+          break if targets.all? { |t| t.fainted? }
+        end
       end
       # Battle Arena only - attack is successful
       @battle.successStates[user.index].useState = 2

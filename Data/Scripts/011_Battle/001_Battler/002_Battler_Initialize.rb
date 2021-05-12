@@ -99,7 +99,7 @@ class PokeBattle_Battler
     pkmn.moves.each_with_index do |m,i|
       if (isSpecies?(:ZACIAN) || isSpecies?(:ZAMAZENTA)) && @form == 1 && m.id == :IRONHEAD
         moveID = isSpecies?(:ZACIAN) ? :BEHEMOTHBLADE : :BEHEMOTHBASH
-        @moves[i] = PokeBattle_Move.from_pokemon_move(@battle,Pokemon::Move(moveID))
+        @moves[i] = PokeBattle_Move.from_pokemon_move(@battle,Pokemon::Move.new(moveID))
       else
         @moves[i] = PokeBattle_Move.from_pokemon_move(@battle,m)
       end
@@ -304,7 +304,7 @@ class PokeBattle_Battler
     @effects[PBEffects::WeightChange]        = 0
     @effects[PBEffects::Yawn]                = 0
     @effects[PBEffects::GorillaTactics]      = -1
-    @effects[PBEffects::BallFetch]           = 0
+    @effects[PBEffects::BallFetch]           = nil
     @effects[PBEffects::LashOut]             = false
     @effects[PBEffects::BurningJealousy]     = false
     @effects[PBEffects::Obstruct]            = false
