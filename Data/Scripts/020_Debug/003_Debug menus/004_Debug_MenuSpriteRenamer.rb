@@ -239,6 +239,7 @@ module SpriteRenamer
   def convert_files
     return if !pbConfirmMessage("Check for Pokémon/item/trainer files in their old folders that need renaming and moving?")
     any_changed = false
+    any_player_changed = false
     # Rename and move Pokémon sprites/icons
     dest_dir = "Graphics/Pokemon/"
     Dir.mkdir(dest_dir) if !FileTest.directory?(dest_dir)
@@ -259,20 +260,19 @@ module SpriteRenamer
     convert_trainer_sprites("Graphics/Trainers/")
     pbSetWindowText(nil)
     if pbConfirmMessage("Rename all trainer charsets? This will also edit map data to change events' charsets accordingly.")
+      # Rename Trainer Charsets
       convert_trainer_sprites("Graphics/Characters/")
-      # Edit all maps to replace used charsets
-      newPlayerMeta = []
       for i in 0...8
         metadata = GameData::Metadata.get_player(i)
-        if metadata
-          newMeta = metadata.clone
-          newMeta[1] = "trainer_#{metadata[0]}"
-          newPlayerMeta.push(newMeta)
-        else
-          newPlayerMeta.push(nil)
-        end
+        next if !metadata
+        id = GameData::TrainerType.get(metadata[0]).id_number
+        next if metadata[1] != sprintf("trchar%03d",id)
+        newMeta = metadata.clone
+        newMeta[1] = "trainer_#{metadata[0]}"
+        newPlayerMeta.push(newMeta)
+        any_player_changed = true
       end
-      echoln(newPlayerMeta)
+      # Edit all maps to replace used charsets
       mapData = Compiler::MapData.new
       t = Time.now.to_i
       Graphics.update
@@ -301,7 +301,7 @@ module SpriteRenamer
       end
     end
     pbMessage(_INTL("All found sprites and icons were renamed and moved."))
-    if any_changed
+    if any_player_changed
       metadata = GameData::Metadata.get
       metadata_hash = {
         :id                 => 0,
@@ -326,10 +326,10 @@ module SpriteRenamer
       GameData::Metadata.register(metadata_hash)
       GameData::Metadata.save
       Compiler.write_metadata
-      pbMessage(_INTL("Some map data was edited. Close and reopen RPG Maker XP to see the changes."))
       pbMessage(_INTL("Since all Trainer charsets have been renamed, it is possible that the charset name in the metadata.txt. for the PlayerA, PlayerB etc, no longer matches the file name in Graphics/ Characters."))
       pbMessage(_INTL("If that is the case, please make sure to rectify this, else you will get an error upon closing and reopening RPG Maker XP."))
     end
+    pbMessage(_INTL("Some map data was edited. Close and reopen RPG Maker XP to see the changes.")) if any_changed
     pbUpdateVehicle if $game_player
   end
 end
