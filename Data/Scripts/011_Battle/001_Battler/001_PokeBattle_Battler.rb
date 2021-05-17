@@ -417,8 +417,8 @@ class PokeBattle_Battler
       :RKSSYSTEM,
       :ASONEICE,
       :ASONEGHOST,
-	  :NEUTRALIZINGGAS,
-	  :HUNGERSWITCH
+      :NEUTRALIZINGGAS,
+      :HUNGERSWITCH
     ]
     return ability_blacklist.include?(abil.id)
   end

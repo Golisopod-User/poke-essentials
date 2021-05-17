@@ -1771,28 +1771,28 @@ BattlerPlayerY = 62
 BattlerEnemyY = 15
 #-------------------------------
 [VIVILLON,1]
-FormName = Continental Pattern
+FormName = Archipelago Pattern
 #-------------------------------
 [VIVILLON,2]
-FormName = Elegant Pattern
+FormName = Continental Pattern
 #-------------------------------
 [VIVILLON,3]
-FormName = Garden Pattern
+FormName = Elegant Pattern
 #-------------------------------
 [VIVILLON,4]
-FormName = High Plains Pattern
+FormName = Garden Pattern
 #-------------------------------
 [VIVILLON,5]
-FormName = Icy Snow Pattern
+FormName = High Plains Pattern
 #-------------------------------
 [VIVILLON,6]
-FormName = Jungle Pattern
+FormName = Icy Snow Pattern
 #-------------------------------
 [VIVILLON,7]
-FormName = Marine Pattern
+FormName = Jungle Pattern
 #-------------------------------
 [VIVILLON,8]
-FormName = Meadow Pattern
+FormName = Marine Pattern
 #-------------------------------
 [VIVILLON,9]
 FormName = Modern Pattern
