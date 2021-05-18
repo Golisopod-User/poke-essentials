@@ -236,6 +236,25 @@ module SpriteRenamer
     end
   end
 
+  def convert_player_metadata_charsets
+    changed = false
+    for i in 0...8
+      metadata = GameData::Metadata.get_player(i)
+      next if !metadata
+      if metadata[1][/^trchar(\d{3})$/]
+        tr_type_number = $~[1].to_i
+        tr_type_data = GameData::TrainerType.try_get(tr_type_number)
+        raise _INTL("Trainer type {1} is not defined (trying to rename player metadata filename {2}).", tr_type_number, metadata[1]) if !tr_type_data
+        metadata[1] = "trainer_" + tr_type_data.id.to_s
+        changed = true
+      end
+    end
+    return if !changed
+    # Save changes to metadata and rewrite PBS file
+    GameData::Metadata.save
+    Compiler.write_metadata
+  end
+
   def convert_files
     return if !pbConfirmMessage("Check for Pokémon/item/trainer files in their old folders that need renaming and moving?")
     any_changed = false
@@ -263,18 +282,8 @@ module SpriteRenamer
     if pbConfirmMessage("Rename all trainer charsets? This will also edit map data to change events' charsets accordingly.")
       # Rename Trainer Charsets
       convert_trainer_sprites("Graphics/Characters/")
+      convert_player_metadata_charsets
       pbSetWindowText(nil)
-      for i in 0...8
-        metadata = GameData::Metadata.get_player(i)
-        next if !metadata
-        id = GameData::TrainerType.get(metadata[0]).id_number
-        newMeta = metadata.clone
-        if metadata[1] == sprintf("trchar%03d",id)
-          newMeta[1] = "trainer_#{metadata[0]}"
-          any_player_changed = true
-        end
-        newPlayerMeta.push(newMeta)
-      end
       # Edit all maps to replace used charsets
       mapData = Compiler::MapData.new
       t = Time.now.to_i
@@ -304,32 +313,6 @@ module SpriteRenamer
       end
     end
     pbMessage(_INTL("All found sprites and icons were renamed and moved."))
-    if any_player_changed
-      metadata = GameData::Metadata.get
-      metadata_hash = {
-        :id                 => 0,
-        :home               => metadata.home,
-        :wild_battle_BGM    => metadata.wild_battle_BGM,
-        :trainer_battle_BGM => metadata.trainer_battle_BGM,
-        :wild_victory_ME    => metadata.wild_victory_ME,
-        :trainer_victory_ME => metadata.trainer_victory_ME,
-        :wild_capture_ME    => metadata.wild_capture_ME,
-        :surf_BGM           => metadata.surf_BGM,
-        :bicycle_BGM        => metadata.bicycle_BGM,
-        :player_A           => newPlayerMeta[0],
-        :player_B           => newPlayerMeta[1],
-        :player_C           => newPlayerMeta[2],
-        :player_D           => newPlayerMeta[3],
-        :player_E           => newPlayerMeta[4],
-        :player_F           => newPlayerMeta[5],
-        :player_G           => newPlayerMeta[6],
-        :player_H           => newPlayerMeta[7]
-      }
-      # Add metadata's data to records
-      GameData::Metadata.register(metadata_hash)
-      GameData::Metadata.save
-      Compiler.write_metadata
-    end
     pbMessage(_INTL("Some map data was edited. Close and reopen RPG Maker XP to see the changes.")) if any_changed
     pbUpdateVehicle if $game_player
   end
