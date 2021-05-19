@@ -256,6 +256,7 @@ def pbEncounterTypeEditor(enc_data, enc_type)
   help_window = Window_UnformattedTextPokemon.newWithSize(_INTL("Edit encounter slots"),
      Graphics.width / 2, 0, Graphics.width / 2, 96)
   help_window.z = 99999
+  enc_type_name = ""
   ret = 0
   need_refresh = true
   loop do
@@ -316,7 +317,7 @@ def pbEncounterTypeEditor(enc_data, enc_type)
           need_refresh = true
         end
       when 1   # Copy
-        enc_data.types[enc_type].insert(ret, enc_data.types[enc_type][ret - 2].clone)
+        enc_data.types[enc_type].insert(ret - 1, enc_data.types[enc_type][ret - 2].clone)
         ret += 1
         need_refresh = true
       when 2   # Delete
@@ -386,14 +387,14 @@ def pbTrainerTypeEditor
             type_hash = {
               :id_number   => t_data.id_number,
               :id          => t_data.id,
-              :name        => line[1],
-              :base_money  => line[2],
-              :battle_BGM  => line[3],
-              :victory_ME  => line[4],
-              :intro_ME    => line[5],
-              :gender      => line[6],
-              :skill_level => line[7],
-              :skill_code  => line[8]
+              :name        => data[1],
+              :base_money  => data[2],
+              :battle_BGM  => data[3],
+              :victory_ME  => data[4],
+              :intro_ME    => data[5],
+              :gender      => data[6],
+              :skill_level => data[7],
+              :skill_code  => data[8]
             }
             # Add trainer type's data to records
             GameData::TrainerType.register(type_hash)
