@@ -775,6 +775,8 @@ ItemHandlers::UseOnPokemon.add(:HEALTHWING,proc { |item,pkmn,scene|
   next true
 })
 
+ItemHandlers::UseOnPokemon.copy(:HEALTHWING,:HEALTHFEATHER)
+
 ItemHandlers::UseOnPokemon.add(:MUSCLEWING,proc { |item,pkmn,scene|
   if pbRaiseEffortValues(pkmn,:ATTACK,1,false)==0
     scene.pbDisplay(_INTL("It won't have any effect."))
@@ -784,6 +786,8 @@ ItemHandlers::UseOnPokemon.add(:MUSCLEWING,proc { |item,pkmn,scene|
   pkmn.changeHappiness("wing")
   next true
 })
+
+ItemHandlers::UseOnPokemon.copy(:MUSCLEWING,:MUSCLEFEATHER)
 
 ItemHandlers::UseOnPokemon.add(:RESISTWING,proc { |item,pkmn,scene|
   if pbRaiseEffortValues(pkmn,:DEFENSE,1,false)==0
@@ -795,6 +799,8 @@ ItemHandlers::UseOnPokemon.add(:RESISTWING,proc { |item,pkmn,scene|
   next true
 })
 
+ItemHandlers::UseOnPokemon.copy(:RESISTWING,:RESISTFEATHER)
+
 ItemHandlers::UseOnPokemon.add(:GENIUSWING,proc { |item,pkmn,scene|
   if pbRaiseEffortValues(pkmn,:SPECIAL_ATTACK,1,false)==0
     scene.pbDisplay(_INTL("It won't have any effect."))
@@ -804,6 +810,8 @@ ItemHandlers::UseOnPokemon.add(:GENIUSWING,proc { |item,pkmn,scene|
   pkmn.changeHappiness("wing")
   next true
 })
+
+ItemHandlers::UseOnPokemon.copy(:GENIUSWING,:GENIUSFEATHER)
 
 ItemHandlers::UseOnPokemon.add(:CLEVERWING,proc { |item,pkmn,scene|
   if pbRaiseEffortValues(pkmn,:SPECIAL_DEFENSE,1,false)==0
@@ -815,6 +823,8 @@ ItemHandlers::UseOnPokemon.add(:CLEVERWING,proc { |item,pkmn,scene|
   next true
 })
 
+ItemHandlers::UseOnPokemon.copy(:CLEVERWING,:CLEVERFEATHER)
+
 ItemHandlers::UseOnPokemon.add(:SWIFTWING,proc { |item,pkmn,scene|
   if pbRaiseEffortValues(pkmn,:SPEED,1,false)==0
     scene.pbDisplay(_INTL("It won't have any effect."))
@@ -824,6 +834,8 @@ ItemHandlers::UseOnPokemon.add(:SWIFTWING,proc { |item,pkmn,scene|
   pkmn.changeHappiness("wing")
   next true
 })
+
+ItemHandlers::UseOnPokemon.copy(:SWIFTWING,:SWIFTFEATHER)
 
 ItemHandlers::UseOnPokemon.add(:RARECANDY,proc { |item,pkmn,scene|
   if pkmn.level >= GameData::GrowthRate.max_level || pkmn.shadowPokemon?
