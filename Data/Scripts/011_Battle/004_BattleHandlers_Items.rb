@@ -1281,10 +1281,10 @@ BattleHandlers::UserItemAfterMoveUse.add(:SHELLBELL,
 BattleHandlers::UserItemAfterMoveUse.add(:THROATSPRAY,
   proc { |item,user,targets,move,numHits,battle|
     next if !move.soundMove? || numHits==0
-    next if !user.pbCanRaiseStatStage?(:SPATK,user)
+    next if !user.pbCanRaiseStatStage?(:SPECIAL_ATTACK,user)
     battle.pbCommonAnimation("UseItem",user)
     showAnim = true
-    user.pbRaiseStatStageByCause(:SPATK,1,user,user.itemName,showAnim)
+    user.pbRaiseStatStageByCause(:SPECIAL_ATTACK,1,user,user.itemName,showAnim)
     user.pbConsumeItem
   }
 )

@@ -168,7 +168,7 @@ class PokeBattle_Move_187 < PokeBattle_Move_005
     defenseStage = targets[0].stages[:DEFENSE]+6
     realDefense  = (defense.to_f*stageMul[defenseStage]/stageDiv[defenseStage]).floor
     spdef        = targets[0].spdef
-    spdefStage   = targets[0].stages[:SPDEF]+6
+    spdefStage   = targets[0].stages[:SPECIAL_DEFENSE]+6
     realSpdef    = (spdef.to_f*stageMul[spdefStage]/stageDiv[spdefStage]).floor
     # Determine move's category
     @calcCategory = (realDefense < realSpdef) ? 0 : 1
@@ -348,8 +348,8 @@ class PokeBattle_Move_191 < PokeBattle_TwoTurnMove
   end
 
   def pbChargingTurnEffect(user,target)
-    if user.pbCanRaiseStatStage?(:SPATK,user,self)
-      user.pbRaiseStatStage(:SPATK,1,user)
+    if user.pbCanRaiseStatStage?(:SPECIAL_ATTACK,user,self)
+      user.pbRaiseStatStage(:SPECIAL_ATTACK,1,user)
     end
   end
 end

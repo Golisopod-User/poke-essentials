@@ -405,8 +405,8 @@ class PokeBattle_Battle
       if b.pbCanLowerStatStage?(:DEFENSE,octouser,self)
         b.pbLowerStatStage(:DEFENSE,1,octouser,true,false,true)
       end
-      if b.pbCanLowerStatStage?(:SPDEF,octouser,self)
-        b.pbLowerStatStage(:SPDEF,1,octouser,true,false,true)
+      if b.pbCanLowerStatStage?(:SPECIAL_DEFENSE,octouser,self)
+        b.pbLowerStatStage(:SPECIAL_DEFENSE,1,octouser,true,false,true)
       end
     end
     # Trapping attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)

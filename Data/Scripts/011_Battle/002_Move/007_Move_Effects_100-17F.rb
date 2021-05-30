@@ -409,7 +409,7 @@ class PokeBattle_Move_110 < PokeBattle_Move
       user.pbOwnSide.effects[PBEffects::StickyWebUser] = -1
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!",user.pbThis))
     end
-    user.pbRaiseStatStage(:SPEED,1,user)
+    user.pbRaiseStatStage(:SPEED,1,user) if user.pbCanRaiseStatStage?(:SPEED,user,self)
   end
 end
 
@@ -2664,37 +2664,25 @@ end
 # Raises all user's stats by 1 stage in exchange for the user losing 1/3 of its
 # maximum HP, rounded down. Fails if the user would faint. (Clangorous Soul)
 #===============================================================================
-class PokeBattle_Move_179 < PokeBattle_Move
+class PokeBattle_Move_179 < PokeBattle_MultiStatUpMove
+  def initialize(battle,move)
+    super
+    @statUp = [:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1,:SPEED,1]
+  end
+
   def pbMoveFailed?(user,targets)
-    if user.hp<=(user.totalhp/3) ||
-	  (!user.pbCanRaiseStatStage?(:ATTACK,user,self) &&
-      !user.pbCanRaiseStatStage?(:DEFENSE,user,self) &&
-      !user.pbCanRaiseStatStage?(:SPEED,user,self) &&
-      !user.pbCanRaiseStatStage?(:SPATK,user,self) &&
-      !user.pbCanRaiseStatStage?(:SPDEF,user,self))
+    hpLoss = [user.totalhp/3,1].max
+    if user.hp <= hpLoss
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    return false
+    super(user,targets)
   end
 
   def pbEffectGeneral(user)
-    if user.pbCanRaiseStatStage?(:ATTACK,user,self)
-      user.pbRaiseStatStage(:ATTACK,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:DEFENSE,user,self)
-      user.pbRaiseStatStage(:DEFENSE,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:SPEED,user,self)
-      user.pbRaiseStatStage(:SPEED,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:SPATK,user,self)
-      user.pbRaiseStatStage(:SPATK,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:SPDEF,user,self)
-      user.pbRaiseStatStage(:SPDEF,1,user)
-    end
-    user.pbReduceHP(user.totalhp/3,false)
+    super(user)
+    hpLoss = [user.totalhp/3,1].max
+    user.pbReduceHP(hpLoss,false)
   end
 end
 
@@ -2747,7 +2735,7 @@ end
 class PokeBattle_Move_17B < PokeBattle_TargetMultiStatUpMove
   def initialize(battle,move)
     super
-    @statUp = [:ATTACK,2,:SPATK,2]
+    @statUp = [:ATTACK,2,:SPECIAL_ATTACK,2]
   end
 end
 
@@ -2834,38 +2822,21 @@ end
 # Increases each stat by 1 stage. Prevents user from fleeing. (No Retreat)
 #===============================================================================
 class PokeBattle_Move_17F < PokeBattle_MultiStatUpMove
+  def initialize(battle,move)
+    super
+    @statUp = [:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1,:SPEED,1]
+  end
+
   def pbMoveFailed?(user,targets)
     if user.effects[PBEffects::NoRetreat]
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    if !user.pbCanRaiseStatStage?(:ATTACK,user,self,true) &&
-       !user.pbCanRaiseStatStage?(:DEFENSE,user,self,true) &&
-       !user.pbCanRaiseStatStage?(:SPATK,user,self,true) &&
-       !user.pbCanRaiseStatStage?(:SPDEF,user,self,true) &&
-       !user.pbCanRaiseStatStage?(:SPEED,user,self,true)
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
+    super(user,targets)
   end
 
   def pbEffectGeneral(user)
-    if user.pbCanRaiseStatStage?(:ATTACK,user,self)
-      user.pbRaiseStatStage(:ATTACK,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:DEFENSE,user,self)
-      user.pbRaiseStatStage(:DEFENSE,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:SPEED,user,self)
-      user.pbRaiseStatStage(:SPEED,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:SPATK,user,self)
-      user.pbRaiseStatStage(:SPATK,1,user)
-    end
-    if user.pbCanRaiseStatStage?(:SPDEF,user,self)
-      user.pbRaiseStatStage(:SPDEF,1,user)
-    end
+    super(user)
     if !(user.effects[PBEffects::MeanLook]>=0 || user.effects[PBEffects::Trapping]>0 ||
        user.effects[PBEffects::JawLock] || user.effects[PBEffects::OctolockUser]>=0)
       user.effects[PBEffects::NoRetreat] = true

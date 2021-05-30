@@ -1892,8 +1892,8 @@ BattleHandlers::UserAbilityEndOfMove.add(:GRIMNEIGH,
     next if battle.pbAllFainted?(user.idxOpposingSide)
     numFainted = 0
     targets.each { |b| numFainted += 1 if b.damageState.fainted }
-    next if numFainted==0 || !user.pbCanRaiseStatStage?(:SPATK,user)
-    user.pbRaiseStatStageByAbility(:SPATK,numFainted,user)
+    next if numFainted==0 || !user.pbCanRaiseStatStage?(:SPECIAL_ATTACK,user)
+    user.pbRaiseStatStageByAbility(:SPECIAL_ATTACK,numFainted,user)
   }
 )
 
@@ -1918,12 +1918,12 @@ BattleHandlers::UserAbilityEndOfMove.add(:ASONEGHOST,
     next if battle.pbAllFainted?(user.idxOpposingSide)
     numFainted = 0
     targets.each { |b| numFainted += 1 if b.damageState.fainted }
-    next if numFainted==0 || !user.pbCanRaiseStatStage?(:SPATK,user) || user.fainted?
+    next if numFainted==0 || !user.pbCanRaiseStatStage?(:SPECIAL_ATTACK,user) || user.fainted?
     battle.pbShowAbilitySplash(user,false,true,GameData::Ability.get(:GRIMNEIGH).name)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-      user.pbRaiseStatStage(:SPATK,numFainted,user)
+      user.pbRaiseStatStage(:SPECIAL_ATTACK,numFainted,user)
     else
-      user.pbRaiseStatStageByCause(:SPATK,numFainted,user,GameData::Ability.get(:GRIMNEIGH).name)
+      user.pbRaiseStatStageByCause(:SPECIAL_ATTACK,numFainted,user,GameData::Ability.get(:GRIMNEIGH).name)
     end
     battle.pbHideAbilitySplash(user)
   }
