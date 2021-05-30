@@ -550,21 +550,12 @@ GameData::Evolution.register({
   :use_item_proc => proc { |pkmn, parameter, item|
     sweet     = 0
     cream     = 0
-    spin_time = pkmn.personalID % 5
-    if (spin_time >= 4) && PBDayNight.isRainbow?(time)
+    if PBDayNight.isRainbow?(time)
       cream = 8
-    elsif (spin_time >= 2)
-      if PBDayNight.isNight?(time)
-        cream = ($game_player.direction >= 5)? 5 : 4
-      else
-        cream = ($game_player.direction >= 5)? 6 : 7
-      end
+    elsif PBDayNight.isNight?(time)
+      cream = [2,3,4,5][rand(4)]
     else
-      if PBDayNight.isNight?(time)
-        cream = ($game_player.direction >= 5)? 3 : 2
-      else
-        cream = ($game_player.direction >= 5)? 1 : 0
-      end
+      cream = [1,0,6,7][rand(4)]
     end
     sweetArray = [:STRAWBERRYSWEET, :BERRYSWEET, :LOVESWEET, :STARSWEET, :CLOVERSWEET, :FLOWERSWEET, :RIBBONSWEET]
     sweet = sweetArray.index(pkmn.item)
