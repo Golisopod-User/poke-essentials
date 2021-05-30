@@ -241,7 +241,7 @@ module SpriteRenamer
     for i in 0...8
       metadata = GameData::Metadata.get_player(i)
       next if !metadata
-      if metadata[1][/^trchar(\d{3})$/]
+      if metadata[1][/^trchar(\d+)$/]
         tr_type_number = $~[1].to_i
         tr_type_data = GameData::TrainerType.try_get(tr_type_number)
         raise _INTL("Trainer type {1} is not defined (trying to rename player metadata filename {2}).", tr_type_number, metadata[1]) if !tr_type_data
@@ -258,8 +258,6 @@ module SpriteRenamer
   def convert_files
     return if !pbConfirmMessage("Check for Pokémon/item/trainer files in their old folders that need renaming and moving?")
     any_changed = false
-    any_player_changed = false
-    newPlayerMeta = []
     # Rename and move Pokémon sprites/icons
     dest_dir = "Graphics/Pokemon/"
     Dir.mkdir(dest_dir) if !FileTest.directory?(dest_dir)
@@ -280,7 +278,6 @@ module SpriteRenamer
     convert_trainer_sprites("Graphics/Trainers/")
     pbSetWindowText(nil)
     if pbConfirmMessage("Rename all trainer charsets? This will also edit map data to change events' charsets accordingly.")
-      # Rename Trainer Charsets
       convert_trainer_sprites("Graphics/Characters/")
       convert_player_metadata_charsets
       pbSetWindowText(nil)

@@ -610,10 +610,7 @@ def pbUseItemOnPokemon(item,pkmn,scene)
       pbMessage(_INTL("\\se[PC access]You booted up {1}.\1",itm.name)) { scene.pbUpdate }
       if pbConfirmMessage(_INTL("Do you want to teach {1} to {2}?",movename,pkmn.name)) { scene.pbUpdate }
         if pbLearnMove(pkmn,machine,false,true) { scene.pbUpdate }
-          if itm.is_TR?
-            $PokemonBag.pbDeleteItem(item)
-            pkmn.add_first_move(machine)
-          end
+          $PokemonBag.pbDeleteItem(item) if itm.is_TR?
           return true
         end
       end

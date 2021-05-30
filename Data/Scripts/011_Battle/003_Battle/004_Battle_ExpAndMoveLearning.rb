@@ -258,6 +258,9 @@ class PokeBattle_Battle
           pbDisplay(_INTL("{1} did not learn {2}.",pkmnName,moveName))
           break
         end
+      elsif pbDisplayConfirm(_INTL("Give up on learning {1}?",moveName))
+        pbDisplay(_INTL("{1} did not learn {2}.",pkmnName,moveName))
+        break
       end
     end
   end
