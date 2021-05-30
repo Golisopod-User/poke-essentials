@@ -437,6 +437,7 @@ Weight = 24.0
 Color = White
 Kind = Unique Horn
 Pokedex = This Pokémon will look into your eyes and read the contents of your heart. If it finds evil there, it promptly hides away.
+Generation = 8
 BattlerEnemyX = 2
 #-------------------------------
 [RAPIDASH,1]
@@ -1581,6 +1582,7 @@ Height = 0.7
 Weight = 40.0
 Color = White
 Pokedex = The colder they get, the more energetic they are. They freeze their breath to make snowballs, using them as ammo for playful snowball fights.
+Generation = 8
 Evolutions = DARMANITAN,Item,ICESTONE
 #-------------------------------
 [DARMANITAN,1]
