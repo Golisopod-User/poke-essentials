@@ -25,6 +25,7 @@ end
 def mainFunctionDebug
   begin
     PluginManager.runPlugins
+    Graphics.frame_rate = 40 if defined?(EliteBattle)
     Compiler.main
     Game.initialize
     Game.set_up_system
