@@ -365,6 +365,8 @@ MultipleForms.register(:ARCEUS,{
       end
       break if ret > 0
     end
+    # Gen 8 Prevent ??? Arceus from appearing
+    ret = 0 if ret == 9 && Settings::MECHANICS_GENERATION >= 6
     next ret
   }
 })
