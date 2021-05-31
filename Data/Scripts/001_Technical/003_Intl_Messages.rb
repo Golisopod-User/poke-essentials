@@ -728,6 +728,7 @@ def _INTL(*arg)
     string=arg[0]
   end
   string=string.clone
+  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\}/,"#{arg[i]}")
   end
@@ -744,6 +745,7 @@ def _ISPRINTF(*arg)
     string=arg[0]
   end
   string=string.clone
+  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\:([^\}]+?)\}/) { |m|
       next sprintf("%"+$1,arg[i])
@@ -759,6 +761,7 @@ end
 def _MAPINTL(mapid,*arg)
   string=MessageTypes.getFromMapHash(mapid,arg[0])
   string=string.clone
+  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\}/,"#{arg[i]}")
   end
@@ -768,6 +771,7 @@ end
 def _MAPISPRINTF(mapid,*arg)
   string=MessageTypes.getFromMapHash(mapid,arg[0])
   string=string.clone
+  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\:([^\}]+?)\}/) { |m|
       next sprintf("%"+$1,arg[i])
