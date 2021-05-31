@@ -25,6 +25,7 @@ end
 def mainFunctionDebug
   begin
     PluginManager.runPlugins
+    # Change the frame rate of the Game if EBDX is being used
     Graphics.frame_rate = 40 if defined?(EliteBattle)
     Compiler.main
     Game.initialize
