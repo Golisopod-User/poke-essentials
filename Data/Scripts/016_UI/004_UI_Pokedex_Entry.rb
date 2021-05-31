@@ -171,7 +171,7 @@ class PokemonPokedexInfo_Scene
         when 0 then entry[0] = _INTL("Male")
         when 1 then entry[0] = _INTL("Female")
         else
-          entry[0] = (multiple_forms) ? _INTL("One Form") : _INTL("Genderless")
+          entry[0] = (multiple_forms) ? _INTL("Base Form") : _INTL("Genderless")
         end
       end
       entry[1] = 0 if entry[1] == 2   # Genderless entries are treated as male
