@@ -27999,6 +27999,7 @@ Color = Blue
 Shape = Winged
 Kind = Gulp
 Pokedex = This hungry Pokémon swallows Arrokuda whole. Occasionally, it makes a mistake and tries to swallow a Pokémon other than its preferred prey.
+FormName = Base Form
 Generation = 8
 BattlerPlayerX = 0
 BattlerPlayerY = 60

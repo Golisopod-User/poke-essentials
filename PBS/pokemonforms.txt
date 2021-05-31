@@ -83,7 +83,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 4
 #-------------------------------
 [RATTATA,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = DARK
 Type2 = NORMAL
 Abilities = GLUTTONY,HUSTLE
@@ -92,7 +92,7 @@ TutorMoves = ATTRACT,BLIZZARD,CONFIDE,COVET,DARKPULSE,DIG,DOUBLETEAM,EMBARGO,END
 EggMoves = SNATCH,STOCKPILE,FURYSWIPES,SWITCHEROO,COUNTER,REVERSAL,UPROAR,SWALLOW,MEFIRST,REVENGE,FINALGAMBIT
 Weight = 3.8
 Color = Black
-Pokedex = With its incisors, it gnaws through doors and infiltrates people’s homes. Then, with a twitch of its whiskers, it steals whatever food it finds.
+Pokedex = With its incisors, it gnaws through doors and infiltrates people's homes. Then, with a twitch of its whiskers, it steals whatever food it finds.
 Generation = 7
 WildItemUncommon = PECHABERRY
 BattlerPlayerY = 54
@@ -101,7 +101,7 @@ BattlerEnemyY = 26
 Evolutions = RATICATE,LevelNight,20
 #-------------------------------
 [RATICATE,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = DARK
 Type2 = NORMAL
 BaseStats = 75,71,70,77,40,80
@@ -118,37 +118,37 @@ BattlerEnemyX = 4
 [PIKACHU,3]
 FormName = Cosplay Pikachu
 Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Pokedex = When it comes across something new, it blasts it with electricity. If you find a charred berry, it's evidence that a Pikachu mistook the power of its charge.
 Generation = 6
 #-------------------------------
 [PIKACHU,4]
 FormName = Cosplay Pikachu - Belle
 Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Pokedex = When it comes across something new, it blasts it with electricity. If you find a charred berry, it's evidence that a Pikachu mistook the power of its charge.
 Generation = 6
 #-------------------------------
 [PIKACHU,5]
 FormName = Cosplay Pikachu - Libre
 Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Pokedex = When it comes across something new, it blasts it with electricity. If you find a charred berry, it's evidence that a Pikachu mistook the power of its charge.
 Generation = 6
 #-------------------------------
 [PIKACHU,6]
 FormName = Cosplay Pikachu - Ph.D.
 Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Pokedex = When it comes across something new, it blasts it with electricity. If you find a charred berry, it's evidence that a Pikachu mistook the power of its charge.
 Generation = 6
 #-------------------------------
 [PIKACHU,7]
 FormName = Cosplay Pikachu - Pop Star
 Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Pokedex = When it comes across something new, it blasts it with electricity. If you find a charred berry, it's evidence that a Pikachu mistook the power of its charge.
 Generation = 6
 #-------------------------------
 [PIKACHU,8]
 FormName = Cosplay Pikachu - Rock Star
 Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Pokedex = When it comes across something new, it blasts it with electricity. If you find a charred berry, it's evidence that a Pikachu mistook the power of its charge.
 Generation = 6
 #-------------------------------
 [PIKACHU,9]
@@ -200,7 +200,7 @@ Pokedex = This Pikachu is wearing its Trainer's cap. The cap is a precious symbo
 Generation = 8
 #-------------------------------
 [RAICHU,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ELECTRIC
 Type2 = PSYCHIC
 BaseStats = 60,85,50,110,95,85
@@ -218,7 +218,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 12
 #-------------------------------
 [SANDSHREW,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ICE
 Type2 = STEEL
 BaseStats = 50,75,90,40,10,35
@@ -238,7 +238,7 @@ BattlerEnemyY = 30
 Evolutions = SANDSLASH,Item,ICESTONE
 #-------------------------------
 [SANDSLASH,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ICE
 Type2 = STEEL
 BaseStats = 75,100,120,65,25,65
@@ -254,7 +254,7 @@ Generation = 7
 BattlerEnemyY = 24
 #-------------------------------
 [VULPIX,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ICE
 Abilities = SNOWCLOAK
 HiddenAbility = SNOWWARNING
@@ -270,7 +270,7 @@ BattlerEnemyY = 28
 Evolutions = NINETALES,Item,ICESTONE
 #-------------------------------
 [NINETALES,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ICE
 Type2 = FAIRY
 BaseStats = 73,67,75,109,81,100
@@ -287,7 +287,7 @@ BattlerPlayerY = 66
 BattlerEnemyY = 20
 #-------------------------------
 [DIGLETT,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = GROUND
 Type2 = STEEL
 BaseStats = 10,55,30,90,35,45
@@ -302,7 +302,7 @@ BattlerPlayerY = 68
 BattlerEnemyY = 37
 #-------------------------------
 [DUGTRIO,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = GROUND
 Type2 = STEEL
 BaseStats = 35,100,60,110,50,70
@@ -317,7 +317,7 @@ BattlerPlayerY = 59
 BattlerEnemyY = 29
 #-------------------------------
 [MEOWTH,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = DARK
 BaseStats = 40,35,35,90,50,40
 HiddenAbility = RATTLED
@@ -331,7 +331,7 @@ BattlerEnemyY = 27
 Evolutions = PERSIAN,Happiness,
 #-------------------------------
 [MEOWTH,2]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = STEEL
 BaseStats = 50,65,55,40,40,40
 Abilities = PICKUP,TOUGHCLAWS
@@ -344,7 +344,7 @@ BattlerEnemyY = 25
 Evolutions = PERRSERKER,Level,28
 #-------------------------------
 [PERSIAN,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = DARK
 BaseStats = 65,60,60,115,75,65
 Abilities = FURCOAT,TECHNICIAN
@@ -376,7 +376,7 @@ BattlerEnemyY = 4
 BattlerShadowSize = 3
 #-------------------------------
 [GEODUDE,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ROCK
 Type2 = ELECTRIC
 Abilities = MAGNETPULL,STURDY
@@ -392,7 +392,7 @@ WildItemUncommon = CELLBATTERY
 BattlerEnemyY = 35
 #-------------------------------
 [GRAVELER,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ROCK
 Type2 = ELECTRIC
 Abilities = MAGNETPULL,STURDY
@@ -408,7 +408,7 @@ BattlerPlayerY = 72
 BattlerEnemyY = 28
 #-------------------------------
 [GOLEM,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = ROCK
 Type2 = ELECTRIC
 Abilities = MAGNETPULL,STURDY
@@ -425,7 +425,7 @@ BattlerPlayerY = 64
 BattlerEnemyY = 17
 #-------------------------------
 [PONYTA,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = PSYCHIC
 Abilities = RUNAWAY,PASTELVEIL
 HiddenAbility = ANTICIPATION
@@ -441,7 +441,7 @@ Generation = 8
 BattlerEnemyX = 2
 #-------------------------------
 [RAPIDASH,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = PSYCHIC
 Type2 = FAIRY
 Abilities = RUNAWAY,PASTELVEIL
@@ -455,7 +455,7 @@ Pokedex = Brave and prideful, this Pokémon dashes airily through the forest, it
 Generation = 8
 #-------------------------------
 [SLOWPOKE,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = PSYCHIC
 Abilities = GLUTTONY,OWNTEMPO
 Moves = 1,TACKLE,1,CURSE,3,GROWL,6,ACID,9,YAWN,12,CONFUSION,15,DISABLE,18,WATERPULSE,21,HEADBUTT,24,ZENHEADBUTT,27,AMNESIA,30,SURF,33,SLACKOFF,36,PSYCHIC,39,PSYCHUP,42,RAINDANCE,45,HEALPULSE
@@ -469,7 +469,7 @@ BattlerEnemyY = 38
 Evolutions = SLOWBRO,Item,GALARICACUFF,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = POISON
 Type2 = PSYCHIC
 BaseStats = 95,100,95,30,100,70
@@ -497,7 +497,7 @@ BattlerEnemyX = -2
 BattlerEnemyY = 14
 #-------------------------------
 [FARFETCHD,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = FIGHTING
 BaseStats = 52,95,55,55,58,62
 Abilities = STEADFAST
@@ -514,7 +514,7 @@ BattlerEnemyY = 28
 Evolutions = SIRFETCHD,CriticalHits,3
 #-------------------------------
 [GRIMER,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = POISON
 Type2 = DARK
 Abilities = POISONTOUCH,GLUTTONY
@@ -531,7 +531,7 @@ BattlerPlayerY = 61
 BattlerEnemyY = 31
 #-------------------------------
 [MUK,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = POISON
 Type2 = DARK
 Abilities = POISONTOUCH,GLUTTONY
@@ -559,7 +559,7 @@ BattlerPlayerY = 67
 BattlerEnemyY = 21
 #-------------------------------
 [EXEGGUTOR,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 95,105,85,45,125,75
@@ -578,7 +578,7 @@ TutorMoves = AERIALACE,ATTRACT,BLIZZARD,BRICKBREAK,BRUTALSWING,BULLDOZE,CONFIDE,
 Evolutions = MAROWAK,LevelNight,28
 #-------------------------------
 [MAROWAK,1]
-FormName = Alolan
+FormName = Alolan Form
 Type1 = FIRE
 Type2 = GHOST
 Abilities = CURSEDBODY,LIGHTNINGROD
@@ -593,7 +593,7 @@ BattlerPlayerY = 60
 BattlerEnemyY = 17
 #-------------------------------
 [WEEZING,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = POISON
 Type2 = FAIRY
 HiddenAbility = MISTYSURGE
@@ -621,7 +621,7 @@ BattlerPlayerY = 64
 BattlerEnemyY = 21
 #-------------------------------
 [MRMIME,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = ICE
 Type2 = PSYCHIC
 BaseStats = 50,65,65,100,90,90
@@ -683,7 +683,7 @@ BattlerEnemyX = 0
 BattlerShadowSize = 3
 #-------------------------------
 [ARTICUNO,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = PSYCHIC
 Type2 = FLYING
 BaseStats = 90,85,85,95,125,100
@@ -697,7 +697,7 @@ BattlerEnemyX = 6
 BattlerShadowX = 7
 #-------------------------------
 [ZAPDOS,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 90,125,90,100,85,90
@@ -711,7 +711,7 @@ BattlerEnemyX = 6
 BattlerEnemyY = 20
 #-------------------------------
 [MOLTRES,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = DARK
 Type2 = FLYING
 BaseStats = 90,85,90,90,100,125
@@ -767,7 +767,7 @@ BattlerEnemyX = 10
 BattlerEnemyY = 15
 #-------------------------------
 [SLOWKING,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = POISON
 Type2 = PSYCHIC
 BaseStats = 95,65,80,30,110,110
@@ -896,7 +896,7 @@ BattlerPlayerY = 59
 BattlerEnemyY = 15
 #-------------------------------
 [CORSOLA,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = GHOST
 BaseStats = 60,55,100,30,65,100
 Abilities = WEAKARMOR
@@ -978,7 +978,7 @@ Weight = 102.0
 BattlerEnemyY = 17
 #-------------------------------
 [ZIGZAGOON,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = DARK
 Type2 = NORMAL
 Moves = 1,TACKLE,1,LEER,3,SANDATTACK,6,LICK,9,SNARL,12,HEADBUTT,15,BABYDOLLEYES,18,PINMISSILE,21,REST,24,TAKEDOWN,27,SCARYFACE,30,COUNTER,33,TAUNT,36,DOUBLEEDGE
@@ -991,7 +991,7 @@ BattlerPlayerY = 50
 BattlerEnemyX = 4
 #-------------------------------
 [LINOONE,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = DARK
 Type2 = NORMAL
 Moves = 1,NIGHTSLASH,1,SWITCHEROO,1,PINMISSILE,1,BABYDOLLEYES,1,TACKLE,1,LEER,1,SANDATTACK,1,LICK,9,SNARL,12,HEADBUTT,15,HONECLAWS,18,FURYSWIPES,23,REST,28,TAKEDOWN,33,SCARYFACE,38,COUNTER,43,TAUNT,48,DOUBLEEDGE
@@ -1569,11 +1569,11 @@ BattlerEnemyY = 19
 FormName = Blue-Striped
 Abilities = ROCKHEAD,ADAPTABILITY
 TutorMoves = AQUATAIL,ATTRACT,BOUNCE,CONFIDE,CUT,DIVE,DOUBLETEAM,ENDEAVOR,ENDURE,FACADE,FRUSTRATION,HAIL,HIDDENPOWER,ICEBEAM,ICYWIND,LIQUIDATION,PROTECT,RAINDANCE,REST,RETURN,ROUND,SCALD,SLEEPTALK,SNORE,SUBSTITUTE,SUPERPOWER,SURF,SWAGGER,TAUNT,TOXIC,UPROAR,WATERFALL,ZENHEADBUTT
-Pokedex = Known for their violence, these Pokémon have the most fights with schools of red- striped Basculin.
+Pokedex = Known for their violence, these Pokémon have the most fights with schools of red-striped Basculin.
 WildItemUncommon = DEEPSEASCALE
 #-------------------------------
 [DARUMAKA,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = ICE
 Moves = 1,POWDERSNOW,1,TACKLE,4,TAUNT,8,BITE,12,AVALANCHE,16,WORKUP,20,ICEFANG,24,HEADBUTT,28,ICEPUNCH,32,UPROAR,36,BELLYDRUM,40,BLIZZARD,44,THRASH,48,SUPERPOWER
 TutorMoves = ATTRACT,AVALANCHE,BLIZZARD,BRICKBREAK,DIG,ENCORE,ENDURE,FACADE,FIREBLAST,FIREFANG,FIREPUNCH,FIRESPIN,FLAMETHROWER,FLAREBLITZ,FLING,FOCUSENERGY,GRASSKNOT,GYROBALL,HEATWAVE,ICEBEAM,ICEFANG,ICEPUNCH,MEGAKICK,MEGAPUNCH,OVERHEAT,PROTECT,REST,ROCKSLIDE,ROCKTOMB,ROUND,SLEEPTALK,SNORE,SOLARBEAM,SUBSTITUTE,SUNNYDAY,SUPERPOWER,TAUNT,THIEF,UPROAR,UTURN,WILLOWISP,WORKUP,ZENHEADBUTT
@@ -1586,7 +1586,7 @@ Generation = 8
 Evolutions = DARMANITAN,Item,ICESTONE
 #-------------------------------
 [DARMANITAN,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = ICE
 BaseStats = 105,140,55,95,40,55
 Abilities = GORILLATACTICS
@@ -1610,7 +1610,7 @@ BattlerPlayerY = 65
 BattlerEnemyY = 33
 #-------------------------------
 [DARMANITAN,3]
-FormName = Galarian Zen Mode
+FormName = Galarian Form Zen Mode
 Type1 = ICE
 Type2 = FIRE
 BaseStats = 105,160,55,135,30,55
@@ -1622,7 +1622,7 @@ BattlerPlayerY = 61
 BattlerEnemyY = 30
 #-------------------------------
 [YAMASK,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = GROUND
 Type2 = GHOST
 BaseStats = 38,55,85,30,30,65
@@ -1659,7 +1659,7 @@ FormName = Autumn Form
 FormName = Winter Form
 #-------------------------------
 [STUNFISK,1]
-FormName = Galarian
+FormName = Galarian Form
 Type1 = GROUND
 Type2 = STEEL
 BaseStats = 109,81,99,32,66,84
@@ -1721,6 +1721,28 @@ BattlerEnemyY = 7
 #-------------------------------
 [KYUREM,2]
 FormName = Black Kyurem
+BaseStats = 125,170,100,95,120,90
+EffortPoints = 0,3,0,0,0,0
+Abilities = TERAVOLT
+Moves = 1,DRAGONBREATH,1,NOBLEROAR,1,ANCIENTPOWER,1,FREEZEDRY,8,SLASH,16,ENDEAVOR,24,DRAGONPULSE,32,ICEBEAM,40,HYPERVOICE,48,FUSIONBOLT,56,BLIZZARD,64,IMPRISON,72,OUTRAGE,80,FREEZESHOCK,88,SHEERCOLD
+Height = 3.3
+Pokedex = It's said that this Pokémon battles in order to protect the ideal world that will exist in the future for people and Pokémon.
+BattlerPlayerY = 48
+BattlerEnemyY = 4
+#-------------------------------
+[KYUREM,3]
+FormName = White Kyurem (Overdrive Mode)
+BaseStats = 125,120,90,95,170,100
+EffortPoints = 0,0,0,0,3,0
+Abilities = TURBOBLAZE
+Moves = 1,DRAGONBREATH,1,NOBLEROAR,1,ANCIENTPOWER,1,FREEZEDRY,8,SLASH,16,ENDEAVOR,24,DRAGONPULSE,32,ICEBEAM,40,HYPERVOICE,48,FUSIONFLARE,56,BLIZZARD,64,IMPRISON,72,OUTRAGE,80,ICEBURN,88,SHEERCOLD
+Height = 3.6
+Pokedex = It has foreseen that a world of truth will arrive for people and Pokémon. It strives to protect that future.
+BattlerPlayerY = 50
+BattlerEnemyY = 7
+#-------------------------------
+[KYUREM,4]
+FormName = Black Kyurem (Overdrive Mode)
 BaseStats = 125,170,100,95,120,90
 EffortPoints = 0,3,0,0,0,0
 Abilities = TERAVOLT
@@ -2532,19 +2554,19 @@ FormName = Flower - Rainbow Swirl
 [ALCREMIE,62]
 FormName = Ribbon - Rainbow Swirl
 #-------------------------------
-[EISCUE,1]
-FormName = Noice Face
-BaseStats = 75,80,70,130,65,50
-Pokedex = The hair on its head connects to the surface of its brain. When this Pokémon has something on its mind, its hair chills the air around it.
-#-------------------------------
 [SINISTEA,1]
 FormName = Antique Form
-Pokedex = It absorbs the life-force of those who drink it. It waits patiently, but opportunities are fleeting—it tastes so bad that it gets spat out immediately.
+Pokedex = It absorbs the life-force of those who drink it. It waits patiently, but opportunities are fleeting. It tastes so bad that it gets spat out immediately.
 Evolutions = POLTEAGEIST,Item,CHIPPEDPOT
 #-------------------------------
 [POLTEAGEIST,1]
 FormName = Antique Form
 Pokedex = Trainers Polteageist trusts will be allowed to experience its distinctive flavor and aroma firsthand by sampling just a tiny bit of its tea.
+#-------------------------------
+[EISCUE,1]
+FormName = Noice Face
+BaseStats = 75,80,70,130,65,50
+Pokedex = The hair on its head connects to the surface of its brain. When this Pokémon has something on its mind, its hair chills the air around it.
 #-------------------------------
 [INDEEDEE,1]
 FormName = Female
@@ -2605,7 +2627,7 @@ Abilities = ASONEICE
 Moves = 1,GLACIALLANCE,1,TACKLE,1,TAILWHIP,1,DOUBLEKICK,1,AVALANCHE,1,STOMP,1,TORMENT,1,MIST,1,ICICLECRASH,1,TAKEDOWN,1,IRONDEFENSE,1,THRASH,1,TAUNT,1,DOUBLEEDGE,1,SWORDSDANCE,1,POUND,1,MEGADRAIN,1,CONFUSION,1,GROWTH,8,LIFEDEW,16,GIGADRAIN,24,PSYSHOCK,32,HELPINGHAND,40,AROMATHERAPY,48,ENERGYBALL,56,PSYCHIC,64,LEECHSEED,72,HEALPULSE,80,SOLARBEAM,88,FUTURESIGHT
 TutorMoves = AGILITY,ALLYSWITCH,ASSURANCE,AVALANCHE,BATONPASS,BLIZZARD,BODYPRESS,BODYSLAM,BULLDOZE,BULLETSEED,CALMMIND,CLOSECOMBAT,CRUNCH,DRAININGKISS,ENCORE,ENDURE,ENERGYBALL,EXPANDINGFORCE,FACADE,FUTURESIGHT,GIGADRAIN,GIGAIMPACT,GRASSKNOT,GRASSYTERRAIN,GUARDSWAP,HAIL,HEAVYSLAM,HELPINGHAND,HIGHHORSEPOWER,HYPERBEAM,ICEBEAM,ICICLESPEAR,ICYWIND,IMPRISON,IRONDEFENSE,LASHOUT,LEAFSTORM,LIGHTSCREEN,MAGICALLEAF,MAGICROOM,MEGAHORN,METRONOME,MUDSHOT,OUTRAGE,PAYBACK,PAYDAY,POLLENPUFF,POWERSWAP,PROTECT,PSYCHIC,PSYCHICTERRAIN,PSYSHOCK,REFLECT,REST,ROUND,SAFEGUARD,SCARYFACE,SEEDBOMB,SKILLSWAP,SLEEPTALK,SMARTSTRIKE,SNARL,SNORE,SOLARBEAM,SOLARBLADE,SPEEDSWAP,STOMPINGTANTRUM,STOREDPOWER,SUBSTITUTE,SUNNYDAY,SUPERPOWER,SWIFT,SWORDSDANCE,TAUNT,THROATCHOP,TRIATTACK,TRICK,TRICKROOM,UPROAR,WONDERROOM,ZENHEADBUTT
 Kind = High King
-Pokedex = It's said that this Pokémon once moved a large forest—and all the Pokémon living there—to a new location overnight.
+Pokedex = It's said that this Pokémon once moved a large forest,and all the Pokémon living there, to a new location overnight.
 BattlerPlayerY = 48
 BattlerEnemyX = 0
 BattlerEnemyY = 12

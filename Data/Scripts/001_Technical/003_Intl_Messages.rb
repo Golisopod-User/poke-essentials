@@ -462,6 +462,7 @@ class Messages
     arr=[]
     for i in 0...array.length
       arr[i]=(array[i]) ? array[i] : ""
+      arr[i].force_encoding(Encoding::UTF_8)
     end
     @messages[type]=arr
   end
@@ -471,6 +472,7 @@ class Messages
     arr=(@messages[type]) ? @messages[type] : []
     for i in 0...array.length
       arr[i]=(array[i]) ? array[i] : (arr[i]) ? arr[i] : ""
+      arr[i].force_encoding(Encoding::UTF_8)
     end
     @messages[type]=arr
   end
