@@ -136,7 +136,7 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
     if tr_type
       tbargraphic = sprintf("vsBar_%s", tr_type.to_s) rescue nil
       tgraphic    = sprintf("vsTrainer_%s", tr_type.to_s) rescue nil
-      if pbResolveBitmap(tbargraphic) && pbResolveBitmap(tgraphic)
+      if pbResolveBitmap("Graphics/Transitions/" + tbargraphic) && pbResolveBitmap("Graphics/Transitions/" + tgraphic)
         player_tr_type = $Trainer.trainer_type
         outfit = $Trainer.outfit
         # Set up
