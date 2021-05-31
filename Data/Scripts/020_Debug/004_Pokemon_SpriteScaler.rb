@@ -341,12 +341,12 @@ if !defined?(EliteBattle)
       @sprites["infosprite"].constrict(208)
       @sprites["formfront"].constrict(200) if @sprites["formfront"]
       if @sprites["formback"]
-        @sprites["formback"].constrict(200)
+        @sprites["formback"].constrict(400)
         @sprites["formback"].setOffset(PictureOrigin::Center)
         @sprites["formback"].y = @sprites["formfront"].y if @sprites["formfront"]
         if Settings::BACK_BATTLER_SPRITE_SCALE > Settings::FRONT_BATTLER_SPRITE_SCALE
-          @sprites["formback"].zoom_x = (Settings::FRONT_BATTLER_SPRITE_SCALE/Settings::BACK_BATTLER_SPRITE_SCALE)
-          @sprites["formback"].zoom_y = (Settings::FRONT_BATTLER_SPRITE_SCALE/Settings::BACK_BATTLER_SPRITE_SCALE)
+          @sprites["formback"].zoom_x = ((Settings::FRONT_BATTLER_SPRITE_SCALE * 1.0)/Settings::BACK_BATTLER_SPRITE_SCALE)
+          @sprites["formback"].zoom_y = ((Settings::FRONT_BATTLER_SPRITE_SCALE * 1.0)/Settings::BACK_BATTLER_SPRITE_SCALE)
         end
       end
     end
