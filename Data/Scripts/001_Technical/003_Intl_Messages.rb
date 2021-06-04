@@ -462,7 +462,6 @@ class Messages
     arr=[]
     for i in 0...array.length
       arr[i]=(array[i]) ? array[i] : ""
-      arr[i].force_encoding(Encoding::UTF_8)
     end
     @messages[type]=arr
   end
@@ -472,7 +471,6 @@ class Messages
     arr=(@messages[type]) ? @messages[type] : []
     for i in 0...array.length
       arr[i]=(array[i]) ? array[i] : (arr[i]) ? arr[i] : ""
-      arr[i].force_encoding(Encoding::UTF_8)
     end
     @messages[type]=arr
   end
@@ -728,7 +726,6 @@ def _INTL(*arg)
     string=arg[0]
   end
   string=string.clone
-  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\}/,"#{arg[i]}")
   end
@@ -745,7 +742,6 @@ def _ISPRINTF(*arg)
     string=arg[0]
   end
   string=string.clone
-  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\:([^\}]+?)\}/) { |m|
       next sprintf("%"+$1,arg[i])
@@ -761,7 +757,6 @@ end
 def _MAPINTL(mapid,*arg)
   string=MessageTypes.getFromMapHash(mapid,arg[0])
   string=string.clone
-  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\}/,"#{arg[i]}")
   end
@@ -771,7 +766,6 @@ end
 def _MAPISPRINTF(mapid,*arg)
   string=MessageTypes.getFromMapHash(mapid,arg[0])
   string=string.clone
-  string.force_encoding(Encoding::UTF_8)
   for i in 1...arg.length
     string.gsub!(/\{#{i}\:([^\}]+?)\}/) { |m|
       next sprintf("%"+$1,arg[i])
