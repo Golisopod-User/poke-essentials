@@ -234,10 +234,10 @@ class PokeBattle_Battler
         if newTypes != originalTypes
           if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
             @battle.pbDisplay(_INTL("{1}'s type changed to {3}!",pbThis,
-             self.abilityName,GameData::Type.get(newTypes[0]).name))
+             self.abilityName,GameData::Type.get(newTypes).name))
           else
             @battle.pbDisplay(_INTL("{1}'s {2} made it the {3} type!",pbThis,
-             self.abilityName,GameData::Type.get(newTypes[0]).name))
+             self.abilityName,GameData::Type.get(newTypes).name))
           end
         else
           @battle.pbDisplay(_INTL("{1} returned back to normal!",pbThis))
