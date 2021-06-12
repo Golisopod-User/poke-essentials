@@ -1111,6 +1111,7 @@ module Compiler
   # Compile individual trainer data
   #=============================================================================
   def compile_trainers(path = "PBS/trainers.txt")
+    GameData::Trainer::DATA.clear
     schema = GameData::Trainer::SCHEMA
     max_level = GameData::GrowthRate.max_level
     trainer_names             = []

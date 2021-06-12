@@ -1,6 +1,6 @@
 #==============================================================================#
 #                              Pokémon Essentials                              #
-#                                 Version 19.1                                 #
+#                               Version 19.1.dev                               #
 #                https://github.com/Maruno17/pokemon-essentials                #
 #==============================================================================#
 
@@ -400,6 +400,6 @@ end
 
 # DO NOT EDIT THESE!
 module Essentials
-  VERSION = "19.1"
+  VERSION = "19.1.dev"
   ERROR_TEXT = ""
 end
