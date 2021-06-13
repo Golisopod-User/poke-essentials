@@ -400,6 +400,6 @@ end
 
 # DO NOT EDIT THESE!
 module Essentials
-  VERSION = "19.1.dev"
+  VERSION = "19.1"
   ERROR_TEXT = ""
 end

@@ -397,10 +397,16 @@ end
 
 PluginManager.register({
   :name => "Generation 8 Project for Essentials v19",
-  :version => "1.0.3",
+  :version => "1.0.4",
   :credits => ["Golisopod User","Vendily","TheToxic",
                "HM100","Aioross","WolfPP","MFilice",
                "lolface","KyureJL","DarrylBD99",
                "Turn20Negate","TheKandinavian",
                "ErwanBeurier","Luka S.J."]
 })
+
+module Essentials
+  GEN_8_VERSION = "1.0.4"
+end
+
+Essentials::ERROR_TEXT += "[Generation 8 Project v1.0.4]\r\n"
