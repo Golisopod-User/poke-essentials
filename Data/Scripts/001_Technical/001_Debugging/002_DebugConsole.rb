@@ -18,7 +18,7 @@ module Console
     echoln "program from the Shell, or download a Release"
     echoln "version."
     echoln ""
-    echoln "You are using v1.0.3 of the Generation 8"
+    echoln "You are using v#{Essentials::GEN_8_VERSION} of the Generation 8"
     echoln "Project for Essentials v19.1"
     echoln ""
     echoln "--------------------------------"

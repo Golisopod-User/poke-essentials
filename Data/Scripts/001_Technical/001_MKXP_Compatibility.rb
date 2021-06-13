@@ -38,3 +38,7 @@ def pbSetResizeFactor(factor)
     Graphics.center
   end
 end
+
+module Essentials
+  GEN_8_VERSION = "1.0.4"
+end
