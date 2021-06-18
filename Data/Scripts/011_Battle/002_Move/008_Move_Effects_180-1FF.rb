@@ -49,6 +49,16 @@ end
 # Consumes berry and raises the user's Defense by 2 stages. (Stuff Cheeks)
 #===============================================================================
 class PokeBattle_Move_183 < PokeBattle_Move
+  def pbCanChooseMove?(user,commandPhase,showMessages)
+    if user.item && !user.item.is_berry?
+      if showMessages
+        msg = _INTL("{1} can't use that move because it doesn't have any berry!",user.pbThis)
+        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+      end
+      return false
+    end
+    return true
+  end
 
   def pbMoveFailed?(user,targets)
     if (!user.item || !user.item.is_berry?) && user.pbCanRaiseStatStage?(:DEFENSE,user,self)
