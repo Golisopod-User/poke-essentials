@@ -1,4 +1,8 @@
-class EBSBitmapWrapper
+#-------------------------------------------------------------------------------
+#  New bitmap wrapper by Luka S.J. EBDX sprites
+#  Creates an animated bitmap (different from regular bitmaps)
+#-------------------------------------------------------------------------------
+class EBDXBitmapWrapper
   attr_reader :width, :height, :totalFrames, :animationFrames, :currentIndex
   attr_accessor :constrict, :scale, :frameSkip
   #-----------------------------------------------------------------------------
@@ -8,7 +12,8 @@ class EBSBitmapWrapper
   #-----------------------------------------------------------------------------
   def initialize(file, scale = Settings::FRONT_BATTLER_SPRITE_SCALE, skip = 1)
     # failsafe checks
-    raise "filename is nil" if file.nil?
+    raise "EBDXBitmapWrapper filename is nil." if file.nil?
+    raise "EBDXBitmapWrapper does not support GIF files." if File.extname(file) == ".gif"
     #---------------------------------------------------------------------------
     @scale = scale
     @constrict = nil
@@ -27,63 +32,81 @@ class EBSBitmapWrapper
       # 1 - normal speed
       # 2 - medium speed
       # 3 - slow speed
-    @bitmapFile = RPG::Cache.load_bitmap("",file)
+    @bitmapFile = file
     # initializes full Pokemon bitmap
-    @bitmap = Bitmap.new(@bitmapFile.width,@bitmapFile.height)
-    @bitmap.blt(0,0,@bitmapFile,@bitmapFile.rect)
-    @width = @bitmapFile.height*@scale
-    @height = @bitmap.height*@scale
+    @bitmaps = []
     #---------------------------------------------------------------------------
     self.refresh
     #---------------------------------------------------------------------------
-    @actualBitmap = Bitmap.new(@width,@height)
-    @actualBitmap.clear
-    @actualBitmap.stretch_blt(Rect.new(0,0,@width,@height),@bitmap,Rect.new(@currentIndex*(@width/@scale),0,@width/@scale,@height/@scale))
+  end
+  #-----------------------------------------------------------------------------
+  #  check if already a bitmap
+  #-----------------------------------------------------------------------------
+  def is_bitmap?
+    return @bitmapFile.is_a?(BitmapWrapper) || @bitmapFile.is_a?(Bitmap)
   end
   #-----------------------------------------------------------------------------
   #  returns proper object values when requested
   #-----------------------------------------------------------------------------
-  def length; @totalFrames; end
-  def disposed?; @actualBitmap.disposed?; end
+  def length; return @totalFrames; end
+  def disposed?; return @bitmaps.length < 1; end
   def dispose
-    @bitmap.dispose
-    @bitmapFile.dispose
-    @actualBitmap.dispose
+    for bmp in @bitmaps
+      bmp.dispose
+    end
+    @bitmaps.clear
+    @tempBmp.dispose if @tempBmp && !@tempBmp.disposed?
   end
-  def copy; @actualBitmap.clone; end
-  def bitmap; @actualBitmap; end
-  def bitmap=(val); @actualBitmap=val; end
+  def copy; return @bitmaps[@currentIndex].clone; end
+  def bitmap
+    return @bitmapFile if self.is_bitmap? && !@bitmapFile.disposed?
+    return nil if self.disposed?
+    # applies constraint if applicable
+    x, y, w, h = self.box
+    @tempBmp.clear
+    @tempBmp.blt(x, y, @bitmaps[@currentIndex], Rect.new(x, y, w, h))
+    return @tempBmp
+  end
+  def bitmap=(val)
+    return if !val.is_a?(String)
+    @bitmapFile = val
+    self.refresh
+  end
   def each; end
-  def alterBitmap(index); return @strip[index]; end
+  def alter_bitmap(index); return @strip[index]; end
   #-----------------------------------------------------------------------------
   #  preparation and compiling of spritesheet for sprite alterations
   #-----------------------------------------------------------------------------
-  def prepareStrip
+  def prepare_strip
     @strip = []
     for i in 0...@totalFrames
       bitmap = Bitmap.new(@width,@height)
-      bitmap.stretch_blt(Rect.new(0,0,@width,@height),@bitmapFile,Rect.new((@width/@scale)*i,0,@width/@scale,@height/@scale))
+      bitmap.stretch_blt(Rect.new(0,0,@width,@height),@bitmaps[i],Rect.new(0,0,@width,@height))
       @strip.push(bitmap)
     end
   end
-  def compileStrip
-    @bitmap.clear
+  def compile_strip
+    @bitmaps.clear
     for i in 0...@strip.length
-      @bitmap.stretch_blt(Rect.new((@width/@scale)*i,0,@width/@scale,@height/@scale),@strip[i],Rect.new(0,0,@width,@height))
+      bitmap = Bitmap.new(@width,@height)
+      bitmap.stretch_blt(Rect.new(0,0,@width,@height),@strip[i],Rect.new(0,0,@width,@height))
+      @bitmaps.push(bitmap)
     end
   end
   #-----------------------------------------------------------------------------
   #  creates custom loop if defined in data
   #-----------------------------------------------------------------------------
-  def compileLoop(data)
-    r = @bitmapFile.height; w = 0; x = 0
-    @bitmap.clear
+  def compile_loop(data)
+    # temporarily load the full file
+    f_bmp = Bitmap.new(@bitmapFile)
+    r = f_bmp.height; w = 0; x = 0
+    @width = r*@scale
+    @height = r*@scale
+    bitmaps = []
     # calculate total bitmap width
     for p in data
       w += p[:range].to_a.length * p[:repeat] * r
     end
-    # create new bitmap
-    @bitmap = Bitmap.new(w,r)
     # compile strip from data
     for m in 0...data.length
       range = data[m][:range].to_a
@@ -92,21 +115,49 @@ class EBSBitmapWrapper
       x += m > 0 ? (data[m-1][:range].to_a.length * data[m-1][:repeat] * r) : 0
       for i in 0...repeat
         for j in 0...range.length
-          x0 = x + (i*range.length*r) + (j*r)
+          # create new bitmap
+          bitmap = Bitmap.new(@width, @height)
           # draws frame from repeated ranges
-          @bitmap.blt(x0,0,@bitmapFile,Rect.new(range[j]*r,0,r,r))
+          bitmap.strecth_blt(Rect.new(0, 0, @width, @height), fbmp, Rect.new(range[j]*r, 0, r, r))
+          bitmaps.push(bitmap)
         end
       end
     end
-    self.refresh
+    f_bmp.dispose
+    self.refresh(bitmaps)
   end
   #-----------------------------------------------------------------------------
   #  refreshes the metric parameters
   #-----------------------------------------------------------------------------
-  def refresh
+  def refresh(bitmaps = nil)
+    # dispose existing
+    self.dispose
+    # temporarily load the full file
+    if bitmaps.nil? && @bitmapFile.is_a?(String)
+      # calculate initial metrics
+      f_bmp = Bitmap.new(@bitmapFile)
+      @width = f_bmp.height*@scale
+      @height = f_bmp.height*@scale
+      # construct frames
+      for i in 0...(f_bmp.width.to_f/f_bmp.height).ceil
+        x = i*f_bmp.height
+        bitmap = Bitmap.new(@width, @height)
+        bitmap.stretch_blt(Rect.new(0, 0, @width, @height), f_bmp, Rect.new(x, 0, f_bmp.height, f_bmp.height))
+        @bitmaps.push(bitmap)
+      end
+      f_bmp.dispose
+    else
+      @bitmaps = []
+    end
+    if @bitmaps.length < 1 && !self.is_bitmap?
+      raise "Unable to construct proper bitmap sheet from `#{@bitmapFile}`"
+    end
     # calculates the total number of frames
-    @totalFrames = (@bitmap.width.to_f/@bitmap.height).ceil
-    @animationFrames = @totalFrames*@frames
+    if !self.is_bitmap?
+      @totalFrames = @bitmaps.length
+      @animationFrames = @totalFrames*@frames
+      @tempBmp = Bitmap.new(@bitmaps[0].width, @bitmaps[0].width)
+    end
   end
   #-----------------------------------------------------------------------------
   #  reverses the animation
@@ -127,7 +178,7 @@ class EBSBitmapWrapper
   #-----------------------------------------------------------------------------
   #  jumps animation to specific frame
   #-----------------------------------------------------------------------------
-  def toFrame(frame)
+  def to_frame(frame)
     # checks if specified string parameter
     if frame.is_a?(String)
       if frame == "last"
@@ -140,16 +191,12 @@ class EBSBitmapWrapper
     frame = @totalFrames - 1 if frame >= @totalFrames
     frame = 0 if frame < 0
     @currentIndex = frame
-    # draws frame
-    @actualBitmap.clear
-    x, y, w, h = self.box
-    @actualBitmap.stretch_blt(Rect.new(x,y,w,h), @bitmap, Rect.new(@currentIndex*(@width/@scale)+x/@scale, y/@scale, w/@scale, h/@scale))
   end
   #-----------------------------------------------------------------------------
   #  changes the hue of the bitmap
   #-----------------------------------------------------------------------------
   def hue_change(value)
-    @bitmap.hue_change(value)
+    for bmp in @bitmaps; bmp.hue_change(value); end
     @changed_hue = true
   end
   def changedHue?; return @changed_hue; end
@@ -181,7 +228,7 @@ class EBSBitmapWrapper
   #-----------------------------------------------------------------------------
   def update
     return false if @@disableBitmapAnimation
-    return false if @actualBitmap.disposed?
+    return false if self.disposed?
     return false if @speed < 1
     case @speed
     # frame skip
@@ -200,11 +247,6 @@ class EBSBitmapWrapper
       @currentIndex = @totalFrames - 1 if @currentIndex < 0
       @frame = 0
     end
-    # updates actual bitmap
-    @actualBitmap.clear
-    # applies constraint if applicable
-    x, y, w, h = self.box
-    @actualBitmap.stretch_blt(Rect.new(x,y,w,h), @bitmap, Rect.new(@currentIndex*(@width/@scale)+x/@scale, y/@scale, w/@scale, w/@scale))
   end
   #-----------------------------------------------------------------------------
   #  returns bitmap to original state
@@ -212,10 +254,12 @@ class EBSBitmapWrapper
   def deanimate
     @frame = 0
     @currentIndex = 0
-    @actualBitmap.clear
-    # applies constraint if applicable
-    x, y, w, h = self.box
-    @actualBitmap.stretch_blt(Rect.new(x,y,w,h), @bitmap, Rect.new(@currentIndex*(@width/@scale)+x/@scale, y/@scale, w/@scale, h/@scale))
+  end
+  #-----------------------------------------------------------------------------
+  #  disables animation completely
+  #-----------------------------------------------------------------------------
+  def disable_animation(val = true)
+    @@disableBitmapAnimation = val
   end
   #-----------------------------------------------------------------------------
 end
@@ -227,7 +271,7 @@ def findTop(bitmap)
   return 0 if !bitmap
   for i in 1..bitmap.height
     for j in 0..bitmap.width-1
-      return i if bitmap.get_pixel(j,bitmap.height-i).alpha>0
+      return i if bitmap.get_pixel(j,i).alpha>0
     end
   end
   return 0
@@ -237,7 +281,6 @@ end
 #  aliasing the old Pokemon Sprite Functions and fixing UI overflow issues
 #-----------------------------------------------------------------------------
 if !defined?(EliteBattle)
-
   #-----------------------------------------------------------------------------
   #  All Pokemon Sprite files now return EBSBitmapWrapper
   #-----------------------------------------------------------------------------
@@ -245,17 +288,37 @@ if !defined?(EliteBattle)
     class Species
       def self.front_sprite_bitmap(species, form = 0, gender = 0, shiny = false, shadow = false)
         filename = self.front_sprite_filename(species, form, gender, shiny, shadow)
-        return (filename) ? EBSBitmapWrapper.new(filename) : nil
+        return (filename) ? EBDXBitmapWrapper.new(filename) : nil
       end
 
       def self.back_sprite_bitmap(species, form = 0, gender = 0, shiny = false, shadow = false)
         filename = self.back_sprite_filename(species, form, gender, shiny, shadow)
-        return (filename) ? EBSBitmapWrapper.new(filename,Settings::BACK_BATTLER_SPRITE_SCALE) : nil
+        return (filename) ? EBDXBitmapWrapper.new(filename,Settings::BACK_BATTLER_SPRITE_SCALE) : nil
       end
 
       def self.egg_sprite_bitmap(species, form = 0)
         filename = self.egg_sprite_filename(species, form)
-        return (filename) ? EBSBitmapWrapper.new(filename) : nil
+        return (filename) ? EBDXBitmapWrapper.new(filename) : nil
+      end
+
+      def self.sprite_bitmap_from_pokemon(pkmn, back = false, species = nil)
+        species = pkmn.species if !species
+        species = GameData::Species.get(species).species   # Just to be sure it's a symbol
+        return self.egg_sprite_bitmap(species, pkmn.form) if pkmn.egg?
+        if back
+          ret = self.back_sprite_bitmap(species, pkmn.form, pkmn.gender, pkmn.shiny?, pkmn.shadowPokemon?)
+        else
+          ret = self.front_sprite_bitmap(species, pkmn.form, pkmn.gender, pkmn.shiny?, pkmn.shadowPokemon?)
+        end
+        alter_bitmap_function = nil
+        alter_bitmap_function = MultipleForms.getFunction(species, "alterBitmap") if ret && ret.totalFrames == 1
+        return ret if !alter_bitmap_function
+        ret.prepare_strip
+        for i in 0...ret.totalFrames
+          alter_bitmap_function.call(pkmn, ret.alter_bitmap(i))
+        end
+        ret.compile_strip
+        return ret
       end
     end
   end
@@ -396,7 +459,7 @@ if !defined?(EliteBattle)
 end
 
 PluginManager.register({
-  :name => "Generation 8 Project for Essentials v19",
+  :name => "Generation 8 Project for Essentials v19.1",
   :version => "#{Essentials::GEN_8_VERSION}",
   :credits => ["Golisopod User","Vendily","TheToxic",
                "HM100","Aioross","WolfPP","MFilice",
