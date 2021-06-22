@@ -206,7 +206,7 @@ module PokeBattle_BattleCommon
       elsif numOwned>30;  c = x/12
       end
       # Calculate the number of shakes
-      rolls = ($PokemonBag.pbHasItem?(:CATCHINGCHARM)) ? 3 : 1
+      rolls = GameData::Item.exists?(:CATCHINGCHARM) && $PokemonBag.pbHasItem?(:CATCHINGCHARM) ? 3 : 1
       rolls.times do
         if c>0 && pbRandom(256)<c
           @criticalCapture = true

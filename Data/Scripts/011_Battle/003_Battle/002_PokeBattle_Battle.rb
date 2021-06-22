@@ -673,7 +673,6 @@ class PokeBattle_Battle
     # Check for end of primordial weather, and weather-triggered form changes
     eachBattler { |b| b.pbCheckFormOnWeatherChange }
     pbEndPrimordialWeather
-    pbCalculatePriority(true) if Settings::RECALCULATE_TURN_ORDER_AFTER_SPEED_CHANGES
   end
 
   def pbEndPrimordialWeather
@@ -702,7 +701,6 @@ class PokeBattle_Battle
       # Start up the default weather
       pbStartWeather(nil,@field.defaultWeather) if @field.defaultWeather != :None
     end
-    pbCalculatePriority(true) if Settings::RECALCULATE_TURN_ORDER_AFTER_SPEED_CHANGES
   end
 
   def defaultTerrain=(value)
@@ -733,7 +731,6 @@ class PokeBattle_Battle
     when :Psychic
       pbDisplay(_INTL("The battlefield got weird!"))
     end
-    pbCalculatePriority(true) if Settings::RECALCULATE_TURN_ORDER_AFTER_SPEED_CHANGES
     # Check for terrain seeds that boost stats in a terrain
     eachBattler { |b|
 	  b.pbCheckFormOnTerrainChange

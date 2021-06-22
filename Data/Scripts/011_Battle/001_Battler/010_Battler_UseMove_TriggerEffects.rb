@@ -18,9 +18,6 @@ class PokeBattle_Battler
       # Target's item
       if target.itemActive?(true)
         oldHP = user.hp
-        if move.function == "18B" && target.pbCanBurn?(user,false,self) &&  target.effects[PBEffects::BurningJealousy] && !target.damageState.substitute
-          target.pbBurn(user)
-        end
         BattleHandlers.triggerTargetItemOnHit(target.item,user,target,move,@battle)
         user.pbItemHPHealCheck if user.hp<oldHP
       end
