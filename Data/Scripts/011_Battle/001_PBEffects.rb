@@ -127,7 +127,6 @@ begin
     TarShot             = 121
     Octolock            = 122
     OctolockUser        = 123
-    SwitchedAlly        = 124
 
     #===========================================================================
     # These effects apply to a battler position

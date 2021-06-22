@@ -91,25 +91,8 @@ class PokeBattle_Battler
   def pbChangeTargets(move,user,targets,dragondarts=-1)
     target_data = move.pbTarget(user)
     return targets if @battle.switching   # For Pursuit interrupting a switch
-    return targets if move.function != "17C" && !target_data.can_target_one_foe? || targets.length != 1
-    allySwitched = false
-    ally = -1
-    user.eachOpposing do |b|
-      next unless user.canChangeMoveTargets? || move.function == "182"
-      next if !b.lastMoveUsed || GameData::Move.get(b.lastMoveUsed).function_code != "120"
-      next if !target_data.can_target_one_foe?
-      next if !@battle.choices[b.index][3] == targets
-      next if b.effects[PBEffects::SwitchedAlly] == -1
-      allySwitched = !allySwitched
-      ally = b.effects[PBEffects::SwitchedAlly]
-      b.effects[PBEffects::SwitchedAlly] = -1
-    end
-    if allySwitched && ally >= 0
-      targets = []
-      pbAddTarget(targets,user,@battle.battlers[ally],move,move.target.can_target_one_foe?)
-      return targets
-    end
     return targets if move.cannotRedirect?
+    return targets if move.function != "17C" && !target_data.can_target_one_foe? || targets.length != 1
     # Stalwart / Propeller Tail
     return targets if !user.canChangeMoveTargets?
     priority = @battle.pbPriority(true)

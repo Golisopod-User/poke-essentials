@@ -915,7 +915,6 @@ class PokeBattle_Move_120 < PokeBattle_Move
   def pbEffectGeneral(user)
     idxA = user.index
     idxB = @idxAlly
-    user.effects[PBEffects::SwitchedAlly] = @idxAlly
     if @battle.pbSwapBattlers(idxA,idxB)
       @battle.pbDisplay(_INTL("{1} and {2} switched places!",
       @battle.battlers[idxB].pbThis,@battle.battlers[idxA].pbThis(true)))
@@ -923,6 +922,12 @@ class PokeBattle_Move_120 < PokeBattle_Move
 		    @battle.pbActivateHealingWish(@battle.battlers[idxA])
 		    @battle.pbActivateHealingWish(@battle.battlers[idxB])
       end
+    end
+    @battle.eachBattler do |b|
+      next if @battle.choices[b.index][0] != :UseMove || b.movedThisRound?
+      next if b.canChangeMoveTargets? || !@battle.choices[b.index][2].cannotRedirect?
+      @battle.choices[b.index][3] = idxB if @battle.choices[b.index][3] == idxA
+      @battle.choices[b.index][3] = idxA if @battle.choices[b.index][3] == idxB
     end
   end
 end
