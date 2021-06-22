@@ -2599,17 +2599,11 @@ end
 # Increases the user's Speed by 1 stage. Fail if the user is not a Morpeko.
 # If the user is a Morpeko-Hangry, this move will be Dark type. (Aura Wheel)
 #===============================================================================
-class PokeBattle_Move_176 < PokeBattle_StatUpMove
-  def initialize(battle,move)
-    super
-    @statUp = [:SPEED,1]
-  end
-
-  def pbMoveFailed?(user,targets)
+class PokeBattle_Move_176 < PokeBattle_Move_01F
+  def pbMoveFailed?(user, targets)
     if Settings::MECHANICS_GENERATION >= 7 && @id == :AURAWHEEL
-      if !user.isSpecies?(:MORPEKO) &&
-         !user.effects[PBEffects::TransformSpecies] == :MORPEKO
-        @battle.pbDisplay(_INTL("But {1} can't use the move!",user.pbThis))
+      if !user.isSpecies?(:MORPEKO) && user.effects[PBEffects::TransformSpecies] != :MORPEKO
+        @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis))
         return true
       end
     end
@@ -2617,14 +2611,8 @@ class PokeBattle_Move_176 < PokeBattle_StatUpMove
   end
 
   def pbBaseType(user)
-    ret = :NORMAL
-    case user.form
-    when 0
-      ret = :ELECTRIC if GameData::Type.exists?(:ELECTRIC)
-    when 1
-      ret = :DARK if GameData::Type.exists?(:DARK)
-    end
-    return ret
+    return :DARK if user.form == 1 && GameData::Type.exists?(:DARK)
+    return @type
   end
 end
 
@@ -2648,10 +2636,8 @@ end
 #===============================================================================
 class PokeBattle_Move_178 < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    if @battle.choices[target.index][0]!=:None &&
-       ((@battle.choices[target.index][0]!=:UseMove &&
-       @battle.choices[target.index][0]==:Shift) || target.movedThisRound?)
-    else
+    if @battle.choices[target.index][0] == :None ||
+      ([:UseMove, :Shift].include?(@battle.choices[target.index][0]) && !target.movedThisRound?)
       baseDmg *= 2
     end
     return baseDmg
@@ -2667,22 +2653,24 @@ end
 class PokeBattle_Move_179 < PokeBattle_MultiStatUpMove
   def initialize(battle,move)
     super
-    @statUp = [:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1,:SPEED,1]
+    @statUp = [
+      :ATTACK, 1, :DEFENSE, 1, :SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1,
+      :SPEED, 1
+    ]
   end
 
   def pbMoveFailed?(user,targets)
-    hpLoss = [user.totalhp/3,1].max
-    if user.hp <= hpLoss
+    if user.hp <= [user.totalhp / 3, 1].max
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    super(user,targets)
+    return super
   end
 
   def pbEffectGeneral(user)
-    super(user)
-    hpLoss = [user.totalhp/3,1].max
-    user.pbReduceHP(hpLoss,false)
+    super
+    user.pbReduceHP([user.totalhp / 3, 1].max, false)
+    user.pbItemHPHealCheck
   end
 end
 
@@ -2697,21 +2685,22 @@ class PokeBattle_Move_17A < PokeBattle_Move
     super
     @swapEffects = [:Reflect, :LightScreen, :AuroraVeil, :SeaOfFire,
       :Swamp, :Rainbow, :Mist, :Safeguard, :StealthRock, :Spikes,
-      :StickyWeb, :ToxicSpikes,:Tailwind].map!{|e| getConst(PBEffects,e) }
+      :StickyWeb, :ToxicSpikes, :Tailwind].map!{|e| getConst(PBEffects,e) }
   end
 
   def pbMoveFailed(user,targets)
     sides = [user.pbOwnSide,user.pbOpposingSide]
     failed = true
     for i in 0...2
-      for j in @swapEffects
-        next if !sides[i].effects[j] || sides[i].effects[j] == 0
+      side = @battle.sides[i]
+      @swapEffects.each do |j|
+        next if !side.effects[j] || side.effects[j] == 0
         failed = false
         break
       end
     end
     if failed
-      @battle.pbDisplay(_INTL("But it failed..."))
+      @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
     return false
@@ -2719,8 +2708,10 @@ class PokeBattle_Move_17A < PokeBattle_Move
 
 
   def pbEffectGeneral(user)
-    for j in @swapEffects
-      user.pbSwapOwnSideEffect(j)
+    side0 = @battle.sides[0]
+    side1 = @battle.sides[1]
+    @swapEffects.each do |j|
+      side0.effects[j], side1.effects[j] = side1.effects[j], side0.effects[j]
     end
     @battle.pbDisplay(_INTL("{1} swapped the battle effects affecting each side of the field!",user.pbThis))
   end
@@ -2782,12 +2773,11 @@ end
 #===============================================================================
 class PokeBattle_Move_17E < PokeBattle_Move
   def healingMove?; return true; end
-  def worksWithNoTargets?; return true; end
 
   def pbMoveFailed?(user,targets)
     failed = true
     @battle.eachSameSideBattler(user) do |b|
-      next if b.hp == b.totalhp
+      next if !b.canHeal?
       failed = false
       break
     end
@@ -2799,24 +2789,14 @@ class PokeBattle_Move_17E < PokeBattle_Move
   end
 
   def pbFailsAgainstTarget?(user,target)
-    if target.hp == target.totalhp
-      @battle.pbDisplay(_INTL("{1}'s HP is full!",target.pbThis))
-      return true
-    elsif !target.canHeal?
-      @battle.pbDisplay(_INTL("{1} is unaffected!",target.pbThis))
-      return true
-    end
-    return false
+    return !target.canHeal?
   end
 
   def pbEffectAgainstTarget(user,target)
-    hpGain = (target.totalhp/4.0).round
-    target.pbRecoverHP(hpGain)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.",target.pbThis))
+    target.pbRecoverHP(target.totalhp / 4)
+    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
   end
 end
-
-
 
 #===============================================================================
 # Increases each stat by 1 stage. Prevents user from fleeing. (No Retreat)
@@ -2844,8 +2824,3 @@ class PokeBattle_Move_17F < PokeBattle_MultiStatUpMove
     end
   end
 end
-
-# NOTE: If you're inventing new move effects, use function code 209 and onwards.
-#       Actually, you might as well use high numbers like 500+ (up to FFFF),
-#       just to make sure later additions to Essentials don't clash with your
-#       new effects.

@@ -121,7 +121,7 @@ class PokeBattle_Move_185 < PokeBattle_TargetStatDownMove
   end
 
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 1.5 if @battle.field.effects[PBEffects::Gravity] > 0
+    baseDmg = baseDmg * 3 / 2 if @battle.field.effects[PBEffects::Gravity] > 0
     return baseDmg
   end
 end
@@ -189,9 +189,10 @@ end
 #===============================================================================
 # Hits 3 times and always critical. (Surging Strikes)
 #===============================================================================
-class PokeBattle_Move_188 < PokeBattle_Move_0A0
-  def multiHitMove?;           return true; end
-  def pbNumHits(user,targets); return 3;    end
+class PokeBattle_Move_188 < PokeBattle_Move
+  def multiHitMove?;                   return true; end
+  def pbNumHits(user, targets);        return 3;    end
+  def pbCritialOverride(user, target); return 1;    end
 end
 
 #===============================================================================
@@ -202,25 +203,44 @@ class PokeBattle_Move_189 < PokeBattle_Move
   def healingMove?; return true; end
 
   def pbMoveFailed?(user,targets)
-    jglheal = 0
-    for i in 0...targets.length
-      jglheal += 1 if (!targets[i].canHeal?) && targets[i].pbHasAnyStatus?
+    failed = true
+    @battle.eachSameSideBattler(user) do |b|
+      next if b.status == :NONE && !b.canHeal?
+      failed = false
+      break
     end
-    if jglheal == targets.length
+    if failed
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
     return false
   end
 
+  def pbFailsAgainstTarget?(user,target)
+    return target.status == :NONE && !target.canHeal?
+  end
+
   def pbEffectAgainstTarget(user,target)
-    target.pbCureStatus
     if target.canHeal?
-      hpGain = (target.totalhp/4.0).round
-      target.pbRecoverHP(hpGain)
-      @battle.pbDisplay(_INTL("{1}'s health was restored.",target.pbThis))
+      target.pbRecoverHP(target.totalhp / 4)
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
     end
-    super
+    if target.status != :NONE
+      old_status = target.status
+      target.pbCureStatus(false)
+      case old_status
+      when :SLEEP
+        @battle.pbDisplay(_INTL("{1} was woken from sleep.", target.pbThis))
+      when :POISON
+        @battle.pbDisplay(_INTL("{1} was cured of its poisoning.", target.pbThis))
+      when :BURN
+        @battle.pbDisplay(_INTL("{1}'s burn was healed.", target.pbThis))
+      when :PARALYSIS
+        @battle.pbDisplay(_INTL("{1} was cured of paralysis.", target.pbThis))
+      when :FROZEN
+        @battle.pbDisplay(_INTL("{1} was thawed out.", target.pbThis))
+      end
+    end
   end
 end
 
@@ -231,23 +251,22 @@ end
 #===============================================================================
 class PokeBattle_Move_18A < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if @battle.field.terrain != :None && !user.airborne?
+    baseDmg *= 2 if @battle.field.terrain != :None && user.affectedByTerrain?
     return baseDmg
   end
 
   def pbBaseType(user)
     ret = :NORMAL
-    if !user.airborne?
-      case @battle.field.terrain
-      when :Electric
-        ret = :ELECTRIC if GameData::Type.exists?(:ELECTRIC)
-      when :Grassy
-        ret = :GRASS if GameData::Type.exists?(:GRASS)
-      when :Misty
-        ret = :FAIRY if GameData::Type.exists?(:FAIRY)
-      when :Psychic
-        ret = :PSYCHIC if GameData::Type.exists?(:PSYCHIC)
-      end
+    return ret if !user.affectedByTerrain?
+    case @battle.field.terrain
+    when :Electric
+      ret = :ELECTRIC if GameData::Type.exists?(:ELECTRIC)
+    when :Grassy
+      ret = :GRASS if GameData::Type.exists?(:GRASS)
+    when :Misty
+      ret = :FAIRY if GameData::Type.exists?(:FAIRY)
+    when :Psychic
+      ret = :PSYCHIC if GameData::Type.exists?(:PSYCHIC)
     end
     return ret
   end
@@ -293,14 +312,12 @@ class PokeBattle_Move_18C < PokeBattle_Move
 end
 
 
-
 #===============================================================================
-# Power Doubles onn Electric Terrain (Rising Voltage)
+# Power Doubles on Electric Terrain (Rising Voltage)
 #===============================================================================
 class PokeBattle_Move_18D < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if @battle.field.terrain == :Electric &&
-                    !target.airborne?
+    baseDmg *= 2 if @battle.field.terrain == :Electric && user.affectedByTerrain?
     return baseDmg
   end
 end
@@ -324,6 +341,7 @@ end
 #===============================================================================
 class PokeBattle_Move_18F < PokeBattle_Move
   def pbEffectAgainstTarget(user,target)
+    return if @battle.wildBattle? && user.opposes?   # Wild Pokémon can't corrode items
     return if user.fainted?
     return if target.damageState.substitute
     return if !target.item || target.unlosableItem?(target.item)
@@ -379,11 +397,11 @@ end
 #===============================================================================
 class PokeBattle_Move_192 < PokeBattle_Move
   def pbFailsAgainstTarget?(user,target)
-    if !target.item
+    if !target.item || !target.itemActive?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    @battle.pbDisplay(_INTL("{1} is about to be attacked by its {2}!",target.pbThis,target.itemName))
+    @battle.pbDisplay(_INTL("{1} is about to be attacked by its {2}!", target.pbThis, target.itemName))
     return false
   end
 end
@@ -432,14 +450,14 @@ class PokeBattle_Move_195 < PokeBattle_Move
 
   def pbEffectGeneral(user)
     case @battle.field.terrain
-      when :Electric
-        @battle.pbDisplay(_INTL("The electric current disappeared from the battlefield!"))
-      when :Grassy
-        @battle.pbDisplay(_INTL("The grass disappeared from the battlefield!"))
-      when :Misty
-        @battle.pbDisplay(_INTL("The mist disappeared from the battlefield!"))
-      when :Psychic
-        @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield!"))
+    when :Electric
+      @battle.pbDisplay(_INTL("The electricity disappeared from the battlefield."))
+    when :Grassy
+      @battle.pbDisplay(_INTL("The grass disappeared from the battlefield."))
+    when :Misty
+      @battle.pbDisplay(_INTL("The mist disappeared from the battlefield."))
+    when :Psychic
+      @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
     end
     @battle.field.terrain = :None
   end
@@ -452,8 +470,7 @@ end
 #===============================================================================
 class PokeBattle_Move_196 < PokeBattle_Move_0E0
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 1.5 if @battle.field.terrain == :Misty &&
-                        !user.airborne?
+    baseDmg = baseDmg * 3 / 2 if @battle.field.terrain == :Misty && user.affectedByTerrain?
     return baseDmg
   end
 end
@@ -465,8 +482,8 @@ end
 #===============================================================================
 class PokeBattle_Move_197 < PokeBattle_Move
   def pbFailsAgainstTarget?(user,target)
-    if !target.canChangeType? ||
-       !target.pbHasOtherType?(:PSYCHIC)
+    if !target.canChangeType? || !GameData::Type.exists?(:PSYCHIC) ||
+       !target.pbHasOtherType?(:PSYCHIC) || !target.affectedByPowder?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -474,10 +491,9 @@ class PokeBattle_Move_197 < PokeBattle_Move
   end
 
   def pbEffectAgainstTarget(user,target)
-    newType = :PSYCHIC
-    target.pbChangeTypes(newType)
-    typeName = GameData::Type.get(newType).name
-    @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",target.pbThis,typeName))
+    target.pbChangeTypes(:PSYCHIC)
+    typeName = GameData::Type.get(:PSYCHIC).name
+    @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", target.pbThis, typeName))
   end
 end
 
