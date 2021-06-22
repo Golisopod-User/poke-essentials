@@ -565,7 +565,9 @@ BattleHandlers::PriorityBracketChangeAbility.add(:QUICKDRAW,
 
 BattleHandlers::PriorityBracketUseAbility.add(:QUICKDRAW,
   proc { |ability,battler,battle|
-    battle.pbDisplay(_INTL("{1}'s {2} let it move first!",battler.pbThis,battler.abilityName))
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{2} made {1} move faster!",battler.pbThis,battler.abilityName))
+    battle.pbHideAbilitySplash(battler)
   }
 )
 
@@ -1755,10 +1757,8 @@ BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
 BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
   proc { |ability,user,target,move,battle|
     battle.pbShowAbilitySplash(target)
-    target.eachOpposing{|b|
-      b.pbLowerStatStage(:SPEED,1,target)
-    }
-    target.eachAlly{|b|
+    battle.eachBattler{|b|
+      next if b == target
       b.pbLowerStatStage(:SPEED,1,target)
     }
     battle.pbHideAbilitySplash(target)
@@ -2270,6 +2270,8 @@ BattleHandlers::EORGainItemAbility.add(:BALLFETCH,
   proc { |ability,battler,battle|
     next if battler.item
     next if !battler.effects[PBEffects::BallFetch]
+    next if battle.fetchedBall
+    battle.fetchedBall = true
     battler.item = battler.effects[PBEffects::BallFetch]
     battler.effects[PBEffects::BallFetch] = nil
     PBDebug.log("[Ability triggered] #{battler.pbThis}'s Ball Fetch found #{GameData::Item.get(battler.item).name}")
@@ -2654,31 +2656,17 @@ BattleHandlers::AbilityOnSwitchIn.add(:DAUNTLESSSHIELD,
 
 BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
   proc { |ability,battler,battle|
-    target=battler
-    battle.pbShowAbilitySplash(battler)
-    if target.pbOwnSide.effects[PBEffects::AuroraVeil]>0
-      target.pbOwnSide.effects[PBEffects::AuroraVeil] = 0
-      battle.pbDisplay(_INTL("{1}'s Aurora Veil wore off!",target.pbTeam))
-    end
-    if target.pbOwnSide.effects[PBEffects::LightScreen]>0
-      target.pbOwnSide.effects[PBEffects::LightScreen] = 0
-      battle.pbDisplay(_INTL("{1}'s Light Screen wore off!",target.pbTeam))
-    end
-    if target.pbOwnSide.effects[PBEffects::Reflect]>0
-      target.pbOwnSide.effects[PBEffects::Reflect] = 0
-      battle.pbDisplay(_INTL("{1}'s Reflect wore off!",target.pbTeam))
-    end
-    if target.pbOpposingSide.effects[PBEffects::AuroraVeil]>0
-      target.pbOpposingSide.effects[PBEffects::AuroraVeil] = 0
-      battle.pbDisplay(_INTL("{1}'s Aurora Veil wore off!",target.pbOpposingTeam))
-    end
-    if target.pbOpposingSide.effects[PBEffects::LightScreen]>0
-      target.pbOpposingSide.effects[PBEffects::LightScreen] = 0
-      battle.pbDisplay(_INTL("{1}'s Light Screen wore off!",target.pbOpposingTeam))
-    end
-    if target.pbOwnSide.effects[PBEffects::Reflect]>0
-      target.pbOpposingSide.effects[PBEffects::Reflect] = 0
-      battle.pbDisplay(_INTL("{1}'s Reflect wore off!",target.pbOpposingTeam))
+    side = [battler.pbOwnSide,battler.pbOpposingSide]
+    team = [battler.pbTeam,battler.pbOpposingTeam]
+    effects = [:AuroraVeil, :LightScreen, :Reflect].map!{|e| getConst(PBEffcts,e)}
+    effectNames = ["Aurora Veil", "Light Screen", "Reflect"]
+    for i in 0...2
+      effects.each_with_index do |e,j|
+        next if side[i].effects[e] < 1
+        battle.pbShowAbilitySplash(battler)
+        side[i].effects[e] = 0
+        battle.pbDisplay(_INTL("{1}'s {2} wore off!",team[i],effectNames[j]))
+      end
     end
     battle.pbHideAbilitySplash(battler)
   }
@@ -2693,8 +2681,8 @@ BattleHandlers::AbilityOnSwitchIn.add(:PASTELVEIL,
       if !PokeBattle_SceneConstants::USE_ABILITY_SPLASH
         battle.pbDisplay(_INTL("{1}'s {2} cured its {3}'s poison!",battler.pbThis,battler.abilityName,b.pbThis(true)))
       end
-      battle.pbHideAbilitySplash(battler)
     end
+    battle.pbHideAbilitySplash(battler)
   }
 )
 
