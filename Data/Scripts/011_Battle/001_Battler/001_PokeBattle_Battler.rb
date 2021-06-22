@@ -558,7 +558,7 @@ class PokeBattle_Battler
     return true
   end
 
-  def affectedByEntryHazards?
+  def takesEntryHazardDamage?
     return false if hasActiveItem?(:HEAVYDUTYBOOTS)
     return
   end
