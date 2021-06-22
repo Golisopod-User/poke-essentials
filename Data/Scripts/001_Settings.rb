@@ -139,6 +139,9 @@ module Settings
   # whether the machine's move retains the replaced move's PP (true), or whether
   # the machine's move has full PP (false).
   TAUGHT_MACHINES_KEEP_OLD_PP          = (MECHANICS_GENERATION == 5)
+  # If a move is taught to a Pokemon using a TR and the Pokemon forgets that
+  # move, it can relearn that move at a move tutor.
+  RELEARNABLE_TR_MOVES                 = (MECHANICS_GENERATION >= 8)
   # Whether the Black/White Flutes will raise/lower the levels of wild Pokémon
   # respectively (true), or will lower/raise the wild encounter rate
   # respectively (false).
