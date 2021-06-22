@@ -285,9 +285,10 @@ end
 # Move has increased Priority in Grassy Terrain (Grassy Glide)
 #===============================================================================
 class PokeBattle_Move_18C < PokeBattle_Move
-  def pbChangePriority(user)
-    return 1 if @battle.field.terrain == :Grassy && !user.airborne?
-    return 0
+  def priority
+    ret = super
+    ret += 1 if @battle.field.terrain == :Electric
+    return ret
   end
 end
 
