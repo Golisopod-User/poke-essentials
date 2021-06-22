@@ -121,7 +121,6 @@ class PokeBattle_Move
     evasion = 1 if evasion < 1
     # Calculation
     ret = @battle.pbRandom(100) < modifiers[:base_accuracy] * accuracy / evasion
-    user.effects[PBEffects::BlunderPolicy] = true if !ret
     return ret
   end
 

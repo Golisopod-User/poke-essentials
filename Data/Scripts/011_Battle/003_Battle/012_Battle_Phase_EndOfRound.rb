@@ -601,7 +601,7 @@ class PokeBattle_Battle
       BattleHandlers.triggerEOREffectAbility(b.ability,b,self) if b.abilityActive?
       # Flame Orb, Sticky Barb, Toxic Orb
       BattleHandlers.triggerEOREffectItem(b.item,b,self) if b.itemActive?
-      # Harvest, Pickup
+      # Harvest, Pickup, Ball Fetch
       BattleHandlers.triggerEORGainItemAbility(b.ability,b,self) if b.abilityActive?
     end
     pbGainExp

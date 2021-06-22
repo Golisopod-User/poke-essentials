@@ -309,7 +309,6 @@ class PokeBattle_Battler
     @effects[PBEffects::BurningJealousy]     = false
     @effects[PBEffects::Obstruct]            = false
     @effects[PBEffects::TarShot]             = false
-    @effects[PBEffects::BlunderPolicy]       = false
     @effects[PBEffects::SwitchedAlly]        = -1
   end
 

@@ -1619,8 +1619,7 @@ BattleHandlers::ItemOnStatLoss.add(:EJECTPACK,
   proc { |item,battler,user,move,switched,battle|
     next if battle.pbAllFainted?(battler.idxOpposingSide)
     next if !battle.pbCanChooseNonActive?(battler.index)
-	  next if move.function=="0EE" # U-Turn, Volt-Switch, Flip Turn
-	  next if move.function=="151" # Parting Shot
+	  next if ["0EE","151"].include?(move.function) # U-Turn, Volt-Switch, Flip Turn, Parting Shot
     battle.pbCommonAnimation("UseItem",battler)
     battle.pbDisplay(_INTL("{1} is switched out with the {2}!",battler.pbThis,battler.itemName))
     battler.pbConsumeItem(true,false)
@@ -1629,5 +1628,20 @@ BattleHandlers::ItemOnStatLoss.add(:EJECTPACK,
     battle.pbRecallAndReplace(battler.index,newPkmn)
     battle.pbClearChoice(battler.index)   # Replacement Pokémon does nothing this round
     switched.push(battler.index)
+  }
+)
+
+#===============================================================================
+# UserItemOnMiss handlers
+#===============================================================================
+
+BattleHandlers::UserItemOnMiss.add(:BLUNDERPOLICY,
+  proc { |item,user,target,move,battle|
+    next if target.effects[PBEffects::TwoTurnAttack]
+    next if move.function != "070"
+    next if !user.pbCanRaiseStatStage?(:SPEED,user,move)
+    battle.pbCommonAnimation("UseItem",battler)
+    pbRaiseStatStageByCause(:SPEED,2,user,user.itemName)
+    user.pbConsumeItem
   }
 )

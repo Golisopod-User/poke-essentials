@@ -633,14 +633,6 @@ class PokeBattle_Battler
         end
         move.pbCrashDamage(user)
         user.pbItemHPHealCheck
-        # Blunder Policy
-        if user.hasActiveItem?(:BLUNDERPOLICY) && user.effects[PBEffects::BlunderPolicy] &&
-           targets[0].effects[PBEffects::TwoTurnAttack] == 0 && move.function != "070" && hitNum == 0
-          if user.pbCanRaiseStatStage?(:SPEED,user,self)
-            pbRaiseStatStageByCause(:SPEED,2,user,itemName)
-            user.pbConsumeItem
-          end
-        end
         pbCancelMoves
         return false
       end
@@ -676,14 +668,6 @@ class PokeBattle_Battler
     targets.each do |b|
       next if !b.damageState.missed
       pbMissMessage(move,user,b)
-      # Blunder Policy (also activates if only one target is missed)
-      if user.hasActiveItem?(:BLUNDERPOLICY) && user.effects[PBEffects::BlunderPolicy] &&
-        b.effects[PBEffects::TwoTurnAttack] == 0 && move.function != "070" && hitNum == 0
-        if user.pbCanRaiseStatStage?(:SPEED,user,self)
-          pbRaiseStatStageByCause(:SPEED,2,user,itemName)
-          user.pbConsumeItem
-        end
-      end
     end
     # Deal the damage (to all allies first simultaneously, then all foes
     # simultaneously)

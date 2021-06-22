@@ -61,7 +61,8 @@ module BattleHandlers
   # Abilities/items that trigger at the end of using a move
   UserAbilityEndOfMove                = AbilityHandlerHash.new
   TargetItemAfterMoveUse              = ItemHandlerHash.new
-  ItemOnStatLoss                      = ItemHandlerHash.new
+  ItemOnStatLoss                      = ItemHandlerHash.new   # Eject Pack
+  UserItemOnMiss                      = ItemHandlerHash.new   # Blunder Policy
   UserItemAfterMoveUse                = ItemHandlerHash.new
   TargetAbilityAfterMoveUse           = AbilityHandlerHash.new
   EndOfMoveItem                       = ItemHandlerHash.new   # Leppa Berry
@@ -365,6 +366,10 @@ module BattleHandlers
 
   def self.triggerItemOnStatLoss(item,battler,user,move,switched,battle)
     ItemOnStatLoss.trigger(item,battler,user,move,switched,battle)
+  end
+
+  def self.triggerUserItemOnMiss(item,user,target,move,battle)
+    UserItemOnMiss.trigger(item,user,target,move,battle)
   end
 
   #=============================================================================
