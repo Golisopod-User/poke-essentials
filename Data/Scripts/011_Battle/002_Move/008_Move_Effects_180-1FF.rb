@@ -132,7 +132,6 @@ end
 # Decrease 1 stage of speed and weakens target to fire moves. (Tar Shot)
 #===============================================================================
 class PokeBattle_Move_186 < PokeBattle_Move
-
   def pbFailsAgainstTarget?(user,target)
     if !target.pbCanLowerStatStage?(:SPEED,target,self) && !target.effects[PBEffects::TarShot]
       @battle.pbDisplay(_INTL("But it failed!"))
@@ -288,13 +287,11 @@ end
 # execution of this move (Burning Jealousy)
 #===============================================================================
 class PokeBattle_Move_18B < PokeBattle_Move
-  def pbAdditionalEffect(user,target)
-    return if target.damageState.substitute
-    return if target.damageState.iceface
-    if target.pbCanBurn?(user,false,self) &&
-       target.effects[PBEffects::BurningJealousy]
-      target.pbBurn(user)
-    end
+  def pbEffectWhenDealingDamage(user,target)
+    return if target.damageState.substitute || target.damageState.iceface
+    return if !target.effects[PBEffects::BurningJealousy]
+    return if !target.pbCanBurn?(user,false,self)
+    target.pbBurn(user)
   end
 end
 

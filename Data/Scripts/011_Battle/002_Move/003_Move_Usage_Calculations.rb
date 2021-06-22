@@ -342,10 +342,6 @@ class PokeBattle_Move
         multipliers[:base_damage_multiplier] /= 3
       end
     end
-    # Tar Shot
-    if target.effects[PBEffects::TarShot] && type == :FIRE
-      multipliers[:base_damage_multiplier] *= 2
-    end
     # Water Sport
     if type == :FIRE
       @battle.eachBattler do |b|
@@ -504,9 +500,4 @@ class PokeBattle_Move
                 user.pbOwnSide.effects[PBEffects::Rainbow]>0
     return ret
   end
-
-  #=============================================================================
-  # Priority Calculation
-  #=============================================================================
-  # Returns a value to offset priority of a move by
 end
