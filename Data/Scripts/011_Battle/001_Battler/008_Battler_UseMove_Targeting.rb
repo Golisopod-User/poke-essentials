@@ -36,12 +36,6 @@ class PokeBattle_Battler
     preTarget = choice[3]   # A target that was already chosen
     targets = []
     # Get list of targets
-
-    # Expanding Force
-    if move.function == "192" &&
-       @battle.field.terrain == :Psychic && !user.airborne?
-       @battle.eachOtherSideBattler(user.index) { |b| pbAddTarget(targets,user,b,move,false) }
-    end
     case move.pbTarget(user).id  # Curse can change its target type
     when :NearAlly
       targetBattler = (preTarget>=0) ? @battle.battlers[preTarget] : nil

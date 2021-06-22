@@ -339,8 +339,17 @@ end
 # Power is boosted on Psychic Terrain (Expanding Force)
 #===============================================================================
 class PokeBattle_Move_190 < PokeBattle_Move
+  def pbTarget(user)
+    if @battle.field.terrain == :Psychic && user.affectedByTerrain?
+      return GameData::Target.get(:AllNearFoes)
+    end
+    return super
+  end
+
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 1.5 if @battle.field.terrain == :Psychic
+    if @battle.field.terrain == :Psychic && user.affectedByTerrain?
+      baseDmg = baseDmg * 3 / 2
+    end
     return baseDmg
   end
 end
