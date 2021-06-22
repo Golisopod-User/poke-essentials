@@ -143,7 +143,7 @@ ItemHandlers::CanUseInBattle.add(:REVIVE,proc { |item,pokemon,battler,move,first
   next true
 })
 
-ItemHandlers::CanUseInBattle.copy(:REVIVE,:MAXREVIVE,:REVIVALHERB)
+ItemHandlers::CanUseInBattle.copy(:REVIVE,:MAXREVIVE,:REVIVALHERB,:MAXHONEY)
 
 ItemHandlers::CanUseInBattle.add(:ETHER,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
   if !pokemon.able? || move<0 ||
@@ -676,5 +676,12 @@ ItemHandlers::BattleUseOnBattler.add(:DIREHIT2,proc { |item,battler,scene|
 ItemHandlers::BattleUseOnBattler.add(:DIREHIT3,proc { |item,battler,scene|
   battler.effects[PBEffects::FocusEnergy] = 3
   scene.pbDisplay(_INTL("{1} is getting pumped!",battler.pbThis))
+  battler.pokemon.changeHappiness("battleitem")
+})
+
+ItemHandlers::BattleUseOnBattler.add(:MAXMUSHROOMS,proc { |item,battler,scene|
+  GameData::Stat.each_main_battle do |stat|
+    battler.pbRaiseStatStage(stat.id,1,battler)
+  end
   battler.pokemon.changeHappiness("battleitem")
 })
