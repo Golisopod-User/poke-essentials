@@ -349,7 +349,7 @@ class PokeBattle_Battler
   #       active, and the code for the two combined would cause an infinite loop
   #       (regardless of whether any Pokémon actualy has either the ability or
   #       the item - the code existing is enough to cause the loop).
-  def abilityActive?(ignoreFainted=false)
+  def abilityActive?(ignoreFainted = false)
     return false if fainted? && !ignoreFainted
     return false if @battle.field.effects[PBEffects::NeutralizingGas]
     return false if @effects[PBEffects::GastroAcid]
@@ -491,6 +491,11 @@ class PokeBattle_Battler
 
   def canChangeType?
     return ![:MULTITYPE, :RKSSYSTEM].include?(@ability_id)
+  end
+
+  def canChangeMoveTargets?
+    return false if hasActiveAbility?([:STALWART, :PROPELLERTAIL])
+    return true
   end
 
   def airborne?

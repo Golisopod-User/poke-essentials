@@ -36,7 +36,7 @@ class PokeBattle_Battler
     preTarget = choice[3]   # A target that was already chosen
     targets = []
     # Get list of targets
-    case move.pbTarget(user).id  # Curse can change its target type
+    case move.pbTarget(user).id   # Curse can change its target type
     when :NearAlly
       targetBattler = (preTarget>=0) ? @battle.battlers[preTarget] : nil
       if !pbAddTarget(targets,user,targetBattler,move)
@@ -91,16 +91,13 @@ class PokeBattle_Battler
   def pbChangeTargets(move,user,targets,dragondarts=-1)
     target_data = move.pbTarget(user)
     return targets if @battle.switching   # For Pursuit interrupting a switch
-    return targets if move.cannotRedirect?
     return targets if move.function != "17C" && !target_data.can_target_one_foe? || targets.length != 1
-    # Stalwart / Propeller Tail
     allySwitched = false
     ally = -1
     user.eachOpposing do |b|
-      next if !b.lastMoveUsed
-      next if GameData::Move.get(b.lastMoveUsed).function_code != "120"
+      next unless user.canChangeMoveTargets? || move.function == "182"
+      next if !b.lastMoveUsed || GameData::Move.get(b.lastMoveUsed).function_code != "120"
       next if !target_data.can_target_one_foe?
-      next if !hasActiveAbility?(:STALWART) && !hasActiveAbility?(:PROPELLERTAIL) && move.function != "182"
       next if !@battle.choices[b.index][3] == targets
       next if b.effects[PBEffects::SwitchedAlly] == -1
       allySwitched = !allySwitched
@@ -112,9 +109,9 @@ class PokeBattle_Battler
       pbAddTarget(targets,user,@battle.battlers[ally],move,move.target.can_target_one_foe?)
       return targets
     end
-    return targets if user.hasActiveAbility?(:STALWART) || user.hasActiveAbility?(:PROPELLERTAIL)
-	  return targets if move.function == "182"
-    priority = @battle.pbPriority(true)
+    return targets if move.cannotRedirect?
+    # Stalwart / Propeller Tail
+    return targets if !user.canChangeMoveTargets?
     nearOnly = !target_data.can_choose_distant_target?
     # Spotlight (takes priority over Follow Me/Rage Powder/Lightning Rod/Storm Drain)
     newTarget = nil; strength = 100   # Lower strength takes priority
