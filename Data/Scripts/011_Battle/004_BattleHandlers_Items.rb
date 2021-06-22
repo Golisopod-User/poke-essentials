@@ -1289,6 +1289,16 @@ BattleHandlers::UserItemAfterMoveUse.add(:THROATSPRAY,
   }
 )
 
+BattleHandlers::UserItemAfterMoveUse.add(:ROOMSERVICE,
+  proc { |item,user,targets,move,numHits,battle|
+    next if numHits == 0 || battle.field.effects[PBEffects::TrickRoom] == 0
+    next if !user.pbCanLowerStatStage?(:SPEED,b)
+    battle.pbCommonAnimation("UseItem",user)
+    user.pbLowerStatStageByCause(:SPEED,1,user,user.itemName,true,false,false,true)
+    user.pbConsumeItem
+  }
+)
+
 #===============================================================================
 # EndOfMoveItem handlers
 #===============================================================================
@@ -1583,6 +1593,7 @@ BattleHandlers::ItemOnSwitchIn.add(:ROOMSERVICE,
   proc { |item,battler,battle|
     next if battle.field.effects[PBEffects::TrickRoom] == 0
     next if !battler.pbCanLowerStatStage?(:SPEED,battler)
+    battle.pbCommonAnimation("UseItem",battler)
     battler.pbLowerStatStageByCause(:SPEED,1,battler,battler.itemName)
     battler.pbConsumeItem
   }

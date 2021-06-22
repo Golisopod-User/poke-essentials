@@ -590,13 +590,6 @@ class PokeBattle_Battler
         return if @battle.decision>0
       end
     end
-    @battle.eachBattler do |b|
-      next if !b.hasActiveItem?(:ROOMSERVICE)
-      next if battle.field.effects[PBEffects::TrickRoom] == 0
-      next if !b.pbCanLowerStatStage?(:SPEED,b)
-      b.pbLowerStatStageByCause(:SPEED,1,b,b.itemName)
-      b.pbConsumeItem
-    end
   end
 
   #=============================================================================
