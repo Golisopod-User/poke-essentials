@@ -110,10 +110,9 @@ module PokeBattle_BattleCommon
     # Ball Fetch
     if numShakes != 4 && ![:SAFARIBALL,:MASTERBALL].include?(ball)
       eachBattler do |b|
-        if b.hasActiveAbility?(:BALLFETCH) && !b.item
-          b.effects[PBEffects::BallFetch] = ball
-          break
-        end
+        next if !b.hasActiveAbility?(:BALLFETCH) || b.item
+        b.effects[PBEffects::BallFetch] = ball
+        break
       end
     end
     # Outcome message

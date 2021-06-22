@@ -83,6 +83,7 @@ class PokeBattle_Battle
   attr_reader   :endOfRound       # True during the end of round
   attr_accessor :moldBreaker      # True if Mold Breaker applies
   attr_reader   :struggle         # The Struggle move
+  attr_accessor :fetchedBall      # For Ball Fetch. Set to true after ball has been fetched once
 
   include PokeBattle_BattleCommon
 
