@@ -50,18 +50,17 @@ end
 #===============================================================================
 class PokeBattle_Move_183 < PokeBattle_Move
   def pbCanChooseMove?(user,commandPhase,showMessages)
-    if user.item && !user.item.is_berry?
-      if showMessages
-        msg = _INTL("{1} can't use that move because it doesn't have any berry!",user.pbThis)
-        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
-      end
+    if !user.item || !user.item.is_berry?
+      return false if !showMessages
+      msg = _INTL("{1} can't use that move because it doesn't have any berry!",user.pbThis)
+      (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
       return false
     end
     return true
   end
 
   def pbMoveFailed?(user,targets)
-    if (!user.item || !user.item.is_berry?) && user.pbCanRaiseStatStage?(:DEFENSE,user,self)
+    if !user.item || !user.item.is_berry? || !user.pbCanRaiseStatStage?(:DEFENSE,user,self)
       @battle.pbDisplay("But it failed!")
       return true
     end
@@ -79,7 +78,7 @@ end
 
 #===============================================================================
 # Forces all active Pokémon to consume their held berries. This move bypasses
-# Substitutes. (Tea Time)
+# Substitutes. (Teatime)
 #===============================================================================
 class PokeBattle_Move_184 < PokeBattle_Move
   def ignoresSubstitute?(user); return true; end
@@ -98,8 +97,8 @@ class PokeBattle_Move_184 < PokeBattle_Move
   end
 
   def pbFailsAgainstTarget?(user,target)
-    return false if @validTargets.include?(target.index)
     return true if target.semiInvulnerable?
+    return true if !@validTargets.include?(target.index)
   end
 
   def pbEffectAgainstTarget(user,target)
@@ -175,10 +174,10 @@ class PokeBattle_Move_187 < PokeBattle_Move_005
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
     defense      = targets[0].defense
-    defenseStage = targets[0].stages[:DEFENSE]+6
+    defenseStage = targets[0].stages[:DEFENSE] + 6
     realDefense  = (defense.to_f*stageMul[defenseStage]/stageDiv[defenseStage]).floor
     spdef        = targets[0].spdef
-    spdefStage   = targets[0].stages[:SPECIAL_DEFENSE]+6
+    spdefStage   = targets[0].stages[:SPECIAL_DEFENSE] + 6
     realSpdef    = (spdef.to_f*stageMul[spdefStage]/stageDiv[spdefStage]).floor
     # Determine move's category
     @calcCategory = (realDefense < realSpdef) ? 0 : 1
@@ -324,14 +323,13 @@ end
 #===============================================================================
 class PokeBattle_Move_18F < PokeBattle_Move
   def pbEffectAgainstTarget(user,target)
-    return if @battle.wildBattle? && user.opposes?   # Wild Pokémon can't knock off
     return if user.fainted?
     return if target.damageState.substitute
     return if !target.item || target.unlosableItem?(target.item)
     return if target.hasActiveAbility?(:STICKYHOLD) && !@battle.moldBreaker
     itemName = target.itemName
     target.pbRemoveItem(false)
-    @battle.pbDisplay(_INTL("{1} dropped its {2}!",target.pbThis,itemName))
+    @battle.pbDisplay(_INTL("{1} corroded {2}'s {3}!",user.pbThis,target.pbThis(true),itemName))
   end
 end
 
