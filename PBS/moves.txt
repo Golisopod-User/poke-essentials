@@ -720,7 +720,7 @@
 702,BEHEMOTHBASH,Behemoth Bash,000,100,STEEL,Physical,100,5,0,NearOther,0,abef,"The user becomes a gigantic shield and slams into the target."
 703,BEHEMOTHBLADE,Behemoth Blade,000,100,STEEL,Physical,100,5,0,NearOther,0,abef,"The user becomes a gigantic sword and cuts the target."
 704,STEELROLLER,Steel Roller,195,130,STEEL,Physical,100,5,0,NearOther,0,abef,"Attacks while destroying the terrain. This move fails in the absence of a terrain."
-705,STEELBEAM,Steel Beam,0FC,140,STEEL,Special,95,5,100,NearOther,0,bef,"Fires a beam of steel that it collected from its entire body. This also damages the user."
+705,STEELBEAM,Steel Beam,199,140,STEEL,Special,95,5,100,NearOther,0,bef,"Fires a beam of steel that it collected from its entire body. This also damages the user."
 #-------------------------------
 706,HYDROCANNON,Hydro Cannon,0C2,150,WATER,Special,90,5,0,NearOther,0,bef,"The target is hit with a watery blast. The user must rest on the next turn, however."
 707,WATERSPOUT,Water Spout,08B,150,WATER,Special,100,5,0,AllNearFoes,0,bef,"The user spouts water to damage the foe. The lower the user's HP, the less powerful it becomes."

@@ -741,13 +741,4 @@ class PokeBattle_Battler
     end
     return @battle.battlers[(@index^1)]
   end
-
-  def pbSwapOwnSideEffect(effect)
-    effect  = getConst(PBEffects,effect) if effect.is_a?(Symbol)
-    ownside = pbOwnSide
-    oppside = pbOpposingSide
-    toSwap  = ownside.effects[effect]
-    ownside.effects[effect] = oppside.effects[effect]
-    oppside.effects[effect] = toSwap
-  end
 end

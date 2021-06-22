@@ -500,18 +500,25 @@ class PokeBattle_Move_198 < PokeBattle_Move
   end
 end
 
+#===============================================================================
+# The user takes recoil damage equal to 1/2 of its total HP (rounded up, min. 1
+# damage). (Steel Beam)
+#===============================================================================
+class PokeBattle_Move_199 < PokeBattle_RecoilMove
+  def pbRecoilDamage(user, target)
+    return (user.totalhp / 2.0).ceil
+  end
+end
 
 #===============================================================================
 # Deals double damage to Dynamax POkémons. Dynamax is not implemented though.
 # (Behemoth Blade, Behemoth Bash, Dynamax Cannon)
 #===============================================================================
-class PokeBattle_Move_199 < PokeBattle_Move
-  # DYNAMAX IS NOT IMPLEMENTED.
+class PokeBattle_Move_19A < PokeBattle_Move
 end
 
 
-
-# NOTE: If you're inventing new move effects, use function code 199 and onwards.
+# NOTE: If you're inventing new move effects, use function code 19B and onwards.
 #       Actually, you might as well use high numbers like 500+ (up to FFFF),
 #       just to make sure later additions to Essentials don't clash with your
 #       new effects.
