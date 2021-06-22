@@ -178,8 +178,8 @@ class PokeBattle_Battler
   def pbLowerStatStage(stat, increment, user, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false, ignoreAbiliy = false)
     # Mirror Armor
     if !ignoreMirrorArmor && hasActiveAbility?(:MIRRORARMOR) && !@battle.moldBreaker && pbCanLowerStatStage?(stat)
-      battle.pbShowAbilitySplash(self)
       if user && user.index!=@index && !user.hasActiveAbility?(:MIRRORARMOR) && user.pbCanLowerStatStage?(stat,nil,nil,true)
+        battle.pbShowAbilitySplash(self)
         user.pbLowerStatStageByAbility(stat,increment,user,false,false)
 		    # Trigger user's abilities upon stat loss
 		    BattleHandlers.triggerAbilityOnStatLoss(user.ability,user,stat,self) if user.abilityActive?
@@ -214,13 +214,11 @@ class PokeBattle_Battler
   def pbLowerStatStageByCause(stat, increment, user, cause, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false, ignoreAbiliy = false)
     # Mirror Armor
     if !ignoreMirrorArmor && hasActiveAbility?(:MIRRORARMOR) && !@battle.moldBreaker && pbCanLowerStatStage?(stat)
-      battle.pbShowAbilitySplash(self)
-      if user && user.index!=@index && !user.hasActiveAbility?(:MIRRORARMOR) && user.pbCanLowerStatStage?(stat,nil,nil,true)
+      if user && user.index != @index && !user.hasActiveAbility?(:MIRRORARMOR) && user.pbCanLowerStatStage?(stat,nil,nil,true)
+        battle.pbShowAbilitySplash(self)
         user.pbLowerStatStageByAbility(stat,increment,user,false,false)
         # Trigger user's abilities upon stat loss
         BattleHandlers.triggerAbilityOnStatLoss(user.ability,user,stat,self) if user.abilityActive?
-      else
-        @battle.pbDisplay(_INTL("But it failed...",pbThis))
       end
       battle.pbHideAbilitySplash(self)
       return false

@@ -680,8 +680,10 @@ ItemHandlers::BattleUseOnBattler.add(:DIREHIT3,proc { |item,battler,scene|
 })
 
 ItemHandlers::BattleUseOnBattler.add(:MAXMUSHROOMS,proc { |item,battler,scene|
+  showAnim = true
   GameData::Stat.each_main_battle do |stat|
-    battler.pbRaiseStatStage(stat.id,1,battler)
+    battler.pbRaiseStatStage(stat.id,1,battler,showAnim)
+    showAnim = false
   end
   battler.pokemon.changeHappiness("battleitem")
 })

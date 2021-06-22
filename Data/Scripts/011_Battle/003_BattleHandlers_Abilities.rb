@@ -1757,7 +1757,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
 BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
   proc { |ability,user,target,move,battle|
     battle.pbShowAbilitySplash(target)
-    battle.eachBattler{|b|
+    battle.pbPriority(true).each {|b|
       next if b == target
       b.pbLowerStatStage(:SPEED,1,target)
     }

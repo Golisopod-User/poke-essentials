@@ -582,6 +582,8 @@ ItemHandlers::UseOnPokemon.add(:MAXREVIVE,proc { |item,pkmn,scene|
   next true
 })
 
+ItemHandlers::UseOnPokemon.copy(:MAXREVIVE,:MAXHONEY)
+
 ItemHandlers::UseOnPokemon.add(:ENERGYPOWDER,proc { |item,pkmn,scene|
   if pbHPItem(pkmn,60,scene)
     pkmn.changeHappiness("powder")
