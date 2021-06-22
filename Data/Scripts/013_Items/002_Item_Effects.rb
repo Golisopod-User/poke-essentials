@@ -538,7 +538,7 @@ ItemHandlers::UseOnPokemon.add(:FULLHEAL,proc { |item,pkmn,scene|
 
 ItemHandlers::UseOnPokemon.copy(:FULLHEAL,
    :LAVACOOKIE,:OLDGATEAU,:CASTELIACONE,:LUMIOSEGALETTE,:SHALOURSABLE,
-   :BIGMALASADA,:LUMBERRY)
+   :BIGMALASADA,:LUMBERRY,:PEWTERCRUNCHIES)
 ItemHandlers::UseOnPokemon.copy(:FULLHEAL,:RAGECANDYBAR) if Settings::RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS
 
 ItemHandlers::UseOnPokemon.add(:FULLRESTORE,proc { |item,pkmn,scene|
@@ -1327,7 +1327,7 @@ ItemHandlers::UseOnPokemon.add(:ABILITYPATCH,proc { |item,pkmn,scene|
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
-  newabil = hiddenArr[rand(hiddenArr.length)]
+  newabil = hiddenArr.sample
   newabilname = GameData::Ability.get(newabil[1]).name
   if scene.pbConfirm(_INTL("Would you like to change {1}'s Ability to {2}?",pkmn.name,newabilname))
     pkmn.ability = nil
