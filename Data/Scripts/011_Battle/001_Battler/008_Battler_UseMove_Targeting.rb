@@ -112,6 +112,7 @@ class PokeBattle_Battler
     return targets if move.cannotRedirect?
     # Stalwart / Propeller Tail
     return targets if !user.canChangeMoveTargets?
+    priority = @battle.pbPriority(true)
     nearOnly = !target_data.can_choose_distant_target?
     # Spotlight (takes priority over Follow Me/Rage Powder/Lightning Rod/Storm Drain)
     newTarget = nil; strength = 100   # Lower strength takes priority

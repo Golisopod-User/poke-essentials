@@ -1648,10 +1648,9 @@ BattleHandlers::ItemOnStatLoss.add(:EJECTPACK,
 
 BattleHandlers::UserItemOnMiss.add(:BLUNDERPOLICY,
   proc { |item,user,target,move,battle|
-    next if target.effects[PBEffects::TwoTurnAttack]
-    next if move.function != "070"
+    next if target.fainted? || target.semiInvulnerable? || move.function == "070"
     next if !user.pbCanRaiseStatStage?(:SPEED,user,move)
-    battle.pbCommonAnimation("UseItem",battler)
+    battle.pbCommonAnimation("UseItem",user)
     pbRaiseStatStageByCause(:SPEED,2,user,user.itemName)
     user.pbConsumeItem
   }
