@@ -205,7 +205,7 @@ class Pokemon
     @level = nil
   end
 
-  # Sets this Pokémon's Exp. Points wothout changing the level
+  # Sets this Pokémon's Exp. Points without resetting the level. Used by Exp Candies
   # @param value [Integer] new experience points
   def setExp(value)
     @exp = value

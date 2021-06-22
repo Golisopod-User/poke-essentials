@@ -654,7 +654,6 @@ class PokeBattle_Battle
       b.effects[PBEffects::BurningJealousy]  = false
       b.effects[PBEffects::LashOut]          = false
       b.effects[PBEffects::Obstruct]         = false
-      b.effects[PBEffects::SwitchedAlly]     = -1
       b.lastHPLost                           = 0
       b.lastHPLostFromFoe                    = 0
       b.tookDamage                           = false
@@ -686,13 +685,13 @@ class PokeBattle_Battle
   end
 
 
-  def pbCheckNeutralizingGas(battler=nil)
+  def pbCheckNeutralizingGas(battler = nil)
     return if !@field.effects[PBEffects::NeutralizingGas]
     return if battler && (battler.ability == :NEUTRALIZINGGAS ||
 		battler.effects[PBEffects::GastroAcid])
     hasabil = false
     eachBattler do |b|
-	    next if b == battler
+	    next if battler && b == battler
       # neutralizing gas can be blocked with gastro acid, ending the effect.
       if b.ability == :NEUTRALIZINGGAS && !b.effects[PBEffects::GastroAcid]
         hasabil = true; break
@@ -701,7 +700,7 @@ class PokeBattle_Battle
     if !hasabil
       @field.effects[PBEffects::NeutralizingGas] = false
       pbPriority(true).each { |b|
-	      next if b == battler
+	      next if battler && b == battler
 	      b.pbEffectsOnSwitchIn
       }
     end

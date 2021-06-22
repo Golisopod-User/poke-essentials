@@ -496,7 +496,7 @@ class PokeBattle_Move_197 < PokeBattle_Move
 end
 
 #===============================================================================
-# Target's last move used loses 3 PP. (Eerie Spell - Galarian Slowking)
+# Target's last move used loses 3 PP. (Eerie Spell)
 #===============================================================================
 class PokeBattle_Move_198 < PokeBattle_Move
   def pbFailsAgainstTarget?(user,target)
