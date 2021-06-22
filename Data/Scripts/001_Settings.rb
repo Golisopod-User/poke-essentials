@@ -303,6 +303,9 @@ module Settings
   # The Game Switch which, while ON, makes all Pokémon created considered to be
   # met via a fateful encounter.
   FATEFUL_ENCOUNTER_SWITCH  = 32
+  # The Game Switch which, while ON, blocks access to the Pokemon Box Link
+  # Storage functionality. Set this to -1 to always have Pokemon Box Link access.
+  POKEMON_BOX_LINK_SWITCH   = -1
 
   #=============================================================================
 
