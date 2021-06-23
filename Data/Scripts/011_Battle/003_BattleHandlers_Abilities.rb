@@ -1756,10 +1756,12 @@ BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
 
 BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
   proc { |ability,user,target,move,battle|
+    splashAnim = false
     battle.pbShowAbilitySplash(target)
     battle.pbPriority(true).each {|b|
-      next if b == target
-      b.pbLowerStatStage(:SPEED,1,target)
+      next if b == target || !b.pbCanLowerStatStage?(:SPEED,target)
+      b.pbLowerStatStageByAbility(:SPEED,1,target,!splashAnim)
+      splashAnim = true
     }
     battle.pbHideAbilitySplash(target)
   }
@@ -2656,6 +2658,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:DAUNTLESSSHIELD,
 
 BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
   proc { |ability,battler,battle|
+    splashAnim = false
     side = [battler.pbOwnSide,battler.pbOpposingSide]
     team = [battler.pbTeam,battler.pbOpposingTeam]
     effects = [:AuroraVeil, :LightScreen, :Reflect].map!{|e| getConst(PBEffcts,e)}
@@ -2663,9 +2666,10 @@ BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
     for i in 0...2
       effects.each_with_index do |e,j|
         next if side[i].effects[e] < 1
-        battle.pbShowAbilitySplash(battler)
+        battle.pbShowAbilitySplash(battler) if !splashAnim
         side[i].effects[e] = 0
         battle.pbDisplay(_INTL("{1}'s {2} wore off!",team[i],effectNames[j]))
+        splashAnim = true
       end
     end
     battle.pbHideAbilitySplash(battler)
@@ -2674,9 +2678,11 @@ BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
 
 BattleHandlers::AbilityOnSwitchIn.add(:PASTELVEIL,
   proc { |ability,battler,battle|
+    splashAnim = false
     battler.eachAlly do |b|
       next if b.status != :POISON
-      battle.pbShowAbilitySplash(battler)
+      battle.pbShowAbilitySplash(battler) if !splashAnim
+      splashAnim = true
       b.pbCureStatus(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
       if !PokeBattle_SceneConstants::USE_ABILITY_SPLASH
         battle.pbDisplay(_INTL("{1}'s {2} cured its {3}'s poison!",battler.pbThis,battler.abilityName,b.pbThis(true)))
@@ -2687,18 +2693,21 @@ BattleHandlers::AbilityOnSwitchIn.add(:PASTELVEIL,
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:CURIOUSMEDICINE,
-  proc { |ability,battler,battle|
-    failed = true
+  proc { |ability, battler, battle|
+    splashAnim = false
     battler.eachAlly do |b|
       next if !b.hasAlteredStatStages?
+      battle.pbShowAbilitySplash(battler) if !splashAnim
+      splashAnim = true
       b.pbResetStatStages
-      failed = false
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s stat changes were removed!", b.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s stat changes were removed by {2}'s {3}!",
+           b.pbThis, battler.pbThis(true), battler.abilityName))
+      end
     end
-    if !failed
-      battle.pbShowAbilitySplash(battler)
-      battle.pbDisplay(_INTL("All allies' stat changes were eliminated!"))
-      battle.pbHideAbilitySplash(battler)
-    end
+    battle.pbHideAbilitySplash(battler)
   }
 )
 
