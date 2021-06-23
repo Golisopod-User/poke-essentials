@@ -565,7 +565,7 @@ class PokeBattle_Battler
 
   def takesEntryHazardDamage?
     return false if hasActiveItem?(:HEAVYDUTYBOOTS)
-    return
+    return true
   end
 
   def affectedByPowder?(showMsg=false)
