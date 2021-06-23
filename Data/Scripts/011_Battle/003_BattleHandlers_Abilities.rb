@@ -1742,17 +1742,25 @@ BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
-  proc { |ability,user,target,move,battle|
+  proc { |ability, user, target, move, battle|
     next if !move.pbContactMove?(user)
-    next if !user.affectedByContactEffect?
-    next if user.effects[PBEffects::PerishSong]>0
+    next if user.fainted?
+    next if user.effects[PBEffects::PerishSong] > 0 || target.effects[PBEffects::PerishSong] > 0
     battle.pbShowAbilitySplash(target)
-    battle.pbDisplay(_INTL("Both Pokémon will faint in three turns!"))
-    user.effects[PBEffects::PerishSong] = 3
-    target.effects[PBEffects::PerishSong] = 3 if target.effects[PBEffects::PerishSong] == 0
+    if user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
+      user.effects[PBEffects::PerishSong] = 4
+      user.effects[PBEffects::PerishSongUser] = target.index
+      target.effects[PBEffects::PerishSong] = 4
+      target.effects[PBEffects::PerishSongUser] = target.index
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("Both Pokémon will faint in three turns!"))
+      else
+        battle.pbDisplay(_INTL("Both Pokémon will faint in three turns because of {1}'s {2}!",
+           target.pbThis(true), target.abilityName))
+      end
+    end
     battle.pbHideAbilitySplash(target)
   }
-)
 
 BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
   proc { |ability,user,target,move,battle|
