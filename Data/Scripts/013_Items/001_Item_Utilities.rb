@@ -327,10 +327,11 @@ def pbNatureChangeItem(pkmn,nature,item,scene)
     scene.pbDisplay(_INTL("It won't have any effect."))
     return false
   else
-    if scene.pbConfirm(_INTL("It might affect {1}'s stats.\nAre you sure you want to use it?",pkmn.name))
-      ret = pbChangeNature(pkmn,nature)
+    return false if !scene.pbConfirm(_INTL("It might affect {1}'s stats.\nAre you sure you want to use it?",pkmn.name))
+    ret = pbChangeNature(pkmn,nature)
+    if ret
       scene.pbDisplay(_INTL("{1}'s stats changed due to the effects of the {2}!",pkmn.name,
-                                                                    GameData::Item.get(item).name)) if ret
+                                                                    GameData::Item.get(item).name))
     else
       scene.pbDisplay(_INTL("It won't have any effect."))
     end
