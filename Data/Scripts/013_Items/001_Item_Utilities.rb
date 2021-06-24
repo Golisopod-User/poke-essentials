@@ -366,13 +366,51 @@ def pbEXPAdditionItem(pkmn,exp,item,scene)
     if new_level == current_lv
       scene.pbRefresh
     else
+      attackdiff  = pkmn.attack
+      defensediff = pkmn.defense
+      speeddiff   = pkmn.speed
+      spatkdiff   = pkmn.spatk
+      spdefdiff   = pkmn.spdef
+      totalhpdiff = pkmn.totalhp
       level_diff = new_level - current_lv
       leftover_exp = pkmn.exp - pkmn.growth_rate.minimum_exp_for_level(new_level)
       leftover_exp.clamp(0,(pkmn.growth_rate.minimum_exp_for_level(new_level + 1) - 1))
-      level_diff.times do
-        pbChangeLevel(pkmn,pkmn.level+1,scene)
-        scene.pbHardRefresh
+      pkmn.level = new_level
+      pkmn.changeHappiness("vitamin")
+      pkmn.calc_stats
+      scene.pbRefresh
+      if scene.is_a?(PokemonPartyScreen)
+        scene.pbDisplay(_INTL("{1} grew to Lv. {2}!",pkmn.name,pkmn.level))
+      else
+        pbMessage(_INTL("{1} grew to Lv. {2}!",pkmn.name,pkmn.level))
       end
+      attackdiff  = pkmn.attack-attackdiff
+      defensediff = pkmn.defense-defensediff
+      speeddiff   = pkmn.speed-speeddiff
+      spatkdiff   = pkmn.spatk-spatkdiff
+      spdefdiff   = pkmn.spdef-spdefdiff
+      totalhpdiff = pkmn.totalhp-totalhpdiff
+      pbTopRightWindow(_INTL("Max. HP<r>+{1}\r\nAttack<r>+{2}\r\nDefense<r>+{3}\r\nSp. Atk<r>+{4}\r\nSp. Def<r>+{5}\r\nSpeed<r>+{6}",
+         totalhpdiff,attackdiff,defensediff,spatkdiff,spdefdiff,speeddiff),scene)
+      pbTopRightWindow(_INTL("Max. HP<r>{1}\r\nAttack<r>{2}\r\nDefense<r>{3}\r\nSp. Atk<r>{4}\r\nSp. Def<r>{5}\r\nSpeed<r>{6}",
+         pkmn.totalhp,pkmn.attack,pkmn.defense,pkmn.spatk,pkmn.spdef,pkmn.speed),scene)
+      movelist = pkmn.getMoveList
+      for i in movelist
+        next if i[0] <= current_lv || i[0] > pkmn.level
+        pbLearnMove(pkmn, i[1], true) { scene.pbUpdate }
+      end
+      # Check for evolution
+      new_species = pkmn.check_evolution_on_level_up
+      if new_species
+        pbFadeOutInWithMusic {
+          evo = PokemonEvolutionScene.new
+          evo.pbStartScreen(pkmn, new_species)
+          evo.pbEvolution
+          evo.pbEndScreen
+          scene.pbRefresh if scene.is_a?(PokemonPartyScreen)
+        }
+      end
+      scene.pbHardRefresh
       pkmn.setExp(pkmn.growth_rate.minimum_exp_for_level(new_level) + leftover_exp)
     end
     return true

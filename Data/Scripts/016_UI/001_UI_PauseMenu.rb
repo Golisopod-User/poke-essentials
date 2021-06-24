@@ -208,10 +208,11 @@ class PokemonPauseMenu
           return
         end
       elsif cmdStorageBox>=0 && command==cmdStorageBox
-        @scene.pbHideMenu
-        storage = StorageSystemPC.new
-        storage.access
-        pbShowMenu
+        pbFadeOutIn {
+          scene = PokemonStorageScene.new
+          screen = PokemonStorageScreen.new(scene,$PokemonStorage)
+          screen.pbStartScreen(0)
+        }
       elsif cmdPokegear>=0 && command==cmdPokegear
         pbPlayDecisionSE
         pbFadeOutIn {

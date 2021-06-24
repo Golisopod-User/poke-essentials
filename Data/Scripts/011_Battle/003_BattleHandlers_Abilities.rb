@@ -1761,6 +1761,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
     end
     battle.pbHideAbilitySplash(target)
   }
+)
 
 BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
   proc { |ability,user,target,move,battle|
