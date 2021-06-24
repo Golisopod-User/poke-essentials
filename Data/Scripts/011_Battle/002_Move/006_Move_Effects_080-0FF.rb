@@ -3461,10 +3461,10 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
               :PIXIEPLATE,:SKYPLATE,:SPLASHPLATE,:SPOOKYPLATE,:STONEPLATE,
               :TOXICPLATE,:ZAPPLATE
              ],
-       80 => [:ASSAULTVEST,:DAWNSTONE,:DUSKSTONE,:ELECTIRIZER,:MAGMARIZER,
-              :ODDKEYSTONE,:OVALSTONE,:PROTECTOR,:QUICKCLAW,:RAZORCLAW,:SACHET,
-              :SAFETYGOGGLES,:SHINYSTONE,:STICKYBARB,:WEAKNESSPOLICY,
-              :WHIPPEDDREAM
+       80 => [:ASSAULTVEST,:CHIPPEDPOT,:CRACKEDPOT,:DAWNSTONE,:DUSKSTONE,
+              :ELECTIRIZER,:HEAVYDUTYBOOTS,:MAGMARIZER,:ODDKEYSTONE,:OVALSTONE,
+              :PROTECTOR,:QUICKCLAW,:RAZORCLAW,:SACHET,:SAFETYGOGGLES,
+              :SHINYSTONE,:STICKYBARB,:WEAKNESSPOLICY,:WHIPPEDDREAM
              ],
        70 => [:DRAGONFANG,:POISONBARB,
               # EV-training items (Macho Brace is 60)
@@ -3473,7 +3473,7 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
               # Drives
               :BURNDRIVE,:CHILLDRIVE,:DOUSEDRIVE,:SHOCKDRIVE
              ],
-       60 => [:ADAMANTORB,:DAMPROCK,:GRISEOUSORB,:HEATROCK,:LUSTROUSORB,
+       60 => [:ADAMANTORB,:DAMPROCK,:GRISEOUSORB,:HEATROCK,:LEEK,:LUSTROUSORB,
               :MACHOBRACE,:ROCKYHELMET,:STICK,:TERRAINEXTENDER
              ],
        50 => [:DUBIOUSDISC,:SHARPBEAK,
@@ -3500,7 +3500,7 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
               :BURNHEAL,:CASTELIACONE,:ELIXIR,:ENERGYPOWDER,:ENERGYROOT,:ETHER,
               :FRESHWATER,:FULLHEAL,:FULLRESTORE,:HEALPOWDER,:HYPERPOTION,
               :ICEHEAL,:LAVACOOKIE,:LEMONADE,:LUMIOSEGALETTE,:MAXELIXIR,
-              :MAXETHER,:MAXPOTION,:MAXREVIVE,:MOOMOOMILK,:OLDGATEAU,
+              :MAXETHER,:MAXHONEY,:MAXPOTION,:MAXREVIVE,:MOOMOOMILK,:OLDGATEAU,
               :PARALYZEHEAL,:PARLYZHEAL,:PEWTERCRUNCHIES,:POTION,:RAGECANDYBAR,
               :REDFLUTE,:REVIVALHERB,:REVIVE,:SHALOURSABLE,:SODAPOP,
               :SUPERPOTION,:SWEETHEART,:YELLOWFLUTE,
@@ -3515,12 +3515,14 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
               :XSPEED,:XSPEED2,:XSPEED3,:XSPEED6,
               :DIREHIT,:DIREHIT2,:DIREHIT3,
               :ABILITYURGE,:GUARDSPEC,:ITEMDROP,:ITEMURGE,:RESETURGE,
+              :MAXMUSHROOMS,
               # Vitamins
               :CALCIUM,:CARBOS,:HPUP,:IRON,:PPUP,:PPMAX,:PROTEIN,:ZINC,
               :RARECANDY,
               # Most evolution stones (see also 80)
               :EVERSTONE,:FIRESTONE,:ICESTONE,:LEAFSTONE,:MOONSTONE,:SUNSTONE,
-              :THUNDERSTONE,:WATERSTONE,
+              :THUNDERSTONE,:WATERSTONE,:SWEETAPPLE,:TARTAPPLE, :GALARICACUFF,
+              :GALARICAWREATH,
               # Repels
               :MAXREPEL,:REPEL,:SUPERREPEL,
               # Mulches
@@ -3532,13 +3534,15 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
               :BALMMUSHROOM,:BIGMUSHROOM,:BIGNUGGET,:BIGPEARL,:COMETSHARD,
               :NUGGET,:PEARL,:PEARLSTRING,:RELICBAND,:RELICCOPPER,:RELICCROWN,
               :RELICGOLD,:RELICSILVER,:RELICSTATUE,:RELICVASE,:STARDUST,
-              :STARPIECE,:STRANGESOUVENIR,:TINYMUSHROOM
+              :STARPIECE,:STRANGESOUVENIR,:TINYMUSHROOM,
+              # Exp Candies
+              :EXPCANDYXS, :EXPCANDYS, :EXPCANDYM, :EXPCANDYL, :EXPCANDYXL
              ],
-       20 => [# Wings
-              :CLEVERWING,:GENIUSWING,:HEALTHWING,:MUSCLEWING,
-              :PRETTYWING,:RESISTWING,:SWIFTWING,
+       20 => [# Feathers
               :CLEVERFEATHER,:GENIUSFEATHER,:HEALTHFEATHER,:MUSCLEFEATHER,
-              :PRETTYFEATHER,:RESISTFEATHER,:SWIFTFEATHER
+              :PRETTYFEATHER,:RESISTFEATHER,:SWIFTFEATHER,
+              :CLEVERWING,:GENIUSWING,:HEALTHWING,:MUSCLEWING,:PRETTYWING,
+              :RESISTWING,:SWIFTWING
              ],
        10 => [:AIRBALLOON,:BIGROOT,:BRIGHTPOWDER,:CHOICEBAND,:CHOICESCARF,
               :CHOICESPECS,:DESTINYKNOT,:DISCOUNTCOUPON,:EXPERTBELT,:FOCUSBAND,
@@ -3554,7 +3558,16 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
               :FULLINCENSE,:LAXINCENSE,:LUCKINCENSE,:ODDINCENSE,:PUREINCENSE,
               :ROCKINCENSE,:ROSEINCENSE,:SEAINCENSE,:WAVEINCENSE,
               # Scarves
-              :BLUESCARF,:GREENSCARF,:PINKSCARF,:REDSCARF,:YELLOWSCARF
+              :BLUESCARF,:GREENSCARF,:PINKSCARF,:REDSCARF,:YELLOWSCARF,
+              # Mints
+              :LONELYMINT, :ADAMANTMINT, :NAUGHTYMINT, :BRAVEMINT, :BOLDMINT,
+              :IMPISHMINT, :LAXMINT, :RELAXEDMINT, :MODESTMINT, :MILDMINT,
+              :RASHMINT, :QUIETMINT, :CALMMINT, :GENTLEMINT, :CAREFULMINT,
+              :SASSYMINT, :TIMIDMINT, :HASTYMINT, :JOLLYMINT, :NAIVEMINT,
+              :SERIOUSMINT,
+              # Sweets
+              :STRAWBERRYSWEET, :LOVESWEET, :BERRYSWEET, :CLOVERSWEET,
+              :FLOWERSWEET, :STARSWEET, :RIBBONSWEET
              ]
     }
   end
@@ -3598,9 +3611,9 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
     return 10 if user.item && user.item.is_berry?
     return 80 if user.item && user.item.is_mega_stone?
     if user.item.is_TR?
-      return 10 if GameData::Move(user.item.move).category == 2
-      return 10 if GameData::Move(user.item.move).base_damage < 10
-      return GameData::Move(user.item.move).base_damage
+      ret = GameData::Move.get(user.item.move).base_damage
+      ret = 10 if ret < 10
+      return ret
     end
     @flingPowers.each do |power,items|
       return power if items.include?(user.item_id)
