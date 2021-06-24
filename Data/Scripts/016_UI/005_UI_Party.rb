@@ -435,6 +435,8 @@ end
 # Pokémon party visuals
 #===============================================================================
 class PokemonParty_Scene
+  attr_accessor :inbattle
+
   def pbStartScene(party,starthelptext,annotations=nil,multiselect=false)
     @sprites = {}
     @party = party
@@ -711,6 +713,19 @@ class PokemonParty_Scene
         return [1,@activecmd]
       elsif Input.trigger?(Input::ACTION) && canswitch==2
         return -1
+      elsif Input.trigger?(Input::SPECIAL) &&
+        GameData::Item.exists?(:POKEMONBOXLINK) &&
+        $PokemonBag.pbHasItem?(:POKEMONBOXLINK) &&
+        !@inbattle                              &&
+        (Settings::POKEMON_BOX_LINK_SWITCH < 0  ||
+         !$game_switches[Settings::POKEMON_BOX_LINK_SWITCH])
+         pbPlayDecisionSE
+         pbFadeOutIn(99999) {
+           scene = PokemonStorageScene.new
+           screen = PokemonStorageScreen.new(scene,$PokemonStorage)
+           screen.pbStartScreen(0)
+         }
+         pbHardRefresh
       elsif Input.trigger?(Input::BACK)
         pbPlayCloseMenuSE if !switching
         return -1
@@ -751,7 +766,7 @@ class PokemonParty_Scene
         currentsel -= 1
         while currentsel > 0 && currentsel < Settings::MAX_PARTY_SIZE && !@party[currentsel]
           currentsel -= 1
-        end 
+        end
       else
         begin
           currentsel -= 2

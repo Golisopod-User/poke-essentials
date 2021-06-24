@@ -149,6 +149,7 @@ class PokeBattle_Scene
     modParty = @battle.pbPlayerDisplayParty(idxBattler)
     # Start party screen
     scene = PokemonParty_Scene.new
+    scene.inbattle = true if scene.respond_to?(:inbattle)
     switchScreen = PokemonPartyScreen.new(scene,modParty)
     switchScreen.pbStartScene(_INTL("Choose a Pokémon."),@battle.pbNumPositions(0,0))
     # Loop while in party screen
@@ -254,6 +255,7 @@ class PokeBattle_Scene
         modParty = @battle.pbPlayerDisplayParty(idxBattler)
         # Start party screen
         pkmnScene = PokemonParty_Scene.new
+        pkmnScene.inbattle = true if pkmnScene.respond_to?(:inbattle)
         pkmnScreen = PokemonPartyScreen.new(pkmnScene,modParty)
         pkmnScreen.pbStartScene(_INTL("Use on which Pokémon?"),@battle.pbNumPositions(0,0))
         idxParty = -1

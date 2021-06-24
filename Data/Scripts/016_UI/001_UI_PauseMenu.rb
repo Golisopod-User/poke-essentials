@@ -105,7 +105,6 @@ class PokemonPauseMenu
     commands = []
     cmdPokedex    = -1
     cmdPokemon    = -1
-    cmdStorageBox = -1
     cmdBag        = -1
     cmdTrainer    = -1
     cmdSave       = -1
@@ -119,9 +118,6 @@ class PokemonPauseMenu
     end
     if $Trainer.party_count > 0
       commands[cmdPokemon = commands.length]    = _INTL("Pokémon")
-      commands[cmdStorageBox = commands.length] = _INTL("PC Storage") if GameData::Item.exists?(:POKEMONBOXLINK) &&
-                                                                         $PokemonBag.pbHasItem?(:POKEMONBOXLINK) &&
-                                                                         (Settings::POKEMON_BOX_LINK_SWITCH < 0 || !$game_switches[Settings::POKEMON_BOX_LINK_SWITCH])
     end
     commands[cmdBag = commands.length]       = _INTL("Bag") if !pbInBugContest?
     commands[cmdPokegear = commands.length]  = _INTL("Pokégear") if $Trainer.has_pokegear
@@ -207,12 +203,6 @@ class PokemonPauseMenu
           pbUseKeyItemInField(item)
           return
         end
-      elsif cmdStorageBox>=0 && command==cmdStorageBox
-        pbFadeOutIn {
-          scene = PokemonStorageScene.new
-          screen = PokemonStorageScreen.new(scene,$PokemonStorage)
-          screen.pbStartScreen(0)
-        }
       elsif cmdPokegear>=0 && command==cmdPokegear
         pbPlayDecisionSE
         pbFadeOutIn {
