@@ -43,7 +43,11 @@ class PokeBattle_Scene
       for i in 0...@battle.sideSizes[1]
         idxBattler = 2*i+1
         next if !@battle.battlers[idxBattler] || !@battle.battlers[idxBattler].shiny?
-        pbCommonAnimation("Shiny",@battle.battlers[idxBattler])
+        if Settings::SQUARE_SHINY && @battle.battlers[idxBattler].square_shiny?
+          pbCommonAnimation("SquareShiny", @battle.battlers[idxBattler])
+        else
+          pbCommonAnimation("Shiny", @battle.battlers[idxBattler])
+        end
       end
     end
   end
@@ -130,7 +134,11 @@ class PokeBattle_Scene
     # Play shininess animations for shiny Pokémon
     sendOuts.each do |b|
       next if !@battle.showAnims || !@battle.battlers[b[0]].shiny?
-      pbCommonAnimation("Shiny",@battle.battlers[b[0]])
+      if Settings::SQUARE_SHINY && @battle.battlers[b[0]].square_shiny?
+        pbCommonAnimation("SquareShiny", @battle.battlers[b[0]])
+      else
+        pbCommonAnimation("Shiny", @battle.battlers[b[0]])
+      end
     end
   end
 

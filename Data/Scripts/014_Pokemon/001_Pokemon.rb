@@ -402,6 +402,27 @@ class Pokemon
   end
 
   #=============================================================================
+  # Square Shininess
+  #=============================================================================
+  # @return [Boolean] whether this Pokémon is a square sparkle shiny (differently colored,
+  #   square sparkles)
+  def square_shiny?
+    if @square_shiny.nil?
+      a = @personalID ^ @owner.id
+      b = a & 0xFFFF
+      c = (a >> 16) & 0xFFFF
+      d = b ^ c
+      @square_shiny = (d == 0)
+    end
+    return @square_shiny
+  end
+
+  def square_shiny=(value)
+    @square_shiny = value
+    @shiny = true if @square_shiny
+  end
+
+  #=============================================================================
   # Ability
   #=============================================================================
 
