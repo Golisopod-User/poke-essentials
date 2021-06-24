@@ -280,6 +280,17 @@ ItemHandlers::CanUseInBattle.add(:POKEFLUTE,proc { |item,pokemon,battler,move,fi
   next true
 })
 
+ItemHandlers::CanUseInBattle.add(:MAXMUSHROOMS, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  failed = true
+  GameData::Stat.each_main_battle do |stat|
+    next if !pbBattleItemCanRaiseStat?(stat.id, battler, scene, false)
+    failed = false
+    break
+  end
+  scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages && failed
+  next !failed
+})
+
 #===============================================================================
 # UseInBattle handlers
 # For items used directly or on an opposing battler
