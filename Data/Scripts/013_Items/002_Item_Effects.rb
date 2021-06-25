@@ -418,18 +418,20 @@ ItemHandlers::UseOnPokemon.addIf(proc { |item| GameData::Item.get(item).is_evolu
 )
 
 ItemHandlers::UseOnPokemon.add(:POTION,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,20,scene)
+  next pbHPItem(pkmn,20,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.copy(:POTION,:BERRYJUICE,:SWEETHEART)
 ItemHandlers::UseOnPokemon.copy(:POTION,:RAGECANDYBAR) if !Settings::RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS
 
 ItemHandlers::UseOnPokemon.add(:SUPERPOTION,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,50,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 60 : 50
+  next pbHPItem(pkmn,healAmt,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:HYPERPOTION,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,200,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 120 : 200
+  next pbHPItem(pkmn,healAmt,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:MAXPOTION,proc { |item,pkmn,scene|
@@ -437,27 +439,30 @@ ItemHandlers::UseOnPokemon.add(:MAXPOTION,proc { |item,pkmn,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:FRESHWATER,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,50,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 30 : 50
+  next pbHPItem(pkmn,healAmt,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:SODAPOP,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,60,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 50 : 60
+  next pbHPItem(pkmn,healAmt,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:LEMONADE,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,80,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 70 : 80
+  next pbHPItem(pkmn,healAmt,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:MOOMOOMILK,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,100,scene)
+  next pbHPItem(pkmn,100,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:ORANBERRY,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,10,scene)
+  next pbHPItem(pkmn,10,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:SITRUSBERRY,proc { |item,pkmn,scene|
-  next pbHPItem(pkmn,pkmn.totalhp/4,scene)
+  next pbHPItem(pkmn,pkmn.totalhp/4,scene,item)
 })
 
 ItemHandlers::UseOnPokemon.add(:AWAKENING,proc { |item,pkmn,scene|
@@ -585,7 +590,8 @@ ItemHandlers::UseOnPokemon.add(:MAXREVIVE,proc { |item,pkmn,scene|
 ItemHandlers::UseOnPokemon.copy(:MAXREVIVE,:MAXHONEY)
 
 ItemHandlers::UseOnPokemon.add(:ENERGYPOWDER,proc { |item,pkmn,scene|
-  if pbHPItem(pkmn,60,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 60 : 50
+  if pbHPItem(pkmn,healAmt,scene,item)
     pkmn.changeHappiness("powder")
     next true
   end
@@ -593,7 +599,8 @@ ItemHandlers::UseOnPokemon.add(:ENERGYPOWDER,proc { |item,pkmn,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:ENERGYROOT,proc { |item,pkmn,scene|
-  if pbHPItem(pkmn,200,scene)
+  healAmt = (Settings::GEN_7_HEALING_ITEMS) ? 120 : 200
+  if pbHPItem(pkmn,healAmt,scene,item)
     pkmn.changeHappiness("energyroot")
     next true
   end

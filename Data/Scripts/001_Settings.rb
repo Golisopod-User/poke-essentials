@@ -154,6 +154,14 @@ module Settings
   REPEL_COUNTS_FAINTED_POKEMON         = (MECHANICS_GENERATION >= 6)
   # Whether Rage Candy Bar acts as a Full Heal (true) or a Potion (false).
   RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS = (MECHANICS_GENERATION >= 7)
+  # Healing Items have HP healing amounts like they did in Gen 7 (true) or
+  # like in Gen 5 (false)
+  # Examples:
+  #  Fresh Water heals 50 HP in Gen 5 and 30 HP in Gen 7
+  #  Lemonade heals 80 HP in Gen 5 and 70 HP in Gen 7
+  #  Hyper Potion and Energy Root heal 200 HP in Gen 5 and 120 HP in Gen 7
+  #  Super Potion and Energy Powder heal 50 HP in Gen 5 and 60 HP in Gen 7
+  GEN_7_HEALING_ITEMS                  = (MECHANICS_GENERATION >= 7)
 
   #=============================================================================
 
@@ -166,7 +174,7 @@ module Settings
   # Whether putting a Pokémon into Pokémon storage will heal it. IF false, they
   # are healed by the Recover All: Entire Party event command (at Poké Centers).
   HEAL_STORED_POKEMON = (MECHANICS_GENERATION < 8)
-  
+
   #=============================================================================
 
   # The names of each pocket of the Bag. Ignore the first entry ("").

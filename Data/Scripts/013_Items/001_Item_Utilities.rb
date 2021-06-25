@@ -221,10 +221,18 @@ def pbItemRestoreHP(pkmn,restoreHP)
   return hpGain
 end
 
-def pbHPItem(pkmn,restoreHP,scene)
+def pbHPItem(pkmn,restoreHP,scene,item = nil)
   if !pkmn.able? || pkmn.hp==pkmn.totalhp
     scene.pbDisplay(_INTL("It won't have any effect."))
     return false
+  end
+  if item
+    maxhp = ((pkmn.totalhp - pkmn.hp)/restoreHP.to_f).ceil
+    maximum = [maxhp,$PokemonBag.pbQuantity(item)].min
+    qty = scene.pbChooseNumber(
+      _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+    restoreHP *= qty
+    $PokemonBag.pbDeleteItem(item, qty - 1)
   end
   hpGain = pbItemRestoreHP(pkmn,restoreHP)
   scene.pbRefresh
@@ -304,9 +312,7 @@ def pbRaiseHappinessAndLowerEV(pkmn,scene,stat,messages)
     scene.pbDisplay(_INTL("It won't have any effect."))
     return false
   end
-  if h
-    pkmn.changeHappiness("evberry")
-  end
+  pkmn.changeHappiness("evberry") if h
   if e
     pkmn.ev[stat] -= 10
     pkmn.ev[stat] = 0 if pkmn.ev[stat]<0
