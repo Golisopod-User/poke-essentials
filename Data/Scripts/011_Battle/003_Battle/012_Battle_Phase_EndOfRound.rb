@@ -403,7 +403,7 @@ class PokeBattle_Battle
       next if b.fainted? || b.effects[PBEffects::Octolock] < 0
       pbCommonAnimation("Octolock", b)
       b.pbLowerStatStage(:DEFENSE, 1, nil) if b.pbCanLowerStatStage?(:DEFENSE)
-      b.pbLowerStatStage(:SPECIAL_DEFENSE, 1, nil) if b.pbCanLowerStatStage?(:SPECIAL_DEFENSE)
+      b.pbLowerStatStage(:SPECIAL_DEFENSE, 1, nil, false) if b.pbCanLowerStatStage?(:SPECIAL_DEFENSE)
     end
     # Trapping attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)
     priority.each do |b|
