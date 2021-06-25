@@ -100,6 +100,7 @@ class PokeBattle_Move_184 < PokeBattle_Move
   def pbFailsAgainstTarget?(user,target)
     return true if target.semiInvulnerable?
     return true if !@validTargets.include?(target.index)
+    return false
   end
 
   def pbEffectAgainstTarget(user,target)
@@ -155,32 +156,43 @@ end
 # (Shell Side Arm)
 #===============================================================================
 class PokeBattle_Move_187 < PokeBattle_Move_005
-  def initialize(battle,move)
+  def initialize(battle, move)
     super
     @calcCategory = 1
   end
 
-  def pbContactMove?(user)
-    ret = super
-    ret = true if physicalMove?
-    return ret
-  end
+  def physicalMove?(thisType = nil); return (@calcCategory == 0); end
+  def specialMove?(thisType = nil);  return (@calcCategory == 1); end
+  def contactMove?;                  return physicalMove?;        end
 
-  def physicalMove?(thisType=nil); return (@calcCategory==0); end
-  def specialMove?(thisType=nil);  return (@calcCategory==1); end
-
-  def pbOnStartUse(user,targets)
-    return false if !targets.is_a?(Array)
+  def pbOnStartUse(user, targets)
+    target = targets[0]
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
-    defense      = targets[0].defense
-    defenseStage = targets[0].stages[:DEFENSE] + 6
-    realDefense  = (defense.to_f*stageMul[defenseStage]/stageDiv[defenseStage]).floor
-    spdef        = targets[0].spdef
-    spdefStage   = targets[0].stages[:SPECIAL_DEFENSE] + 6
-    realSpdef    = (spdef.to_f*stageMul[spdefStage]/stageDiv[spdefStage]).floor
+    # Calculate user's effective attacking values
+    attack_stage         = user.stages[:ATTACK] + 6
+    real_attack          = (user.attack.to_f * stageMul[attack_stage] / stageDiv[attack_stage]).floor
+    special_attack_stage = user.stages[:SPECIAL_ATTACK] + 6
+    real_special_attack  = (user.spatk.to_f * stageMul[special_attack_stage] / stageDiv[special_attack_stage]).floor
+    # Calculate target's effective defending values
+    defense_stage         = target.stages[:DEFENSE] + 6
+    real_defense          = (target.defense.to_f * stageMul[defense_stage] / stageDiv[defense_stage]).floor
+    special_defense_stage = target.stages[:SPECIAL_DEFENSE] + 6
+    real_special_defense  = (target.spdef.to_f * stageMul[special_defense_stage] / stageDiv[special_defense_stage]).floor
+    # Perform simple damage calculation
+    physical_damage = real_attack.to_f / real_defense
+    special_damage = real_special_attack.to_f / real_special_defense
     # Determine move's category
-    @calcCategory = (realDefense < realSpdef) ? 0 : 1
+    if physical_damage == special_damage
+      @calcCategry = @battle.pbRandom(2)
+    else
+      @calcCategory = (physical_damage > special_damage) ? 0 : 1
+    end
+  end
+
+  def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+    hitNum = 1 if physicalMove?
+    super
   end
 end
 
@@ -329,6 +341,27 @@ class PokeBattle_Move_18E < PokeBattle_TargetMultiStatUpMove
   def initialize(battle,move)
     super
     @statUp = [:ATTACK,1,:DEFENSE,1]
+  end
+
+  def pbMoveFailed?(user,targets)
+    @validTargets = []
+    @battle.eachSameSideBattler(user) do |b|
+      next if !b.pbCanRaiseStatStage?(:ATTACK,user,self) &&
+              !b.pbCanRaiseStatStage?(:DEFENSE,user,self)
+      next if b.index == user.index
+      @validTargets.push(b)
+    end
+    if @validTargets.length==0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user,target)
+    ret = super
+    return true if !@validTargets.any? { |b| b.index == target.index }
+    return ret
   end
 end
 

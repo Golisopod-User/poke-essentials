@@ -202,7 +202,7 @@
 195,OCTOLOCK,Octolock,181,0,FIGHTING,Status,100,15,0,NearOther,0,be,"Locks the target in and prevents fleeing. Lowers target's Defense and Sp. Def every turn."
 196,METEORASSAULT,Meteor Assault,0C2,150,FIGHTING,Physical,100,5,0,NearOther,0,bef,"Attacks wildly with its thick leek. The user can't move on the next turn."
 197,NORETREAT,No Retreat,17F,0,FIGHTING,Status,0,5,0,User,3,d,"This move raises all the user's stats but prevents the user from switching out or fleeing."
-198,COACHING,Coaching,18E,0,FIGHTING,Status,0,10,0,NearAlly,0,,"The user properly coaches its ally Pokémon, boosting their Attack and Defense stats."
+198,COACHING,Coaching,18E,0,FIGHTING,Status,0,10,0,UserAndAllies,0,,"The user properly coaches its ally Pokémon, boosting their Attack and Defense stats."
 199,BODYPRESS,Body Press,177,80,FIGHTING,Physical,100,10,0,NearOther,0,abef,"Attacks by slamming its body into the target. Damage increases with the user's Defense stat."
 200,THUNDEROUSKICK,Thunderous Kick,043,90,FIGHTING,Physical,100,10,100,NearOther,0,abef,"The user kicks the target with lightning-like movement. It lowers the target's Defense."
 #-------------------------------
