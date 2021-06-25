@@ -126,7 +126,6 @@ begin
     JawLockUser         = 120
     TarShot             = 121
     Octolock            = 122
-    OctolockUser        = 123
 
     #===========================================================================
     # These effects apply to a battler position

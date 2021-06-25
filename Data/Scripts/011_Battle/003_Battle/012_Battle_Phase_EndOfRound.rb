@@ -400,14 +400,10 @@ class PokeBattle_Battle
     end
     # Octolock
     priority.each do |b|
-      next if !b.effects[PBEffects::Octolock]
-	    octouser = @battlers[b.effects[PBEffects::OctolockUser]]
-      if b.pbCanLowerStatStage?(:DEFENSE,octouser,self)
-        b.pbLowerStatStage(:DEFENSE,1,octouser,true,false,true)
-      end
-      if b.pbCanLowerStatStage?(:SPECIAL_DEFENSE,octouser,self)
-        b.pbLowerStatStage(:SPECIAL_DEFENSE,1,octouser,true,false,true)
-      end
+      next if b.fainted? || b.effects[PBEffects::Octolock] < 0
+      pbCommonAnimation("Octolock", b)
+      b.pbLowerStatStage(:DEFENSE, 1, nil) if b.pbCanLowerStatStage?(:DEFENSE)
+      b.pbLowerStatStage(:SPECIAL_DEFENSE, 1, nil) if b.pbCanLowerStatStage?(:SPECIAL_DEFENSE)
     end
     # Trapping attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)
     priority.each do |b|

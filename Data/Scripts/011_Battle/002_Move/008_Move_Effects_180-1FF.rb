@@ -16,22 +16,22 @@ end
 # turn. Prevents target from retreating. (Octolock)
 #===============================================================================
 class PokeBattle_Move_181 < PokeBattle_Move
-  def pbFailsAgainstTarget?(user,target)
-    if target.effects[PBEffects::OctolockUser]>=0 || (target.damageState.substitute && !ignoresSubstitute?(user))
+  def pbFailsAgainstTarget?(user, target)
+    return false if damagingMove?
+    if target.effects[PBEffects::Octolock] >= 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
     if Settings::MORE_TYPE_EFFECTS && target.pbHasType?(:GHOST)
-      @battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+      @battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
       return true
     end
     return false
   end
 
-  def pbEffectAgainstTarget(user,target)
-    target.effects[PBEffects::OctolockUser] = user.index
-    target.effects[PBEffects::Octolock] = true
-    @battle.pbDisplay(_INTL("{1} can no longer escape!",target.pbThis))
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::Octolock] = user.index
+    @battle.pbDisplay(_INTL("{1} can no longer escape because of {2}!", target.pbThis, @name))
   end
 end
 

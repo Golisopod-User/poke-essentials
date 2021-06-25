@@ -590,6 +590,8 @@ class PokeBattle_Battle
                      PBEffects::MeanLook,
                      PBEffects::MirrorCoatTarget,
                      PBEffects::SkyDrop,
+                     PBEffects::Octolock,
+                     PBEffects::NoRetreat,
                      PBEffects::TrappingUser]
     eachBattler do |b|
       for i in effectsToSwap

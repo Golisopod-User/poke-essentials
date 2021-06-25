@@ -222,13 +222,9 @@ class PokeBattle_Battler
       b.effects[PBEffects::LockOn]    = 0
       b.effects[PBEffects::LockOnPos] = -1
     end
-    @effects[PBEffects::Octolock]     = false
-    @effects[PBEffects::OctolockUser] = -1
-    @battle.eachBattler do |b|   # Other battlers lose their lock-on against self - Octolock
-      next if !b.effects[PBEffects::Octolock]
-      next if b.effects[PBEffects::OctolockUser] != @index
-      b.effects[PBEffects::Octolock]     = false
-      b.effects[PBEffects::OctolockUser] = -1
+    @effects[PBEffects::Octolock]            = -1
+    @battle.eachBattler do |b|   # Other battlers no longer locked by self
+      b.effects[PBEffects::Octolock] = -1 if b.effects[PBEffects::Octolock] == @index
     end
     @battle.eachBattler do |b|   # Other battlers lose their lock-on against self - Jawlock
       next if !b.effects[PBEffects::JawLock]
