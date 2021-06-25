@@ -435,7 +435,7 @@ end
 # Pokémon party visuals
 #===============================================================================
 class PokemonParty_Scene
-  attr_accessor :inbattle
+  attr_accessor :allowBox
 
   def pbStartScene(party,starthelptext,annotations=nil,multiselect=false)
     @sprites = {}
@@ -716,7 +716,7 @@ class PokemonParty_Scene
       elsif Input.trigger?(Input::SPECIAL) &&
         GameData::Item.exists?(:POKEMONBOXLINK) &&
         $PokemonBag.pbHasItem?(:POKEMONBOXLINK) &&
-        !@inbattle                              &&
+        @allowBox                               &&
         (Settings::POKEMON_BOX_LINK_SWITCH < 0  ||
          !$game_switches[Settings::POKEMON_BOX_LINK_SWITCH])
          pbPlayDecisionSE
@@ -1160,7 +1160,9 @@ class PokemonPartyScreen
        (@party.length>1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."),nil)
     loop do
       @scene.pbSetHelpText((@party.length>1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+      @scene.allowBox = true if @scene.respond_to?(:allowBox)
       pkmnid = @scene.pbChoosePokemon(false,-1,1)
+      @scene.allowBox = false if @scene.respond_to?(:allowBox)
       break if (pkmnid.is_a?(Numeric) && pkmnid<0) || (pkmnid.is_a?(Array) && pkmnid[1]<0)
       if pkmnid.is_a?(Array) && pkmnid[0]==1   # Switch
         @scene.pbSetHelpText(_INTL("Move to where?"))
