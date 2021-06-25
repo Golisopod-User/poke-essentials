@@ -162,6 +162,9 @@ module Settings
   #  Hyper Potion and Energy Root heal 200 HP in Gen 5 and 120 HP in Gen 7
   #  Super Potion and Energy Powder heal 50 HP in Gen 5 and 60 HP in Gen 7
   GEN_7_HEALING_ITEMS                  = (MECHANICS_GENERATION >= 7)
+  # Limit the amount of Vitamins you can give to a single Pokemon to 100 (true)
+  # or the Maximum for that particular stat (false).
+  CAP_VITAMIN_AMOUNT                   = (MECHANICS_GENERATION < 8)
 
   #=============================================================================
 

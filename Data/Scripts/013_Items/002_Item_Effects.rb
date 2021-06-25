@@ -713,135 +713,61 @@ ItemHandlers::UseOnPokemon.add(:PPMAX,proc { |item,pkmn,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:HPUP,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:HP)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbRefresh
-  scene.pbDisplay(_INTL("{1}'s HP increased.",pkmn.name))
-  pkmn.changeHappiness("vitamin")
-  next true
+  next pbItemRaiseEV(pkmn,:HP,scene,10,item,"vitamin")
 })
 
 ItemHandlers::UseOnPokemon.add(:PROTEIN,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:ATTACK)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Attack increased.",pkmn.name))
-  pkmn.changeHappiness("vitamin")
-  next true
+  next pbItemRaiseEV(pkmn,:ATTACK,scene,10,item,"vitamin")
 })
 
 ItemHandlers::UseOnPokemon.add(:IRON,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:DEFENSE)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Defense increased.",pkmn.name))
-  pkmn.changeHappiness("vitamin")
-  next true
+  next pbItemRaiseEV(pkmn,:DEFENSE,scene,10,item,"vitamin")
 })
 
 ItemHandlers::UseOnPokemon.add(:CALCIUM,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:SPECIAL_ATTACK)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Special Attack increased.",pkmn.name))
-  pkmn.changeHappiness("vitamin")
-  next true
+  next pbItemRaiseEV(pkmn,:SPECIAL_ATTACK,scene,10,item,"vitamin")
 })
 
 ItemHandlers::UseOnPokemon.add(:ZINC,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:SPECIAL_DEFENSE)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Special Defense increased.",pkmn.name))
-  pkmn.changeHappiness("vitamin")
-  next true
+  next pbItemRaiseEV(pkmn,:SPECIAL_DEFENSE,scene,10,item,"vitamin")
 })
 
 ItemHandlers::UseOnPokemon.add(:CARBOS,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:SPEED)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Speed increased.",pkmn.name))
-  pkmn.changeHappiness("vitamin")
-  next true
+  next pbItemRaiseEV(pkmn,:SPEED,scene,10,item,"vitamin")
 })
 
 ItemHandlers::UseOnPokemon.add(:HEALTHFEATHER,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:HP,1,false)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbRefresh
-  scene.pbDisplay(_INTL("{1}'s HP increased.",pkmn.name))
-  pkmn.changeHappiness("wing")
-  next true
+  next pbItemRaiseEV(pkmn,:HP,scene,1,item,"wing")
 })
 
 ItemHandlers::UseOnPokemon.copy(:HEALTHFEATHER,:HEALTHWING)
 
 ItemHandlers::UseOnPokemon.add(:MUSCLEFEATHER,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:ATTACK,1,false)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Attack increased.",pkmn.name))
-  pkmn.changeHappiness("wing")
-  next true
+  next pbItemRaiseEV(pkmn,:ATTACK,scene,1,item,"wing")
 })
 
 ItemHandlers::UseOnPokemon.copy(:MUSCLEFEATHER,:MUSCLEWING)
 
 ItemHandlers::UseOnPokemon.add(:RESISTFEATHER,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:DEFENSE,1,false)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Defense increased.",pkmn.name))
-  pkmn.changeHappiness("wing")
-  next true
+  next pbItemRaiseEV(pkmn,:DEFENSE,scene,1,item,"wing")
 })
 
 ItemHandlers::UseOnPokemon.copy(:RESISTFEATHER,:RESISTWING)
 
 ItemHandlers::UseOnPokemon.add(:GENIUSFEATHER,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:SPECIAL_ATTACK,1,false)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Special Attack increased.",pkmn.name))
-  pkmn.changeHappiness("wing")
-  next true
+  next pbItemRaiseEV(pkmn,:SPECIAL_ATTACK,scene,1,item,"wing")
 })
 
 ItemHandlers::UseOnPokemon.copy(:GENIUSFEATHER,:GENIUSWING)
 
 ItemHandlers::UseOnPokemon.add(:CLEVERFEATHER,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:SPECIAL_DEFENSE,1,false)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Special Defense increased.",pkmn.name))
-  pkmn.changeHappiness("wing")
-  next true
+  next pbItemRaiseEV(pkmn,:SPECIAL_DEFENSE,scene,1,item,"wing")
 })
 
 ItemHandlers::UseOnPokemon.copy(:CLEVERFEATHER,:CLEVERWING)
 
 ItemHandlers::UseOnPokemon.add(:SWIFTFEATHER,proc { |item,pkmn,scene|
-  if pbRaiseEffortValues(pkmn,:SPEED,1,false)==0
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-  scene.pbDisplay(_INTL("{1}'s Speed increased.",pkmn.name))
-  pkmn.changeHappiness("wing")
-  next true
+  next pbItemRaiseEV(pkmn,:SPEED,scene,1,item,"wing")
 })
 
 ItemHandlers::UseOnPokemon.copy(:SWIFTFEATHER,:SWIFTWING)

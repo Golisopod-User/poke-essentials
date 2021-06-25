@@ -232,6 +232,7 @@ def pbHPItem(pkmn,restoreHP,scene,item = nil)
     qty = scene.pbChooseNumber(
       _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
     restoreHP *= qty
+    return false if qty == 0
     $PokemonBag.pbDeleteItem(item, qty - 1)
   end
   hpGain = pbItemRestoreHP(pkmn,restoreHP)
@@ -303,6 +304,34 @@ def pbRaiseEffortValues(pkmn, stat, evGain = 10, ev_limit = true)
     pkmn.calc_stats
   end
   return evGain
+end
+
+def pbItemRaiseEV(pkmn, stat, scene, evGain = 10, item = nil, happiness = "")
+  qty = 1
+  if Settings::CAP_VITAMIN_AMOUNT && pkmn.ev[stat] >= 100
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    return false
+  end
+  if item
+    evTotal = 0
+    GameData::Stat.each_main { |s| evTotal += pkmn.ev[s.id] }
+    maxEvGain = [Pokemon::EV_STAT_LIMIT - pkmn.ev[stat],Pokemon::EV_LIMIT - evTotal].min
+    maxEV = (maxEvGain/evGain.to_f).ceil
+    maximum = [maxEV,$PokemonBag.pbQuantity(item)].min
+    qty = scene.pbChooseNumber(
+      _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+    return false if qty == 0
+    $PokemonBag.pbDeleteItem(item, qty - 1)
+  end
+  if pbJustRaiseEffortValues(pkmn,stat,evGain * qty) == 0
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    return false
+  end
+  scene.pbRefresh
+  statName = GameData::Stat.get(stat).id
+  scene.pbDisplay(_INTL("{1}'s {2} increased.",pkmn.name,statName))
+  qty.times do; pkmn.changeHappiness(happiness); end
+  return true
 end
 
 def pbRaiseHappinessAndLowerEV(pkmn,scene,stat,messages)
@@ -392,43 +421,10 @@ def pbEXPAdditionItem(pkmn,exp,item,scene)
       level_diff = new_level - current_lv
       leftover_exp = pkmn.exp - pkmn.growth_rate.minimum_exp_for_level(new_level)
       leftover_exp.clamp(0,(pkmn.growth_rate.minimum_exp_for_level(new_level + 1) - 1))
-      pkmn.level = new_level
+      pbChangeLevel(pkmn,new_level,scene,true)
       pkmn.changeHappiness("vitamin")
-      pkmn.calc_stats
-      scene.pbRefresh
-      if scene.is_a?(PokemonPartyScreen)
-        scene.pbDisplay(_INTL("{1} grew to Lv. {2}!",pkmn.name,pkmn.level))
-      else
-        pbMessage(_INTL("{1} grew to Lv. {2}!",pkmn.name,pkmn.level))
-      end
-      attackdiff  = pkmn.attack-attackdiff
-      defensediff = pkmn.defense-defensediff
-      speeddiff   = pkmn.speed-speeddiff
-      spatkdiff   = pkmn.spatk-spatkdiff
-      spdefdiff   = pkmn.spdef-spdefdiff
-      totalhpdiff = pkmn.totalhp-totalhpdiff
-      pbTopRightWindow(_INTL("Max. HP<r>+{1}\r\nAttack<r>+{2}\r\nDefense<r>+{3}\r\nSp. Atk<r>+{4}\r\nSp. Def<r>+{5}\r\nSpeed<r>+{6}",
-         totalhpdiff,attackdiff,defensediff,spatkdiff,spdefdiff,speeddiff),scene)
-      pbTopRightWindow(_INTL("Max. HP<r>{1}\r\nAttack<r>{2}\r\nDefense<r>{3}\r\nSp. Atk<r>{4}\r\nSp. Def<r>{5}\r\nSpeed<r>{6}",
-         pkmn.totalhp,pkmn.attack,pkmn.defense,pkmn.spatk,pkmn.spdef,pkmn.speed),scene)
-      movelist = pkmn.getMoveList
-      for i in movelist
-        next if i[0] <= current_lv || i[0] > pkmn.level
-        pbLearnMove(pkmn, i[1], true) { scene.pbUpdate }
-      end
-      # Check for evolution
-      new_species = pkmn.check_evolution_on_level_up
-      if new_species
-        pbFadeOutInWithMusic {
-          evo = PokemonEvolutionScene.new
-          evo.pbStartScreen(pkmn, new_species)
-          evo.pbEvolution
-          evo.pbEndScreen
-          scene.pbRefresh if scene.is_a?(PokemonPartyScreen)
-        }
-      end
-      scene.pbHardRefresh
       pkmn.setExp(pkmn.growth_rate.minimum_exp_for_level(new_level) + leftover_exp)
+      scene.pbHardRefresh
     end
     return true
   end
