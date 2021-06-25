@@ -2808,26 +2808,23 @@ end
 #===============================================================================
 # Increases each stat by 1 stage. Prevents user from fleeing. (No Retreat)
 #===============================================================================
-class PokeBattle_Move_17F < PokeBattle_MultiStatUpMove
-  def initialize(battle,move)
-    super
-    @statUp = [:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1,:SPEED,1]
-  end
-
+class PokeBattle_Move_17F < PokeBattle_Move_02D
   def pbMoveFailed?(user,targets)
     if user.effects[PBEffects::NoRetreat]
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    super(user,targets)
+    return super
   end
 
   def pbEffectGeneral(user)
-    super(user)
-    if !(user.effects[PBEffects::MeanLook]>=0 || user.effects[PBEffects::Trapping]>0 ||
-       user.effects[PBEffects::JawLock] || user.effects[PBEffects::OctolockUser]>=0)
+    super
+    if battler.effects[PBEffects::Trapping] == 0 &&
+       battler.effects[PBEffects::MeanLook] < 0 &&
+       !battler.effects[PBEffects::Ingrain] &&
+       @field.effects[PBEffects::FairyLock] == 0
       user.effects[PBEffects::NoRetreat] = true
-      @battle.pbDisplay(_INTL("{1} can no longer escape because it used No Retreat!",user.pbThis))
+      @battle.pbDisplay(_INTL("{1} can no longer escape because it used {2}!", user.pbThis, @name))
     end
   end
 end
