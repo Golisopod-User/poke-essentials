@@ -117,7 +117,8 @@ end
 #===============================================================================
 # Change a Pokémon's level
 #===============================================================================
-def pbChangeLevel(pkmn,newlevel,scene)
+def pbChangeLevel(pkmn,newlevel,scene,checkmoves = false)
+  oldlevel = pkmn.level
   newlevel = newlevel.clamp(1, GameData::GrowthRate.max_level)
   if pkmn.level==newlevel
     pbMessage(_INTL("{1}'s level remained unchanged.",pkmn.name))
@@ -171,8 +172,12 @@ def pbChangeLevel(pkmn,newlevel,scene)
     # Learn new moves upon level up
     movelist = pkmn.getMoveList
     for i in movelist
-      next if i[0]!=pkmn.level
-      pbLearnMove(pkmn,i[1],true) { scene.pbUpdate }
+      if checkmoves
+        next if i[0] <= oldlevel || i[0] > pkmn.level
+      else
+        next if i[0] != pkmn.level
+      end
+      pbLearnMove(pkmn, i[1], true) { scene.pbUpdate }
     end
     # Check for evolution
     newspecies = pkmn.check_evolution_on_level_up
@@ -357,12 +362,18 @@ def pbEXPAdditionItem(pkmn,exp,item,scene)
     scene.pbDisplay(_INTL("It won't have any effect."))
     return false
   else
-    new_level = pbAddEXP(pkmn,exp)
-    display_exp = exp
-    if pkmn.growth_rate.maximum_exp < (current_exp + exp)
+    maxlv = ((pkmn.growth_rate.maximum_exp - current_exp) / exp.to_f).ceil
+    maximum = [maxlv,$PokemonBag.pbQuantity(item)].min
+    qty = scene.pbChooseNumber(
+       _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+    return false if qty < 1
+    $PokemonBag.pbDeleteItem(item, qty - 1)
+    new_level = pbAddEXP(pkmn,exp * qty)
+    display_exp = (exp * qty)
+    if pkmn.growth_rate.maximum_exp < (current_exp + (exp * qty))
       display_exp = pkmn.growth_rate.maximum_exp - current_exp
     end
-    scene.pbDisplay(_INTL("Your Pokémon gained {1} Exp. Points!",display_exp))
+    scene.pbDisplay(_INTL("{1} gained {2} Exp. Points!",pkmn.name,display_exp))
     if new_level == current_lv
       scene.pbRefresh
     else

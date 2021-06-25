@@ -593,6 +593,13 @@ class PokemonParty_Scene
     end
   end
 
+  def pbChooseNumber(helptext, maximum, initnum)
+    oldtext = @sprites["helpwindow"].text
+    ret = UIHelper.pbChooseNumber(@sprites["helpwindow"], helptext, maximum, initnum) { update }
+    pbSetHelpText(oldtext)
+    return ret
+  end
+
   def pbPreSelect(item)
     @activecmd = item
   end
@@ -921,6 +928,10 @@ class PokemonPartyScreen
 
   def pbConfirm(text)
     return @scene.pbDisplayConfirm(text)
+  end
+
+  def pbChooseNumber(helptext, maximum, initnum = 1)
+    return @scene.pbChooseNumber(helptext, maximum, initnum)
   end
 
   def pbShowCommands(helptext,commands,index=0)
