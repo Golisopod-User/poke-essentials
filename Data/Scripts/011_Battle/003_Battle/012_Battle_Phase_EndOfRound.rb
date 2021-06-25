@@ -687,7 +687,7 @@ class PokeBattle_Battle
 		battler.effects[PBEffects::GastroAcid])
     hasabil = false
     eachBattler do |b|
-	    next if battler && b == battler
+	    next if battler && b.index == battler.index
       # neutralizing gas can be blocked with gastro acid, ending the effect.
       if b.ability == :NEUTRALIZINGGAS && !b.effects[PBEffects::GastroAcid]
         hasabil = true; break
@@ -696,7 +696,7 @@ class PokeBattle_Battle
     if !hasabil
       @field.effects[PBEffects::NeutralizingGas] = false
       pbPriority(true).each { |b|
-	      next if battler && b == battler
+	      next if battler && b.index == battler.index
 	      b.pbEffectsOnSwitchIn
       }
     end

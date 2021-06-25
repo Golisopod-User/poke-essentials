@@ -1768,7 +1768,7 @@ BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
     splashAnim = false
     battle.pbShowAbilitySplash(target)
     battle.pbPriority(true).each {|b|
-      next if b == target || !b.pbCanLowerStatStage?(:SPEED,target)
+      next if b.index == target.index || !b.pbCanLowerStatStage?(:SPEED,target)
       b.pbLowerStatStageByAbility(:SPEED,1,target,!splashAnim)
       splashAnim = true
     }
