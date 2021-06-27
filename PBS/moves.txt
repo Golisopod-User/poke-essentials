@@ -606,7 +606,7 @@
 591,TOXICTHREAD,Toxic Thread,159,0,POISON,Status,100,20,0,NearOther,0,bce,"The user shoots poisonous threads to poison the target and lower the target's Speed stat."
 592,VENOMDRENCH,Venom Drench,140,0,POISON,Status,100,20,0,AllNearFoes,0,bc,"Foes are drenched in an odd liquid that lowers the Attack, Sp. Atk, and Speed of poisoned Pokémon."
 593,CORROSIVEGAS,Corrosive Gas,18F,0,POISON,Status,100,40,0,AllNearOthers,0,,"The user surrounds everything around it with highly acidic gas and melts away items they hold."
-594,SHELLSIDEARM,Shell Side Arm,187,90,POISON,Special,20,10,25,NearOther,0,bef,"Inflicts physical or special damage, whichever will be more effective. May poison the target."
+594,SHELLSIDEARM,Shell Side Arm,187,90,POISON,Special,100,10,20,NearOther,0,bef,"Inflicts physical or special damage, whichever will be more effective. May poison the target."
 #-------------------------------
 595,PRISMATICLASER,Prismatic Laser,0C2,160,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user shoots powerful lasers using the power of a prism. The user can't move on the next turn."
 596,PSYCHOBOOST,Psycho Boost,03F,140,PSYCHIC,Special,90,5,0,NearOther,0,bef,"The user attacks the target at full power. The attack's recoil harshly reduces the user's Sp. Atk stat."
