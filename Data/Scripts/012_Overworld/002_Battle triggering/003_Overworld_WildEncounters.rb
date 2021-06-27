@@ -396,7 +396,17 @@ def pbGenerateWildPokemon(species,level,isRoamer=false)
   if GameData::Item.exists?(:SHINYCHARM) && $PokemonBag.pbHasItem?(:SHINYCHARM)
     2.times do   # 3 times as likely
       break if genwildpoke.shiny?
+      genwildpoke.shiny = nil
       genwildpoke.personalID = rand(2**16) | rand(2**16) << 16
+    end
+  end
+  # Number Battled shiny method
+  shinyTier = $Trainer.pokedex.number_battled_shiny_tier(genwildpoke.species)
+  if shinyTier[1] > 1 && rand(1000) < shinyTier[1]
+    shinyTier[0].times do   # 2-6 times as likely
+      break if genwildpoke.shiny?
+      genwildpoke.shiny = nil
+      genwildpoke.personalID = rand(2 ** 16) | rand(2 ** 16) << 16
     end
   end
   # Give Pokérus
