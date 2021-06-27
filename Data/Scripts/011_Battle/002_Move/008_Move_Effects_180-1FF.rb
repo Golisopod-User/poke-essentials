@@ -49,29 +49,40 @@ end
 #===============================================================================
 # Consumes berry and raises the user's Defense by 2 stages. (Stuff Cheeks)
 #===============================================================================
-class PokeBattle_Move_183 < PokeBattle_Move
+class PokeBattle_Move_183 < PokeBattle_StatUpMove
+  def initialize(battle, move)
+    super
+    @statUp = [:DEFENSE, 2]
+  end
+
   def pbCanChooseMove?(user,commandPhase,showMessages)
-    if !user.item || !user.item.is_berry?
-      return false if !showMessages
-      msg = _INTL("{1} can't use that move because it doesn't have any berry!",user.pbThis)
-      (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+    item = user.item
+    if !item || !item.is_berry? || !user.itemActive?
+      if showMessages
+        msg = _INTL("{1} can't use that move because it doesn't have a Berry!", user.pbThis)
+        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+      end
       return false
     end
     return true
   end
 
   def pbMoveFailed?(user,targets)
-    if !user.item || !user.item.is_berry? || !user.pbCanRaiseStatStage?(:DEFENSE,user,self)
-      @battle.pbDisplay("But it failed!")
+    # NOTE: Unnerve does not stop a Pokémon using this move.
+    item = user.item
+    if !item || !item.is_berry? || !user.itemActive?
+      @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    return false
+    return super
   end
 
   def pbEffectGeneral(user)
-    user.pbRaiseStatStage(:DEFENSE,2,user)
-    user.pbHeldItemTriggerCheck(user.item,false)
-    user.pbConsumeItem(true,true,false) if user.item
+    super
+    @battle.pbDisplay(_INTL("{1} ate its {2}!", user.pbThis, user.itemName))
+    item = user.item
+    user.pbConsumeItem(true, false)   # Don't trigger Symbiosis yet
+    user.pbHeldItemTriggerCheck(item, false)
   end
 end
 
@@ -82,31 +93,35 @@ end
 # Substitutes. (Teatime)
 #===============================================================================
 class PokeBattle_Move_184 < PokeBattle_Move
-  def ignoresSubstitute?(user); return true; end
-
-  def pbMoveFailed?(user,targets)
-    @validTargets = []
-    @battle.eachBattler do |b|
+  def pbMoveFailed?(user, targets)
+    failed = true
+    targets.each do |b|
       next if !b.item || !b.item.is_berry?
-      @validTargets.push(b.index)
+      next if b.semiInvulnerable?
+      failed = false
+      break
     end
-    if @validTargets.length==0
-      @battle.pbDisplay(_INTL("But it failed!"))
+    if failed
+      @battle.pbDisplay(_INTL("But nothing happened!"))
       return true
     end
     return false
   end
 
-  def pbFailsAgainstTarget?(user,target)
-    return true if target.semiInvulnerable?
-    return true if !@validTargets.include?(target.index)
+  def pbOnStartUse(user,targets)
+    @battle.pbDisplay(_INTL("It's teatime! Everyone dug in to their Berries!"))
+  end
+
+  def pbFailsAgainstTarget?(user, target)
+    return true if !target.item || !target.item.is_berry? || target.semiInvulnerable?
     return false
   end
 
-  def pbEffectAgainstTarget(user,target)
-    @battle.pbDisplay(_INTL("It's tea time! Everyone dug in to their Berries!"))
-    target.pbHeldItemTriggerCheck(target.item,false)
-    target.pbConsumeItem(true,true,false) if target.item.is_berry?
+  def pbEffectAgainstTarget(user, target)
+    @battle.pbCommonAnimation("EatBerry", target)
+    item = target.item
+    target.pbConsumeItem(true, false)   # Don't trigger Symbiosis yet
+    target.pbHeldItemTriggerCheck(item, false)
   end
 end
 
