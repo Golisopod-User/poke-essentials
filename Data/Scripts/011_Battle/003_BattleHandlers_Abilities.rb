@@ -1703,17 +1703,11 @@ BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
        :STANCECHANGE,
        :WONDERGUARD,
        :ZENMODE,
-       # Abilities that are plain old blocked.
        :NEUTRALIZINGGAS
+       # Abilities that are plain old blocked.
     ]
-    failed = false
-    abilityBlacklist.each do |abil|
-      next if user.ability != abil
-      failed = true
-      break
-    end
-    next if failed
-    oldAbil = -1
+    next if abilityBlacklist.any? {|abil| user.ability == abil}
+    oldAbil = nil
     battle.pbShowAbilitySplash(target) if user.opposes?(target)
     if user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
       oldAbil = user.ability
@@ -1734,11 +1728,10 @@ BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
       battle.pbHideAbilitySplash(user)
     end
     battle.pbHideAbilitySplash(target) if user.opposes?(target)
-    if oldAbil>=0
+    if oldAbil
       user.pbOnAbilityChanged(oldAbil)
       target.pbOnAbilityChanged(:WANDERINGSPIRIT)
     end
-
   }
 )
 
