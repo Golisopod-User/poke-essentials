@@ -89,8 +89,11 @@ class PokeBattle_Battler
     move.pp = pp
     # No need to care about @effects[PBEffects::Mimic], since Mimic can't copy
     # Mimic
-    if move.realMove && move.id==move.realMove.id && !@effects[PBEffects::Transform]
+    if move.realMove && move.id == move.realMove.id && !@effects[PBEffects::Transform]
       move.realMove.pp = pp
+    elsif move.realMove
+      mult = move.realMove.total_pp/move.total_pp
+      move.realMove.pp = pp * mult
     end
   end
 

@@ -557,13 +557,6 @@ def pbAfterBattle(decision,canLose)
     pkmn.statusCount = 0 if pkmn.status == :POISON   # Bad poison becomes regular
     pkmn.makeUnmega
     pkmn.makeUnprimal
-    if pkmn.isSpecies?(:ZACIAN) || pkmn.isSpecies?(:ZAMAZENTA) && @form == 1
-      for i in 0...pkmn.moves.length
-        if pkmn.moves[i].id == :IRONHEAD && pkmn.moves[i].pp < 5
-          pkmn.moves[i].pp *= 3
-        end
-      end
-    end
     newspecies = pkmn.check_evolution_after_battle
     if newspecies
       evo = PokemonEvolutionScene.new

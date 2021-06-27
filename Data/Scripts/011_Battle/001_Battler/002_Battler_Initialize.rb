@@ -100,6 +100,11 @@ class PokeBattle_Battler
       if (isSpecies?(:ZACIAN) || isSpecies?(:ZAMAZENTA)) && @form == 1 && m.id == :IRONHEAD
         moveID = isSpecies?(:ZACIAN) ? :BEHEMOTHBLADE : :BEHEMOTHBASH
         @moves[i] = PokeBattle_Move.from_pokemon_move(@battle,Pokemon::Move.new(moveID))
+        @moves[i].realMove = m
+        maxPP =  GameData::Move.get(moveID).total_pp
+        @moves[i].total_pp =  maxPP + (maxPP * m.ppup / 5)
+        calcPP = ((m.pp/m.total_pp.to_f) * @moves[i].total_pp).to_i
+        pbSetPP(@moves[i],calcPP)
       else
         @moves[i] = PokeBattle_Move.from_pokemon_move(@battle,m)
       end

@@ -566,7 +566,7 @@ class PokeBattle_Move_198 < PokeBattle_Move
   def pbFailsAgainstTarget?(user,target)
     failed = true
     target.eachMove do |m|
-      next if m.id != target.lastRegularMoveUsed || m.pp==0 || m.totalpp<=0
+      next if m.id != target.lastRegularMoveUsed || m.pp==0 || m.total_pp<=0
       failed = false; break
     end
     if failed
@@ -599,7 +599,7 @@ class PokeBattle_Move_199 < PokeBattle_RecoilMove
 end
 
 #===============================================================================
-# Deals double damage to Dynamax POkémons. Dynamax is not implemented though.
+# Deals double damage to Dynamax Pokémon. Dynamax is not implemented though.
 # (Behemoth Blade, Behemoth Bash, Dynamax Cannon)
 #===============================================================================
 class PokeBattle_Move_19A < PokeBattle_Move
