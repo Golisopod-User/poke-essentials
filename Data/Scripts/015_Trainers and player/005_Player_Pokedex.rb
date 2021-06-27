@@ -27,6 +27,7 @@ class Player < Trainer
       @seen_forms      = {}
       @last_seen_forms = {}
       @owned_shadow    = {}
+      @number_battled  = {}
       self.refresh_accessible_dexes
     end
 
@@ -256,6 +257,51 @@ class Player < Trainer
             @accessible_dexes.push(dex_list_to_check)
           end
         end
+      end
+    end
+
+    #===========================================================================
+
+    # Return the Number of Pokemon of this species that the player has
+    # caught or defeated
+    # @param species [Symbol, GameData::Species] species to check
+    # @return [Integer] amount of pokemon of the species battled
+    def number_battled(species)
+      species_id = GameData::Species.try_get(species)&.species
+      return false if species_id.nil?
+      @number_battled = {} if !@number_battled
+      @number_battled[species_id] = 0 if !@number_battled[species_id].is_a?(Numeric)
+      return @number_battled[species_id]
+    end
+
+    # Increase the Number of Pokemon of this species that the player has
+    # caught or defeated
+    # @param species [Symbol, GameData::Species] species to increase
+    def register_battled(species)
+      species_id = GameData::Species.try_get(species)&.species
+      return if species_id.nil?
+      @number_battled[species_id] = 0 if !@number_battled[species_id].is_a?(Numeric)
+      @number_battled[species_id] += 1
+    end
+
+    # Return the array of tries chance  of Boosted Shiny odds from the number
+    # of Pokemon of this species that the player has caught or defeated
+    # @param species [Symbol, GameData::Species] species to increase
+    # @return [Array]
+    def number_battled_shiny_tier(species)
+      number = number_battled(species)
+      if number >= 500
+        return [5,30]
+      elsif number >= 300
+        return [4,30]
+      elsif number >= 200
+        return [3,25]
+      elsif number >= 100
+        return [2,20]
+      elsif number >= 50
+        return [1,15]
+      else
+        return [0,0]
       end
     end
 

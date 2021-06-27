@@ -80,6 +80,7 @@ class PokeBattle_Battler
     pbAbilitiesOnFainting
     # Check for end of primordial weather
     @battle.pbEndPrimordialWeather
+    @battle.pbSetBattled(self)
   end
 
   #=============================================================================
