@@ -148,8 +148,6 @@ class PokeBattle_Battler
       @effects[PBEffects::PowerTrick]        = false
       @effects[PBEffects::Substitute]        = 0
       @effects[PBEffects::Telekinesis]       = 0
-      @effects[PBEffects::JawLock]           = false
-      @effects[PBEffects::JawLockUser]       = -1
       @effects[PBEffects::NoRetreat]         = false
     end
     @fainted               = (@hp==0)
@@ -226,11 +224,9 @@ class PokeBattle_Battler
     @battle.eachBattler do |b|   # Other battlers no longer locked by self
       b.effects[PBEffects::Octolock] = -1 if b.effects[PBEffects::Octolock] == @index
     end
-    @battle.eachBattler do |b|   # Other battlers lose their lock-on against self - Jawlock
-      next if !b.effects[PBEffects::JawLock]
-      next if b.effects[PBEffects::JawLockUser]!=@index
-      b.effects[PBEffects::Jawlock]     = false
-      b.effects[PBEffects::JawLockUser] = -1
+    @effects[PBEffects::JawLock]             = -1
+    @battle.eachBattler do |b|   # Other battlers no longer blocked by self
+      b.effects[PBEffects::JawLock] = -1 if b.effects[PBEffects::JawLock] == @index
     end
     @effects[PBEffects::MagicBounce]         = false
     @effects[PBEffects::MagicCoat]           = false

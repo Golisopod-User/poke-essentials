@@ -123,9 +123,8 @@ begin
     NoRetreat           = 117
     Obstruct            = 118
     JawLock             = 119
-    JawLockUser         = 120
+    Octolock            = 120
     TarShot             = 121
-    Octolock            = 122
 
     #===========================================================================
     # These effects apply to a battler position

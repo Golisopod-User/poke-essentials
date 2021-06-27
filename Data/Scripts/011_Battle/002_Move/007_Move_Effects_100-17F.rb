@@ -2759,15 +2759,12 @@ end
 # Prevents both the user and the target from escaping. (Jaw Lock)
 #===============================================================================
 class PokeBattle_Move_17D < PokeBattle_Move
-  def pbEffectAgainstTarget(user,target)
-    if target.effects[PBEffects::JawLockUser]<0 && !target.effects[PBEffects::JawLock] &&
-      user.effects[PBEffects::JawLockUser]<0 && !user.effects[PBEffects::JawLock]
-      user.effects[PBEffects::JawLock]       = true
-      target.effects[PBEffects::JawLock]     = true
-      user.effects[PBEffects::JawLockUser]   = user.index
-      target.effects[PBEffects::JawLockUser] = user.index
-      @battle.pbDisplay(_INTL("Neither Pokémon can run away!"))
-    end
+  def pbAdditionalEffect(user,target)
+    return if user.fainted? || target.fainted? || target.damageState.substitute
+    return if Settings::MORE_TYPE_EFFECTS && target.pbHasType?(:GHOST)
+    return if user.trappedInBattle? || target.trappedInBattle?
+    target.effects[PBEffects::JawLock] = user.index
+    @battle.pbDisplay(_INTL("Neither Pokémon can run away!"))
   end
 end
 
@@ -2819,10 +2816,7 @@ class PokeBattle_Move_17F < PokeBattle_Move_02D
 
   def pbEffectGeneral(user)
     super
-    if battler.effects[PBEffects::Trapping] == 0 &&
-       battler.effects[PBEffects::MeanLook] < 0 &&
-       !battler.effects[PBEffects::Ingrain] &&
-       @field.effects[PBEffects::FairyLock] == 0
+    if !user.trappedInBattle?
       user.effects[PBEffects::NoRetreat] = true
       @battle.pbDisplay(_INTL("{1} can no longer escape because it used {2}!", user.pbThis, @name))
     end

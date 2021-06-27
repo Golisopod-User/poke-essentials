@@ -70,19 +70,7 @@ class PokeBattle_Battle
       partyScene.pbDisplay(_INTL("{1} can't be switched out!",battler.pbThis)) if partyScene
       return false
     end
-    if battler.effects[PBEffects::JawLock]
-      @battlers.each do |b|
-        if (battler.effects[PBEffects::JawLockUser] == b.index) && !b.fainted?
-          partyScene.pbDisplay(_INTL("{1} can't be switched out!",battler.pbThis)) if partyScene
-          return false
-        end
-      end
-    end
-    if battler.effects[PBEffects::Trapping]>0 ||
-       battler.effects[PBEffects::MeanLook]>=0 ||
-       battler.effects[PBEffects::Ingrain] ||
-       battler.effects[PBEffects::NoRetreat] ||
-       @field.effects[PBEffects::FairyLock]>0
+    if battler.trappedInBattle?
       partyScene.pbDisplay(_INTL("{1} can't be switched out!",battler.pbThis)) if partyScene
       return false
     end
