@@ -391,6 +391,7 @@ class Pokemon
 
   # @return [Boolean] whether this Pokémon is shiny (differently colored)
   def shiny?
+    return true if square_shiny? 
     if @shiny.nil?
       a = @personalID ^ @owner.id
       b = a & 0xFFFF

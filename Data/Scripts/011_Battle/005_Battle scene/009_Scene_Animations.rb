@@ -3,6 +3,7 @@ class PokeBattle_Scene
   # Animates the battle intro
   #=============================================================================
   def pbBattleIntroAnimation
+    @squareShinyAnim = pbCommonAnimationExists?("SquareShiny")
     # Make everything appear
     introAnim = BattleIntroAnimation.new(@sprites,@viewport,@battle)
     loop do
@@ -43,7 +44,7 @@ class PokeBattle_Scene
       for i in 0...@battle.sideSizes[1]
         idxBattler = 2*i+1
         next if !@battle.battlers[idxBattler] || !@battle.battlers[idxBattler].shiny?
-        if Settings::SQUARE_SHINY && @battle.battlers[idxBattler].square_shiny?
+        if Settings::SQUARE_SHINY && @battle.battlers[idxBattler].square_shiny? && @squareShinyAnim
           pbCommonAnimation("SquareShiny", @battle.battlers[idxBattler])
         else
           pbCommonAnimation("Shiny", @battle.battlers[idxBattler])
@@ -134,7 +135,7 @@ class PokeBattle_Scene
     # Play shininess animations for shiny Pokémon
     sendOuts.each do |b|
       next if !@battle.showAnims || !@battle.battlers[b[0]].shiny?
-      if Settings::SQUARE_SHINY && @battle.battlers[b[0]].square_shiny?
+      if Settings::SQUARE_SHINY && @battle.battlers[b[0]].square_shiny? && @squareShinyAnim
         pbCommonAnimation("SquareShiny", @battle.battlers[b[0]])
       else
         pbCommonAnimation("Shiny", @battle.battlers[b[0]])
@@ -499,6 +500,15 @@ class PokeBattle_Scene
       pbAnimationCore(a,user,(target!=nil) ? target : user)
       return
     end
+  end
+
+  def pbCommonAnimationExists?(animName)
+    animations = pbLoadBattleAnimations
+    animations.each do |a|
+      next if !a || a.name!="Common:"+animName
+      return true
+    end
+    return false
   end
 
   def pbAnimationCore(animation,user,target,oppMove=false)
