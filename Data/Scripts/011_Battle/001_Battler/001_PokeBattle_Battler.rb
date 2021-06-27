@@ -432,6 +432,7 @@ class PokeBattle_Battler
     return false if @effects[PBEffects::Embargo]>0
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if hasActiveAbility?(:KLUTZ,ignoreFainted)
+    return false if itemCorroded?
     return true
   end
 
@@ -447,6 +448,7 @@ class PokeBattle_Battler
     return false if !check_item
     return true if GameData::Item.get(check_item).is_mail?
     return false if @effects[PBEffects::Transform]
+    return true if target.itemCorroded?
     # Items that change a Pokémon's form
     if mega?   # Check if item was needed for this Mega Evolution
       return true if @pokemon.species_data.mega_stone == check_item
@@ -692,6 +694,14 @@ class PokeBattle_Battler
 
   def setBelched
     @battle.belch[@index&1][@pokemonIndex] = true
+  end
+
+  def itemCorroded?
+    return @battle.corrodedItem[@index&1][@pokemonIndex]
+  end
+
+  def setCorrodedItem
+    @battle.corrodedItem[@index&1][@pokemonIndex] = true
   end
 
   #=============================================================================

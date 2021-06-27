@@ -386,15 +386,34 @@ end
 # Renders item unusable (Corrosive Gas)
 #===============================================================================
 class PokeBattle_Move_18F < PokeBattle_Move
-  def pbEffectAgainstTarget(user,target)
-    return if @battle.wildBattle? && user.opposes?   # Wild Pokémon can't corrode items
-    return if user.fainted?
-    return if target.damageState.substitute
-    return if !target.item || target.unlosableItem?(target.item)
-    return if target.hasActiveAbility?(:STICKYHOLD) && !@battle.moldBreaker
-    itemName = target.itemName
-    target.pbRemoveItem(false)
-    @battle.pbDisplay(_INTL("{1} corroded {2}'s {3}!",user.pbThis,target.pbThis(true),itemName))
+  def pbFailsAgainstTarget?(user, target)
+    # unlosableItem already checks for whether the item is corroded
+    if !target.item || target.unlosableItem?(target.item) ||
+       target.effects[PBEffects::Substitute] > 0
+      @battle.pbDisplay(_INTL("{1} is unaffected!", target.pbThis))
+      return true
+    end
+    if target.hasActiveAbility?(:STICKYHOLD) && !@battle.moldBreaker
+      @battle.pbShowAbilitySplash(target)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        @battle.pbDisplay(_INTL("{1} is unaffected!", target.pbThis))
+      else
+        @battle.pbDisplay(_INTL("{1} is unaffected because of its {2}!",
+           target.pbThis(true), target.abilityName))
+      end
+      @battle.pbHideAbilitySplash(target)
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.setCorrodedItem
+    target.setRecycleItem(nil)
+    target.effects[PBEffects::PickupItem] = nil
+    target.effects[PBEffects::PickupUse]  = 0
+    @battle.pbDisplay(_INTL("{1} corroded {2}'s {3}!",
+       user.pbThis, target.pbThis(true), target.itemName))
   end
 end
 

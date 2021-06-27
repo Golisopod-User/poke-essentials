@@ -73,6 +73,7 @@ class PokeBattle_Battle
   attr_reader   :initialItems
   attr_reader   :recycleItems
   attr_reader   :belch
+  attr_reader   :corrodedItem
   attr_reader   :battleBond
   attr_reader   :usedInBattle     # Whether each Pokémon was used in battle (for Burmy)
   attr_reader   :successStates    # Success states
@@ -150,6 +151,7 @@ class PokeBattle_Battle
     ]
     @recycleItems      = [Array.new(@party1.length, nil),   Array.new(@party2.length, nil)]
     @belch             = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
+    @corrodedItem      = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @battleBond        = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @usedInBattle      = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @successStates     = []
