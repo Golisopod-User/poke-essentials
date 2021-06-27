@@ -43,7 +43,7 @@ module GameData
     end
 
     def call_on_battle(*args)
-      return (@call_on_field) ? @call_on_field.call(*args) : nil
+      return (@on_battle_proc) ? @on_battle_proc.call(*args) : nil
     end
 
     def call_after_evolution(*args)
@@ -625,7 +625,7 @@ GameData::Evolution.register({
 })
 
 #===============================================================================
-# Evolution methods that triggers after a battle is completed
+# Evolution methods that trigger after a battle is completed
 #===============================================================================
 GameData::Evolution.register({
   :id            => :CriticalHits,

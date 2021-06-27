@@ -557,13 +557,6 @@ def pbAfterBattle(decision,canLose)
     pkmn.statusCount = 0 if pkmn.status == :POISON   # Bad poison becomes regular
     pkmn.makeUnmega
     pkmn.makeUnprimal
-    newspecies = pkmn.check_evolution_after_battle
-    if newspecies
-      evo = PokemonEvolutionScene.new
-      evo.pbStartScreen(pkmn,newspecies)
-      evo.pbEvolution(false)
-      evo.pbEndScreen
-    end
   end
   if $PokemonGlobal.partner
     $Trainer.heal_party
@@ -591,6 +584,7 @@ Events.onEndBattle += proc { |_sender,e|
       pbEvolutionCheck($PokemonTemp.evolutionLevels)
       $PokemonTemp.evolutionLevels = nil
     end
+    pbAfterBattleEvolutionCheck
   end
   case decision
   when 1, 4   # Win, capture
@@ -616,6 +610,18 @@ def pbEvolutionCheck(currentLevels)
     next if !newSpecies
     evo = PokemonEvolutionScene.new
     evo.pbStartScreen(pkmn,newSpecies)
+    evo.pbEvolution
+    evo.pbEndScreen
+  end
+end
+
+def pbAfterBattleEvolutionCheck
+  $Trainer.party.each do |pkmn|
+    next if !pkmn.able? && !Settings::CHECK_EVOLUTION_FOR_FAINTED_POKEMON
+    new_species = pkmn.check_evolution_after_battle
+    next if !new_species
+    evo = PokemonEvolutionScene.new
+    evo.pbStartScreen(pkmn,new_species)
     evo.pbEvolution
     evo.pbEndScreen
   end
