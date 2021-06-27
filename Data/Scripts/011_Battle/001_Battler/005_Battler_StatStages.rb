@@ -175,7 +175,7 @@ class PokeBattle_Battler
     return increment
   end
 
-  def pbLowerStatStage(stat, increment, user, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false, ignoreAbiliy = false)
+  def pbLowerStatStage(stat, increment, user, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false)
     # Mirror Armor
     if !ignoreMirrorArmor && hasActiveAbility?(:MIRRORARMOR) && !@battle.moldBreaker && pbCanLowerStatStage?(stat)
       if user && user.index!=@index && !user.hasActiveAbility?(:MIRRORARMOR) && user.pbCanLowerStatStage?(stat,nil,nil,true)
@@ -202,14 +202,14 @@ class PokeBattle_Battler
        _INTL("{1}'s {2} severely fell!",pbThis,GameData::Stat.get(stat).name)]
     @battle.pbDisplay(arrStatTexts[[increment-1,2].min])
     # Trigger abilities upon stat loss
-    if abilityActive? && !ignoreAbiliy
+    if abilityActive?
       BattleHandlers.triggerAbilityOnStatLoss(self.ability,self,stat,user)
     end
     @effects[PBEffects::LashOut] = true
     return true
   end
 
-  def pbLowerStatStageByCause(stat, increment, user, cause, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false, ignoreAbiliy = false)
+  def pbLowerStatStageByCause(stat, increment, user, cause, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false)
     # Mirror Armor
     if !ignoreMirrorArmor && hasActiveAbility?(:MIRRORARMOR) && !@battle.moldBreaker && pbCanLowerStatStage?(stat)
       if user && user.index != @index && !user.hasActiveAbility?(:MIRRORARMOR) && user.pbCanLowerStatStage?(stat,nil,nil,true)
@@ -241,7 +241,7 @@ class PokeBattle_Battler
     end
     @battle.pbDisplay(arrStatTexts[[increment-1,2].min])
     # Trigger abilities upon stat loss
-    if abilityActive? && !ignoreAbiliy
+    if abilityActive?
       BattleHandlers.triggerAbilityOnStatLoss(self.ability,self,stat,user)
     end
     @effects[PBEffects::LashOut] = true

@@ -1557,7 +1557,7 @@ BattleHandlers::EOREffectItem.add(:ROOMSERVICE,
     next if !battler.pbCanLowerStatStage?(:SPEED,battler)
     battle.pbCommonAnimation("UseItem",battler)
     itemName = battler.itemName
-    battler.pbLowerStatStageByCause(:SPEED,1,battler,itemName,true,false,false,true)
+    battler.pbLowerStatStageByCause(:SPEED,1,battler,itemName)
     battler.pbConsumeItem
   }
 )
