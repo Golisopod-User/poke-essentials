@@ -314,12 +314,9 @@ end
 # Burns opposing Pokemon that have increased their stats in that turn before the
 # execution of this move (Burning Jealousy)
 #===============================================================================
-class PokeBattle_Move_18B < PokeBattle_Move
-  def pbEffectWhenDealingDamage(user,target)
-    return if target.damageState.substitute || target.damageState.iceface
-    return if !target.effects[PBEffects::BurningJealousy]
-    return if !target.pbCanBurn?(user,false,self)
-    target.pbBurn(user)
+class PokeBattle_Move_18B < PokeBattle_BurnMove
+  def pbEffectAgainstTarget(user, target)
+    super if target.statsRaised
   end
 end
 
@@ -494,7 +491,7 @@ end
 #===============================================================================
 class PokeBattle_Move_194 < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if user.effects[PBEffects::LashOut]
+    baseDmg *= 2 if user.statsLowered
     return baseDmg
   end
 end

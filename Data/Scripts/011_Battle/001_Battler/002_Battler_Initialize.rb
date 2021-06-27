@@ -158,6 +158,8 @@ class PokeBattle_Battler
     @lastHPLostFromFoe     = 0
     @tookDamage            = false
     @tookPhysicalHit       = false
+    @statsRaised           = false
+    @statsLowered          = false
     @lastMoveUsed          = nil
     @lastMoveUsedType      = nil
     @lastRegularMoveUsed   = nil
@@ -297,8 +299,6 @@ class PokeBattle_Battler
     @effects[PBEffects::Yawn]                = 0
     @effects[PBEffects::GorillaTactics]      = nil
     @effects[PBEffects::BallFetch]           = nil
-    @effects[PBEffects::LashOut]             = false
-    @effects[PBEffects::BurningJealousy]     = false
     @effects[PBEffects::Obstruct]            = false
     @effects[PBEffects::TarShot]             = false
   end

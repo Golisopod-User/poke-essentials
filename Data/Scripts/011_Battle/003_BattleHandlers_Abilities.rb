@@ -1397,6 +1397,7 @@ BattleHandlers::TargetAbilityOnHit.add(:ANGERPOINT,
       battle.pbDisplay(_INTL("{1}'s {2} maxed its {3}!",
          target.pbThis,target.abilityName,GameData::Stat.get(:ATTACK).name))
     end
+    target.statsRaised = true
     battle.pbHideAbilitySplash(target)
   }
 )

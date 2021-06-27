@@ -60,7 +60,7 @@ class PokeBattle_Battler
     if abilityActive?
       BattleHandlers.triggerAbilityOnStatGain(self.ability,self,stat,user)
     end
-    @effects[PBEffects::BurningJealousy] = true
+    @statsRaised = true
     return true
   end
 
@@ -90,7 +90,7 @@ class PokeBattle_Battler
     if abilityActive?
       BattleHandlers.triggerAbilityOnStatGain(self.ability,self,stat,user)
     end
-    @effects[PBEffects::BurningJealousy] = true
+    @statsRaised = true
     return true
   end
 
@@ -205,7 +205,7 @@ class PokeBattle_Battler
     if abilityActive?
       BattleHandlers.triggerAbilityOnStatLoss(self.ability,self,stat,user)
     end
-    @effects[PBEffects::LashOut] = true
+    @statsLowered = true
     return true
   end
 
@@ -244,7 +244,7 @@ class PokeBattle_Battler
     if abilityActive?
       BattleHandlers.triggerAbilityOnStatLoss(self.ability,self,stat,user)
     end
-    @effects[PBEffects::LashOut] = true
+    @statsLowered = true
     return true
   end
 
@@ -338,6 +338,13 @@ class PokeBattle_Battler
   end
 
   def pbResetStatStages
-    GameData::Stat.each_battle { |s| @stages[s.id] = 0 }
+    GameData::Stat.each_battle do |s|
+      if @stages[s.id] > 0
+        @statsLowered = true
+      elsif @stages[s.id] < 0
+        @statsRaised = true
+      end
+      @stages[s.id] = 0
+    end
   end
 end

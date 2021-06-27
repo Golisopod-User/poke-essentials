@@ -1386,13 +1386,7 @@ end
 #===============================================================================
 class PokeBattle_Move_141 < PokeBattle_Move
   def pbFailsAgainstTarget?(user,target)
-    failed = true
-    GameData::Stat.each_battle do |s|
-      next if target.stages[s.id] == 0
-      failed = false
-      break
-    end
-    if failed
+    if !target.hasAlteredStatStages?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -1400,7 +1394,14 @@ class PokeBattle_Move_141 < PokeBattle_Move
   end
 
   def pbEffectAgainstTarget(user,target)
-    GameData::Stat.each_battle { |s| target.stages[s.id] *= -1 }
+    GameData::Stat.each_battle do |s|
+      if target.stages[s.id] > 0
+        target.statsLowered = true
+      elsif target.stages[s.id] < 0
+        target.statsRaised = true
+      end
+      target.stages[s.id] *= -1
+    end
     @battle.pbDisplay(_INTL("{1}'s stats were reversed!",target.pbThis))
   end
 end
@@ -2019,6 +2020,7 @@ class PokeBattle_Move_15D < PokeBattle_Move
             showAnim = false
           end
         end
+        target.statsLowered = true
         target.stages[s.id] = 0
       end
     end

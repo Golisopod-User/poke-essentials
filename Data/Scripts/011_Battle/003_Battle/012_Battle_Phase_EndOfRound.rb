@@ -647,13 +647,13 @@ class PokeBattle_Battle
       b.effects[PBEffects::SpikyShield]      = false
       b.effects[PBEffects::Spotlight]        = 0
       b.effects[PBEffects::ThroatChop]       -= 1 if b.effects[PBEffects::ThroatChop]>0
-      b.effects[PBEffects::BurningJealousy]  = false
-      b.effects[PBEffects::LashOut]          = false
       b.effects[PBEffects::Obstruct]         = false
       b.lastHPLost                           = 0
       b.lastHPLostFromFoe                    = 0
       b.tookDamage                           = false
       b.tookPhysicalHit                      = false
+      b.statsRaised                          = false
+      b.statsLowered                         = false
       b.lastRoundMoveFailed                  = b.lastMoveFailed
       b.lastAttacker.clear
       b.lastFoeAttacker.clear

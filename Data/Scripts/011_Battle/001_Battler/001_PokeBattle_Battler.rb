@@ -40,6 +40,8 @@ class PokeBattle_Battler
   attr_accessor :currentMove   # ID of multi-turn move currently being used
   attr_accessor :tookDamage    # Boolean for whether self took damage this round
   attr_accessor :tookPhysicalHit
+  attr_accessor :statsRaised   # Stats have been raised this round
+  attr_accessor :statsLowered  # Stats have been lowered this round
   attr_accessor :damageState
   attr_accessor :initialHP     # Set at the start of each move's usage
 

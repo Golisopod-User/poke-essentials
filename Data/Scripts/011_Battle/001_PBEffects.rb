@@ -118,13 +118,11 @@ begin
     Yawn                = 112
     GorillaTactics      = 113
     BallFetch           = 114
-    LashOut             = 115
-    BurningJealousy     = 116
-    NoRetreat           = 117
-    Obstruct            = 118
-    JawLock             = 119
-    Octolock            = 120
-    TarShot             = 121
+    NoRetreat           = 115
+    Obstruct            = 116
+    JawLock             = 117
+    Octolock            = 118
+    TarShot             = 119
 
     #===========================================================================
     # These effects apply to a battler position
