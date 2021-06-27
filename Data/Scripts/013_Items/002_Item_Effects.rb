@@ -57,14 +57,6 @@ ItemHandlers::UseFromBag.add(:ITEMFINDER,proc { |item|
 
 ItemHandlers::UseFromBag.copy(:ITEMFINDER,:DOWSINGMCHN,:DOWSINGMACHINE)
 
-ItemHandlers::UseFromBag.add(:ZYGARDECUBE,proc {|item|
-  pbChooseAblePokemon(1,3)
-  pkmn = $Trainer.party[$game_variables[1]]
-  next 2 if pkmn.isSpecies?(:ZYGARDE)
-  pbMessage(_INTL("It won't have any effect."))
-  next 0
-})
-
 #===============================================================================
 # ConfirmUseInField handlers
 # Return values: true/false
@@ -339,51 +331,6 @@ ItemHandlers::UseInField.add(:EXPALLOFF,proc { |item|
   $PokemonBag.pbChangeItem(:EXPALLOFF,:EXPALL)
   pbMessage(_INTL("The Exp Share was turned on."))
   next 1
-})
-
-ItemHandlers::UseInField.add(:ZYGARDECUBE,proc{|item|
-  poke = $Trainer.party[$game_variables[1]]
-  loop do
-    cmd = pbMessage(_INTL("What would you like to do?"), ["Check Cells","Teach Move", "Change Forms","Cancel"],3)
-    case cmd
-    when 0
-      value = $game_variables[69].is_a?(Numeric)? $game_variables[69] : 69 # A Variable to store nymber of Cells
-      pbMessage(_INTL("You have collected {1}/100 Zygarde Cores and Zygarde Cells.",value))
-    when 1
-      choices = [:EXTREMESPEED,:THOUSANDARROWS,:DRAGONDANCE,:THOUSANDWAVES,:COREENFORCER] # A variable which is an array of moves unlocked
-      displayChoices = []
-      choices.each{|ch| displayChoices.push(ch)};
-      displayChoices.map!{ |name| GameData::Move.get(name).name}
-      displayChoices.push("Cancel")
-      if displayChoices.length>1
-        cmd2 = pbMessage(_INTL("What would you like to teach the Zygarde?"),displayChoices)
-        if cmd2 < (displayChoices.length - 1)
-          pbLearnMove(poke,choices[cmd2])
-        end
-      else
-        pbMessage(_INTL("No Cores have been found"))
-      end
-    when 2
-      if poke.form == 0
-        pbMessage(_INTL("Only a Zygarde with the Power Construct Ability can change its Form."))
-        next
-      end
-      oldForm = poke.form
-      cmd2 = pbMessage(_INTL("What form would you like to change to?"),["10%","50%","Cancel"])
-      poke.form = 1 if cmd2 == 0
-      poke.form = 3 if cmd2 == 1
-      next if cmd2 == 2
-      if poke.form != oldForm
-        pbMessage(_INTL("{1} changed Form!",poke.name))
-        next 1
-      else
-        pbMessage(_INTL("It's already in it's {1} form!",(oldForm==3? "50%":"10%")))
-      end
-    when 3
-      break
-    end
-  end
-  next 2
 })
 
 #===============================================================================
