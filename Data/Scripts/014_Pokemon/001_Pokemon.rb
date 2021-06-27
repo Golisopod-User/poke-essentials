@@ -391,7 +391,7 @@ class Pokemon
 
   # @return [Boolean] whether this Pokémon is shiny (differently colored)
   def shiny?
-    return true if square_shiny? 
+    return true if square_shiny?
     if @shiny.nil?
       a = @personalID ^ @owner.id
       b = a & 0xFFFF
@@ -980,6 +980,16 @@ class Pokemon
   def check_evolution_after_battle
     return check_evolution_internal { |pkmn, new_species, method, parameter|
       success = GameData::Evolution.get(method).call_on_battle(pkmn, parameter)
+      next (success) ? new_species : nil
+    }
+  end
+
+  # Checks whether this Pokemon can evolve because of certain conditions in an event
+  # @param other_pkmn [Pokemon] the other Pokémon involved in the trade
+  # @return [Symbol, nil] the ID of the species to evolve into
+  def check_evolution_in_event
+    return check_evolution_internal { |pkmn, new_species, method, parameter|
+      success = GameData::Evolution.get(method).call_in_event(pkmn, parameter)
       next (success) ? new_species : nil
     }
   end

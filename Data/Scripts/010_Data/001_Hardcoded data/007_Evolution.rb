@@ -9,6 +9,7 @@ module GameData
     attr_reader :on_trade_proc
     attr_reader :on_battle_proc
     attr_reader :after_evolution_proc
+    attr_reader :in_event_proc
 
     DATA = {}
 
@@ -27,6 +28,7 @@ module GameData
       @use_item_proc        = hash[:use_item_proc]
       @on_trade_proc        = hash[:on_trade_proc]
       @on_battle_proc       = hash[:on_battle_proc]
+      @in_event_proc        = hash[:in_event_proc]
       @after_evolution_proc = hash[:after_evolution_proc]
     end
 
@@ -44,6 +46,10 @@ module GameData
 
     def call_on_battle(*args)
       return (@on_battle_proc) ? @on_battle_proc.call(*args) : nil
+    end
+
+    def call_in_event(*args)
+      return (@in_event_proc) ? @in_event_proc.call(*args) : nil
     end
 
     def call_after_evolution(*args)
@@ -637,10 +643,24 @@ GameData::Evolution.register({
   }
 })
 
+#===============================================================================
+# Evolution methods that triggers in the event command pbEvolvePokemonEvent
+#===============================================================================
 GameData::Evolution.register({
   :id            => :DamageDone,
   :parameter     => Integer,
-  :on_battle_proc => proc { |pkmn, parameter|
-    next pkmn.damage_done >= parameter
+  :in_event_proc => proc { |pkmn, parameter|
+    if pkmn.damage_done >= parameter
+      pkmn.damage_done = 0
+      next true
+    end
+    next false
+  }
+})
+
+GameData::Evolution.register({
+  :id            => :Kubfu,
+  :in_event_proc => proc { |pkmn, parameter|
+    next true
   }
 })

@@ -265,3 +265,20 @@ def pbHasEgg?(species)
   return true if species == baby   # Is an egg species without incense
   return false
 end
+def pbEvolvePokemonEvent(species,forced_form = -1,check_fainted = Settings::CHECK_EVOLUTION_FOR_FAINTED_POKEMON)
+  species = [species] if !species.is_a?(Array)
+  $Trainer.party.each do |pkmn|
+    next if !species.any? {|s| pkmn.isSpecies?(s) }
+    next if !pkmn.able? && check_fainted
+    new_species = pkmn.check_evolution_in_event
+    next if !new_species
+    $game_player.straighten
+    pkmn.form = forced_form if forced_form >= 0
+    evo = PokemonEvolutionScene.new
+    pbFadeOutIn(99999) {
+      evo.pbStartScreen(pkmn,new_species)
+      evo.pbEvolution
+      evo.pbEndScreen
+    }
+  end
+end

@@ -29508,7 +29508,7 @@ BattlerEnemyX = 2
 BattlerEnemyY = 23
 BattlerShadowX = 0
 BattlerShadowSize = 1
-Evolutions = URSHIFU,None,
+Evolutions = URSHIFU,Kubfu,
 #-------------------------------
 [892]
 Name = Urshifu
