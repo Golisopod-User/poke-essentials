@@ -2671,7 +2671,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
     splashAnim = false
     side = [battler.pbOwnSide,battler.pbOpposingSide]
     team = [battler.pbTeam,battler.pbOpposingTeam]
-    effects = [:AuroraVeil, :LightScreen, :Reflect].map!{|e| getConst(PBEffcts,e)}
+    effects = [:AuroraVeil, :LightScreen, :Reflect].map!{|e| getConst(PBEffects,e)}
     effectNames = ["Aurora Veil", "Light Screen", "Reflect"]
     for i in 0...2
       effects.each_with_index do |e,j|
