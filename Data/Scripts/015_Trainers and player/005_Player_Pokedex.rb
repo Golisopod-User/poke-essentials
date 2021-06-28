@@ -269,6 +269,7 @@ class Player < Trainer
     def number_battled(species)
       species_id = GameData::Species.try_get(species)&.species
       return false if species_id.nil?
+      @number_battled[species_id] = 0 if !@number_battled[species_id]
       return @number_battled[species_id]
     end
 
@@ -278,6 +279,7 @@ class Player < Trainer
     def register_battled(species)
       species_id = GameData::Species.try_get(species)&.species
       return if species_id.nil?
+      @number_battled[species_id] = 0 if !@number_battled[species_id]
       @number_battled[species_id] += 1
     end
 
