@@ -730,6 +730,7 @@ ItemHandlers::UseOnPokemon.add(:RARECANDY,proc { |item,pkmn,scene|
         evo.pbEndScreen
         scene.pbRefresh
       }
+      next true
     else
       scene.pbDisplay(_INTL("It won't have any effect."))
       next false
@@ -737,7 +738,7 @@ ItemHandlers::UseOnPokemon.add(:RARECANDY,proc { |item,pkmn,scene|
   end
   maximum = [(GameData::GrowthRate.max_level - pkmn.level),$PokemonBag.pbQuantity(item)].min
   qty = scene.pbChooseNumber(
-     _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+     _INTL("How many {1} do you want to use?", GameData::Item.get(item).name_plural), maximum, 1)
   next false if qty < 1
   $PokemonBag.pbDeleteItem(item, qty - 1)
   pbChangeLevel(pkmn,pkmn.level + 1 + (qty - 1),scene,true)

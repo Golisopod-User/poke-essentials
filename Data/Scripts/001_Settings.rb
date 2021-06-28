@@ -163,10 +163,10 @@ module Settings
   # Healing Items have HP healing amounts like they did in Gen 7 (true) or
   # like in Gen 5 (false)
   # Examples:
-  #  Fresh Water heals 50 HP in Gen 5 and 30 HP in Gen 7
-  #  Lemonade heals 80 HP in Gen 5 and 70 HP in Gen 7
-  #  Hyper Potion and Energy Root heal 200 HP in Gen 5 and 120 HP in Gen 7
-  #  Super Potion and Energy Powder heal 50 HP in Gen 5 and 60 HP in Gen 7
+  #  * Fresh Water heals 50 HP in Gen 5 and 30 HP in Gen 7
+  #  * Lemonade heals 80 HP in Gen 5 and 70 HP in Gen 7
+  #  * Hyper Potion and Energy Root heal 200 HP in Gen 5 and 120 HP in Gen 7
+  #  * Super Potion and Energy Powder heal 50 HP in Gen 5 and 60 HP in Gen 7
   GEN_7_HEALING_ITEMS                  = (MECHANICS_GENERATION >= 7)
   # Limit the amount of Vitamins you can give to a single Pokemon to 10 (true)
   # or the Maximum for that particular stat (false).

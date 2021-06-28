@@ -230,7 +230,7 @@ def pbHPItem(pkmn,restoreHP,scene,item = nil)
     maxhp = ((pkmn.totalhp - pkmn.hp)/restoreHP.to_f).ceil
     maximum = [maxhp,$PokemonBag.pbQuantity(item)].min
     qty = scene.pbChooseNumber(
-      _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+      _INTL("How many {1} do you want to use?", GameData::Item.get(item).name_plural), maximum, 1)
     restoreHP *= qty
     return false if qty == 0
     $PokemonBag.pbDeleteItem(item, qty - 1)
@@ -319,7 +319,7 @@ def pbItemRaiseEV(pkmn, stat, scene, evGain = 10, item = nil, happiness = "")
     maxEV = (maxEvGain/evGain.to_f).ceil
     maximum = [maxEV,$PokemonBag.pbQuantity(item)].min
     qty = scene.pbChooseNumber(
-      _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+      _INTL("How many {1} do you want to use?", GameData::Item.get(item).name_plural), maximum, 1)
     return false if qty == 0
     $PokemonBag.pbDeleteItem(item, qty - 1)
   end
@@ -400,7 +400,7 @@ def pbEXPAdditionItem(pkmn,exp,item,scene)
     maxlv = ((pkmn.growth_rate.maximum_exp - current_exp) / exp.to_f).ceil
     maximum = [maxlv,$PokemonBag.pbQuantity(item)].min
     qty = scene.pbChooseNumber(
-       _INTL("How many {1} do you want to use?", GameData::Item.get(item).name), maximum, 1)
+       _INTL("How many {1} do you want to use?", GameData::Item.get(item).name_plural), maximum, 1)
     return false if qty < 1
     $PokemonBag.pbDeleteItem(item, qty - 1)
     new_level = pbAddEXP(pkmn,exp * qty)
