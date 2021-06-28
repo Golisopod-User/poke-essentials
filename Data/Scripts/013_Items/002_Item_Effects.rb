@@ -720,21 +720,20 @@ ItemHandlers::UseOnPokemon.add(:SWIFTFEATHER,proc { |item,pkmn,scene|
 ItemHandlers::UseOnPokemon.copy(:SWIFTFEATHER,:SWIFTWING)
 
 ItemHandlers::UseOnPokemon.add(:RARECANDY,proc { |item,pkmn,scene|
-  if pkmn.level >= GameData::GrowthRate.max_level || pkmn.shadowPokemon?
+  if pkmn.level >= GameData::GrowthRate.max_level
     newspecies = pkmn.check_evolution_on_level_up
-    if newspecies
+    if newspecies && !pkmn.shadowPokemon? && Settings::RARE_CANDY_USABLE_AT_MAX_LEVEL
       pbFadeOutInWithMusic {
         evo = PokemonEvolutionScene.new
         evo.pbStartScreen(pkmn,newspecies)
         evo.pbEvolution
         evo.pbEndScreen
-        scene.pbRefresh if scene.is_a?(PokemonPartyScreen)
+        scene.pbRefresh
       }
     else
       scene.pbDisplay(_INTL("It won't have any effect."))
       next false
     end
-    next true
   end
   maximum = [(GameData::GrowthRate.max_level - pkmn.level),$PokemonBag.pbQuantity(item)].min
   qty = scene.pbChooseNumber(

@@ -156,6 +156,9 @@ module Settings
   REPEL_COUNTS_FAINTED_POKEMON         = (MECHANICS_GENERATION >= 6)
   # Whether Rage Candy Bar acts as a Full Heal (true) or a Potion (false).
   RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS = (MECHANICS_GENERATION >= 7)
+  # Whether Rare Candy can be used on a Pokémon that is already at its maximum
+  # level if it is able to evolve by level-up (if so, triggers that evolution).
+  RARE_CANDY_USABLE_AT_MAX_LEVEL       = false # (MECHANICS_GENERATION >= 8)
   # Healing Items have HP healing amounts like they did in Gen 7 (true) or
   # like in Gen 5 (false)
   # Examples:
