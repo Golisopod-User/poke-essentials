@@ -34,6 +34,7 @@ module Settings
   # The odds of a newly generated Pokémon being shiny (out of 65536).
   SHINY_POKEMON_CHANCE     = (MECHANICS_GENERATION >= 6) ? 16 : 8
   # The odds of a newly generated Pokémon being a Brilliant Pokemon (out of 65536).
+  # Set this to 0 to disable Brilliant Pokemon.
   BRILLIANT_POKEMON_CHANCE = 64
   # Whether square shininess is enabled (uses a different shiny animation with
   # square sparkles).
@@ -240,6 +241,9 @@ module Settings
   # order as above, except the National Dex is -1). All Dex lists included here
   # will begin their numbering at 0 rather than 1 (e.g. Victini in Unova's Dex).
   DEXES_WITH_OFFSETS  = []
+  # Whether the amount of Pokemon of a particular species caught or defeated in
+  # battle by the player boosts shiny odds.
+  NUMBER_BATTLED_BOOSTS_SHINY_ODDS  = true
 
   #=============================================================================
 

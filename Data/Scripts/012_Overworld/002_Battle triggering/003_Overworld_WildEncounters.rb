@@ -402,7 +402,7 @@ def pbGenerateWildPokemon(species,level,isRoamer=false)
   end
   # Number Battled shiny method
   shinyTier = $Trainer.pokedex.number_battled_shiny_tier(genwildpoke.species)
-  if shinyTier[1] > 1 && rand(1000) < shinyTier[1]
+  if Settings::NUMBER_BATTLED_BOOSTS_SHINY_ODDS && shinyTier[1] > 1 && rand(1000) < shinyTier[1]
     shinyTier[0].times do   # 2-6 times as likely
       break if genwildpoke.shiny?
       genwildpoke.shiny = nil
