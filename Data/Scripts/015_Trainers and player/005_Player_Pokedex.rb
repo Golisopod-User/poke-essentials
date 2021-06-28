@@ -284,8 +284,8 @@ class Player < Trainer
       @number_battled[species_id] += 1
     end
 
-    # Return the array of tries chance  of Boosted Shiny odds from the number
-    # of Pokemon of this species that the player has caught or defeated
+    # Return the array of tries and chance of boosted shiny odds from the
+    # number of Pokemon of this species that the player has caught or defeated
     # @param species [Symbol, GameData::Species] species to increase
     # @return [Array]
     def number_battled_shiny_tier(species)
@@ -302,6 +302,40 @@ class Player < Trainer
         return [1,15]
       else
         return [0,0]
+      end
+    end
+
+    # Return the boosted odds for encountering Brilliant Pokemon from
+    # the number of Pokemon of this species that the player has caught
+    # or defeated
+    # @return [Float]
+    def number_battled_brilliant_tier(species)
+      number = number_battled(species)
+      if number >= 200
+        return 2.0
+      elsif number >= 50
+        return 1.6
+      elsif number >= 20
+        return 1.3
+      else
+        return 1.0
+      end
+    end
+
+    # Return the boosted odds for encountering shiny Brilliant Pokemon from
+    # the number of Pokemon of this species that the player has caught
+    # or defeated
+    # @return [Integer]
+    def number_battled_brilliant_shiny(species)
+      number = number_battled(species)
+      if number >= 100
+        ret = 2 + (number/100)
+        ret.clamp(0,6)
+        return ret
+      elsif number >= 50
+        return 2
+      else
+        return 1
       end
     end
 

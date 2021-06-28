@@ -28,16 +28,18 @@ module Settings
   #=============================================================================
 
   # The maximum level Pokémon can reach.
-  MAXIMUM_LEVEL        = 100
+  MAXIMUM_LEVEL            = 100
   # The level of newly hatched Pokémon.
-  EGG_LEVEL            = 1
+  EGG_LEVEL                = 1
   # The odds of a newly generated Pokémon being shiny (out of 65536).
-  SHINY_POKEMON_CHANCE = (MECHANICS_GENERATION >= 6) ? 16 : 8
+  SHINY_POKEMON_CHANCE     = (MECHANICS_GENERATION >= 6) ? 16 : 8
+  # The odds of a newly generated Pokémon being a Brilliant Pokemon (out of 65536).
+  BRILLIANT_POKEMON_CHANCE = 64
   # Whether square shininess is enabled (uses a different shiny animation with
   # square sparkles).
-  SQUARE_SHINY         = (MECHANICS_GENERATION >= 8)
+  SQUARE_SHINY             = (MECHANICS_GENERATION >= 8)
   # The odds of a wild Pokémon/bred egg having Pokérus (out of 65536).
-  POKERUS_CHANCE       = 3
+  POKERUS_CHANCE           = 3
   # Whether a bred baby Pokémon can inherit any TM/HM moves from its father. It
   # can never inherit TM/HM moves from its mother.
   BREEDING_CAN_INHERIT_MACHINE_MOVES         = (MECHANICS_GENERATION <= 5)
@@ -320,6 +322,8 @@ module Settings
   # The Game Switch which, while ON, blocks access to the Pokemon Box Link
   # Storage functionality. Set this to -1 to always have Pokemon Box Link access.
   POKEMON_BOX_LINK_SWITCH   = -1
+  # The Game Switch which, while ON, makes all wild Pokémon created be Brilliant.
+  BRILLIANT_POKEMON_SWITCH   = -1
 
   #=============================================================================
 

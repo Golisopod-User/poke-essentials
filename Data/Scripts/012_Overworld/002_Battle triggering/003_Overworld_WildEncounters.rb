@@ -409,6 +409,12 @@ def pbGenerateWildPokemon(species,level,isRoamer=false)
       genwildpoke.personalID = rand(2 ** 16) | rand(2 ** 16) << 16
     end
   end
+  # Brilliant Pokemon
+  brilliantBoost = $Trainer.pokedex.number_battled_brilliant_tier(genwildpoke.species)
+  if rand(65536) < (Settings::BRILLIANT_POKEMON_CHANCE * brilliantBoost).ceil ||
+     (Settings::BRILLIANT_POKEMON_SWITCH > 0 && $game_switches[Settings::BRILLIANT_POKEMON_SWITCH])
+     genwildpoke.generateBrilliant
+  end
   # Give Pokérus
   genwildpoke.givePokerus if rand(65536) < Settings::POKERUS_CHANCE
   # Change wild Pokémon's gender/nature depending on the lead party Pokémon's

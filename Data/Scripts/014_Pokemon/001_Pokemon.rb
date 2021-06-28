@@ -84,6 +84,8 @@ class Pokemon
   attr_accessor :damage_done
   # @return [Integer] the critical hits scored by the Pokémon before fainting in battle
   attr_accessor :critical_hits
+  # @return [Boolean] whether the Pokemon is a Brilliant Pokemon or no
+  attr_accessor :brilliant
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -405,15 +407,15 @@ class Pokemon
   #=============================================================================
   # Square Shininess
   #=============================================================================
-  # @return [Boolean] whether this Pokémon is a square sparkle shiny (differently colored,
-  #   square sparkles)
+  # @return [Boolean] whether this Pokémon is a square sparkle shiny
+  # (differently colored, square sparkles)
   def square_shiny?
     if @square_shiny.nil?
       a = @personalID ^ @owner.id
       b = a & 0xFFFF
       c = (a >> 16) & 0xFFFF
       d = b ^ c
-      @square_shiny = (d == 0)
+      @square_shiny = d < (Settings::SHINY_POKEMON_CHANCE/16)
     end
     return @square_shiny
   end
@@ -421,6 +423,38 @@ class Pokemon
   def square_shiny=(value)
     @square_shiny = value
     @shiny = true if @square_shiny
+  end
+
+  #=============================================================================
+  # Brilliance
+  #=============================================================================
+  # Generate Pokemon with the following features.
+  # 2 - 6 max IVs
+  # Higher Avg Level
+  # Knows Egg Move
+  # Has a high chance to be shiny
+
+  def generateBrilliant
+    @brilliant = true
+    # 2- 6 max IVs
+    maxIVs = @iv.keys.sample(2 + (rand(@iv.keys.length) - 2))
+    maxIVs.each { |s| @iv[s] = Pokemon::IV_STAT_LIMIT }
+    # Higher Avg Level
+    @level += (2 + rand(5))
+    # Knows Egg Move
+    babyspecies = species_data.get_baby_species
+    eggmoves = GameData::Species.get_species_form(babyspecies,form_simple).egg_moves
+    move = eggmoves.sample
+    learn_move(move); add_first_move(move)
+    # Has a chance to be shiny
+    shinyBoost = $Trainer.pokedex.number_battled_brilliant_shiny(@species)
+    random = rand(65536)
+    shinyChance = Settings::SHINY_POKEMON_CHANCE * shinyBoost
+    echoln "#{random}, #{shinyChance}"
+    if random < shinyChance
+      @shiny = true
+      self.square_shiny = true if random < (shinyChance/16)
+    end
   end
 
   #=============================================================================
