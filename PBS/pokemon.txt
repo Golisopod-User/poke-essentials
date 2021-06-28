@@ -26826,6 +26826,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 32
 BattlerShadowX = 0
 BattlerShadowSize = 1
+Evolutions = MELMETAL,ItemCandy,400
 #-------------------------------
 [809]
 Name = Melmetal

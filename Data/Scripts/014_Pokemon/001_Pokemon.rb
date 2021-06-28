@@ -84,6 +84,8 @@ class Pokemon
   attr_accessor :damage_done
   # @return [Integer] the critical hits scored by the Pokémon before fainting in battle
   attr_accessor :critical_hits
+  # @return [Integer] the amount of evolution candies fed to a Pokemon.
+  attr_accessor :candies_fed
   # @return [Boolean] whether the Pokemon is a Brilliant Pokemon or no
   attr_accessor :brilliant
 
@@ -1209,6 +1211,7 @@ class Pokemon
     @totalhp          = 1
     @damage_done      = 0
     @critical_hits    = 0
+    @candies_fed      = 0
     calc_stats
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)

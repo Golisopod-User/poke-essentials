@@ -552,6 +552,14 @@ GameData::Evolution.register({
 })
 
 GameData::Evolution.register({
+  :id            => :ItemCandy,
+  :parameter     => Integer,
+  :use_item_proc => proc { |pkmn, parameter, item|
+    next pkmn.candies_fed >= parameter
+  }
+})
+
+GameData::Evolution.register({
   :id            => :ItemAlcremie,
   :use_item_proc => proc { |pkmn, parameter, item|
     sweet     = 0

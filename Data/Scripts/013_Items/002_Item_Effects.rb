@@ -1171,6 +1171,32 @@ ItemHandlers::UseOnPokemon.add(:SERIOUSMINT,proc { |item,pkmn,scene|
   next ret
 })
 
+ItemHandlers::UseOnPokemon.add(:MELTANCANDY,proc { |item,pkmn,scene|
+  if !pkmn.isSpecies?(:MELTAN) || pkmn.shadowPokemon?
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
+  maximum = [(400 - pkmn.candies_fed),$PokemonBag.pbQuantity(item)].min
+  itemName = GameData::Item.get(item).name_plural
+  qty = scene.pbChooseNumber(_INTL("How many {1} do you want to feed {2}? (Candies Fed: {3})",itemName, pkmn.name, pkmn.candies_fed), maximum, 1)
+  next false if qty < 1
+  $PokemonBag.pbDeleteItem(item, qty - 1)
+  pkmn.candies_fed += qty
+  scene.pbDisplay(_INTL("You fed {1} {2} {3}.", qty, pkmn.name, itemName))
+  newspecies = pkmn.check_evolution_on_use_item(item)
+  if newspecies
+    pbFadeOutInWithMusic {
+      evo = PokemonEvolutionScene.new
+      evo.pbStartScreen(pkmn,newspecies)
+      evo.pbEvolution
+      evo.pbEndScreen
+      scene.pbRefresh
+    }
+  end
+  scene.pbHardRefresh
+  next true
+})
+
 ItemHandlers::UseOnPokemon.add(:ROTOMCATALOG,proc{|item,pkmn,scene|
   if pkmn.isSpecies?(:ROTOM)
     if pkmn.hp>0
