@@ -1,6 +1,8 @@
 # Audio, Graphics and Plugins folders
 Audio/
 Graphics/
+Plugins/
+PBS/EBDX/
 
 # Data folder, but not Data/Scripts folder
 Data/*
