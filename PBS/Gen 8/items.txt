@@ -689,7 +689,7 @@
 668,ABILITYPATCH,Ability Patch,Ability Patches,2,20000,"A patch that allows a Pokémon with a regular Ability to have a rare Ability.",1,0,0,
 669,PEWTERCRUNCHIES,Pewter Crunchies,Pewter Crunchies,2,250,"Pewter City’s famous crunchy snack. They can be used to heal all status conditions of a single Pokémon.",1,1,0,
 670,MAXHONEY,Max Honey,Max Honey,2,8000,"Honey produced by Dynamax Vespiquen. Revives and fully restores the HP of fainted Pokémon.",1,1,0,
-671,MAXMUSHROOMS,Max Mushrooms, Max Mushrooms,2,8000,"Mushrooms that can boost all stats of a Pokémon during battle.",0,3,0,
+671,MAXMUSHROOMS,Max Mushrooms,Max Mushrooms,7,8000,"Mushrooms that can boost all stats of a Pokémon during battle.",0,3,0,
 #-------------------------------
 672,GALARICACUFF,Galarica Cuff,Galarica Cuffs,1,3000,"A cuff made from Galarica Twigs. Giving it to a Galarian Slowpoke makes them very happy.",1,0,7,
 673,GALARICAWREATH,Galarica Wreath,Galarica Wreaths,1,3000,"A wreath made from Galarica Twigs. Giving it to a Galarian Slowpoke makes them very happy.",1,0,7,
