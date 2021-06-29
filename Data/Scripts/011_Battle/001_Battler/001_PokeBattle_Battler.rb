@@ -651,7 +651,6 @@ class PokeBattle_Battler
     return false
   end
 
-
   def inTwoTurnAttack?(*arg)
     return false if !@effects[PBEffects::TwoTurnAttack]
     ttaFunction = GameData::Move.get(@effects[PBEffects::TwoTurnAttack]).function_code
