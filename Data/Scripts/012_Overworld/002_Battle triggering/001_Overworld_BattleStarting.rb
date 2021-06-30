@@ -630,7 +630,7 @@ end
 def pbDynamicItemList(*args)
   ret = []
   for i in 0...args.length
-    ret.push(i) if GameData::Item.exists?(args[i])
+    ret.push(args[i]) if GameData::Item.exists?(args[i])
   end
   return ret
 end
