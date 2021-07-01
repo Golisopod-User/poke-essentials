@@ -171,6 +171,9 @@ module Settings
   # Whether vitamins can add EVs no matter how many that stat already has in it
   # (true), or whether they can't make that stat's EVs greater than 100 (false).
   NO_VITAMIN_EV_CAP                    = (MECHANICS_GENERATION < 8)
+  # Whether you get 1 Premier Ball for every 10 of any kind of Poké Ball bought
+  # at once (true), or 1 Premier Ball for buying 10+ Poké Balls (false).
+  MORE_BONUS_PREMIER_BALLS              = (MECHANICS_GENERATION >= 8)
 
   #=============================================================================
 
