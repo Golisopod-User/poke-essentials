@@ -32,7 +32,7 @@ class PokemonBoxSprite < SpriteWrapper
       @contents.blt(0,0,@boxbitmap.bitmap,Rect.new(0,0,324,302))
       pbSetSystemFont(@contents)
       widthval = @contents.text_size(boxname).width
-	  # Changed X Postiont of Box Name 
+	  # Changed X Postiont of Box Name
       xval = 163-(widthval/2)
 	  # Changed color of Box Name
       pbDrawShadowText(@contents,xval,8,widthval,28,
@@ -75,7 +75,12 @@ class PokemonBoxPartySprite < SpriteWrapper
       yvalues.push(2 + 16 * (i % 2) + 64 * (i / 2))
     end
     for j in 0...Settings::MAX_PARTY_SIZE
-      @pokemonsprites[j] = nil if @pokemonsprites[j] && @pokemonsprites[j].disposed?
+      next if !@pokemonsprites[j]
+      if @pokemonsprites[j].disposed?
+        @pokemonsprites[j] = nil
+      else
+        @pokemonsprites[j].refresh
+      end
     end
     @pokemonsprites.compact!
     for j in 0...Settings::MAX_PARTY_SIZE
