@@ -519,6 +519,13 @@ class PokeBattle_Battler
     return false
   end
 
+  def affectedByIronBall?
+    return false if @effects[PBEffects::Ingrain]
+    return false if @effects[PBEffects::SmackDown]
+    return false if @battle.field.effects[PBEffects::Gravity] > 0
+    return true
+  end
+
   def affectedByTerrain?
     return false if airborne?
     return false if semiInvulnerable?
