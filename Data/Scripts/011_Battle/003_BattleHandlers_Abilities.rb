@@ -666,6 +666,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:SAPSIPPER,
 BattleHandlers::MoveImmunityTargetAbility.add(:SOUNDPROOF,
   proc { |ability,user,target,move,type,battle|
     next false if !move.soundMove?
+    next false if Settings::MECHANICS_GENERATION >= 8 && user.index == target.index
     battle.pbShowAbilitySplash(target)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
