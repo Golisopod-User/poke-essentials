@@ -46,7 +46,7 @@ BattleHandlers::SpeedCalcAbility.add(:SWIFTSWIM,
 
 BattleHandlers::SpeedCalcAbility.add(:UNBURDEN,
   proc { |ability,battler,mult|
-    next mult*2 if battler.effects[PBEffects::Unburden] && !battler.item
+    next mult*2 if battler.effects[PBEffects::Unburden] && !battler.item && battler.abilityActive?
   }
 )
 
