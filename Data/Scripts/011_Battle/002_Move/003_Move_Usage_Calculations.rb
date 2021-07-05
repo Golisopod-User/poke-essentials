@@ -354,13 +354,14 @@ class PokeBattle_Move
       end
     end
     # Terrain moves
+    terrain_damage_boost = Settings::NERFED_TERRAIN_DAMAGE ? 1.3 : 1.5
     case @battle.field.terrain
     when :Electric
-      multipliers[:base_damage_multiplier] *= 1.3 if type == :ELECTRIC && user.affectedByTerrain?
+      multipliers[:base_damage_multiplier] *= terrain_damage_boost if type == :ELECTRIC && user.affectedByTerrain?
     when :Grassy
-      multipliers[:base_damage_multiplier] *= 1.3 if type == :GRASS && user.affectedByTerrain?
+      multipliers[:base_damage_multiplier] *= terrain_damage_boost if type == :GRASS && user.affectedByTerrain?
     when :Psychic
-      multipliers[:base_damage_multiplier] *= 1.3 if type == :PSYCHIC && user.affectedByTerrain?
+      multipliers[:base_damage_multiplier] *= terrain_damage_boost if type == :PSYCHIC && user.affectedByTerrain?
     when :Misty
       multipliers[:base_damage_multiplier] /= 2 if type == :DRAGON && target.affectedByTerrain?
     end

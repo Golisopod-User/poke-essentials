@@ -37,6 +37,9 @@ module Settings
   # Whether a Pokémon holding a Power item gains 8 (true) or 4 (false) EVs in
   # the relevant stat.
   MORE_EVS_FROM_POWER_ITEMS        = (MECHANICS_GENERATION >= 7)
+  # Whether the damage boost from the Terrains is 1.5x (false) like in Gen 6
+  # and 7, or 1.3x (true) like in Gen 8.
+  NERFED_TERRAIN_DAMAGE            = (MECHANICS_GENERATION >= 8)
 
   #=============================================================================
 
