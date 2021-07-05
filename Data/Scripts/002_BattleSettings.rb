@@ -15,6 +15,7 @@ module Settings
   #   * Ghost-type immunity to being trapped
   #   * Grass-type immunity to powder moves and Effect Spore
   #   * Poison-type Pokémon can't miss when using Toxic
+  #   * Dark-type Pokemon immunity to Prankster moves
   MORE_TYPE_EFFECTS                           = (MECHANICS_GENERATION >= 6)
   # Whether weather caused by an ability lasts 5 rounds (true) or forever (false).
   FIXED_DURATION_WEATHER_FROM_ABILITY         = (MECHANICS_GENERATION >= 6)
