@@ -357,6 +357,18 @@ class PokemonRegionMapScreen
     return ret
   end
 
+  def pbStartFlyingTaxiScreen
+    @scene.pbStartScene(false,1)
+    ret = nil
+    loop do
+      ret = @scene.pbMapScene(1)
+      break if (ret && pbConfirmMessage(_INTL("Would you like to call a Flying Taxi to take you to {1}", pbGetMapNameFromId(ret[0])))) ||
+               !ret
+    end
+    @scene.pbEndScene
+    return ret
+  end
+
   def pbStartScreen
     @scene.pbStartScene($DEBUG)
     @scene.pbMapScene
@@ -367,10 +379,37 @@ end
 #===============================================================================
 #
 #===============================================================================
-def pbShowMap(region=-1,wallmap=true)
+def pbShowMap(region = -1,wallmap = true,taxi = false)
   pbFadeOutIn {
     scene = PokemonRegionMap_Scene.new(region,wallmap)
     screen = PokemonRegionMapScreen.new(scene)
-    screen.pbStartScreen
+    if pbCanUseFlyingTaxi? && taxi
+      ret = screen.pbStartFlyingTaxiScreen
+      if ret
+        $PokemonTemp.flydata = ret
+        pbFadeOutIn {
+          $game_temp.player_new_map_id    = $PokemonTemp.flydata[0]
+          $game_temp.player_new_x         = $PokemonTemp.flydata[1]
+          $game_temp.player_new_y         = $PokemonTemp.flydata[2]
+          $game_temp.player_new_direction = 2
+          $PokemonTemp.flydata = nil
+          $scene.transfer_player
+          $game_map.autoplay
+          $game_map.refresh
+        }
+        pbEraseEscapePoint
+        next true
+      end
+    else
+      screen.pbStartScreen
+    end
   }
+end
+
+def pbCanUseFlyingTaxi?
+  return false if Settings::FLYING_TAXI_SWITCH < 0 || !$game_switches[Settings::FLYING_TAXI_SWITCH]
+  return false if $game_player.pbHasDependentEvents?
+  return false if !GameData::MapMetadata.exists?($game_map.map_id) ||
+                  !GameData::MapMetadata.get($game_map.map_id).outdoor_map
+  return true
 end

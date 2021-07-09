@@ -57,6 +57,12 @@ ItemHandlers::UseFromBag.add(:ITEMFINDER,proc { |item|
 
 ItemHandlers::UseFromBag.copy(:ITEMFINDER,:DOWSINGMCHN,:DOWSINGMACHINE)
 
+ItemHandlers::UseFromBag.add(:TOWNMAP,proc { |item|
+  next 2 if pbCanUseFlyingTaxi?
+  pbShowMap(-1,false)
+  next 0
+})
+
 #===============================================================================
 # ConfirmUseInField handlers
 # Return values: true/false
@@ -312,7 +318,7 @@ ItemHandlers::UseInField.add(:ITEMFINDER,proc { |item|
 ItemHandlers::UseInField.copy(:ITEMFINDER,:DOWSINGMCHN,:DOWSINGMACHINE)
 
 ItemHandlers::UseInField.add(:TOWNMAP,proc { |item|
-  pbShowMap(-1,false)
+  pbShowMap(-1,false,true)
   next 1
 })
 

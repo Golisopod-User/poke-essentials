@@ -333,7 +333,10 @@ module Settings
   # Storage functionality. Set this to -1 to always have Pokemon Box Link access.
   POKEMON_BOX_LINK_SWITCH   = -1
   # The Game Switch which, while ON, makes all wild Pokémon created be Brilliant.
-  BRILLIANT_POKEMON_SWITCH   = -1
+  BRILLIANT_POKEMON_SWITCH  = -1
+  # The Game Switch which, while ON, allows the player to access the Flying Taxi
+  # from the Town Map. Set this to -1 to never have access to the Flying Taxi.
+  FLYING_TAXI_SWITCH        = -1
 
   #=============================================================================
 
