@@ -388,6 +388,7 @@ def pbShowMap(region = -1,wallmap = true,taxi = false)
       if ret
         $PokemonTemp.flydata = ret
         pbFadeOutIn {
+          pbSEPlay("Anim/Wind1")
           $game_temp.player_new_map_id    = $PokemonTemp.flydata[0]
           $game_temp.player_new_x         = $PokemonTemp.flydata[1]
           $game_temp.player_new_y         = $PokemonTemp.flydata[2]
@@ -396,6 +397,7 @@ def pbShowMap(region = -1,wallmap = true,taxi = false)
           $scene.transfer_player
           $game_map.autoplay
           $game_map.refresh
+          pbWait(Graphics.frame_rate/4)
         }
         pbEraseEscapePoint
         next true
