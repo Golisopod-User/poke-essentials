@@ -524,7 +524,7 @@ BattleHandlers::AbilityOnStatLoss.add(:DEFIANT,
 
 BattleHandlers::PriorityChangeAbility.add(:GALEWINGS,
   proc { |ability,battler,move,pri|
-    next pri+1 if (battler.hp == battler.totalhp && Settings::MECHANICS_GENERATION >= 6) &&
+    next pri+1 if (battler.hp == battler.totalhp || Settings::MECHANICS_GENERATION <= 6) &&
                    move.type == :FLYING
   }
 )
