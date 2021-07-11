@@ -2986,7 +2986,7 @@ class PokeBattle_Move_0EA < PokeBattle_Move
   def pbEndOfMoveUsageEffect(user,targets,numHits,switchedBattlers)
     if Settings::MECHANICS_GENERATION >= 8
       return if @battle.wildBattle? && user.opposes?
-      return if user.fainted? || numHits==0
+      return if user.fainted? || numHits==0 || @battle.pbAllFainted?(user.idxOpposingSide)
       return if !@battle.pbCanChooseNonActive?(user.index)
       @battle.pbDisplay(_INTL("{1} went back to {2}!",user.pbThis,
          @battle.pbGetOwnerName(user.index)))
@@ -3166,7 +3166,7 @@ end
 #===============================================================================
 class PokeBattle_Move_0EE < PokeBattle_Move
   def pbEndOfMoveUsageEffect(user,targets,numHits,switchedBattlers)
-    return if user.fainted? || numHits==0
+    return if user.fainted? || numHits==0 || @battle.pbAllFainted?(user.idxOpposingSide)
     targetSwitched = true
     targets.each do |b|
       targetSwitched = false if !switchedBattlers.include?(b.index)
