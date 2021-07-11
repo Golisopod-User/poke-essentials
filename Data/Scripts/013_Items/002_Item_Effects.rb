@@ -1237,22 +1237,22 @@ ItemHandlers::UseOnPokemon.add(:ROTOMCATALOG,proc{|item,pkmn,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:ABILITYPATCH,proc { |item,pkmn,scene|
-  abils = pkmn.getAbilityList
-  hiddenArr =[]
-  for i in abils
-    hiddenArr.push([i[1],i[0]]) if i[0] && i[1]>1 && pkmn.ability_index != i[1]
+  hidden_abils = []
+  pkmn.species_data.hidden_abilities.each_with_index do |a, i|
+    hidden_abils.push([a, i + 2]) if pkmn.ability_index != (i + 2)
   end
-  if hiddenArr.length==0 || (pkmn.hasHiddenAbility? && hiddenArr.length == 1) || pkmn.isSpecies?(:ZYGARDE)
+  if hidden_abils.empty? || pkmn.isSpecies?(:ZYGARDE)
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
-  newabil = hiddenArr.sample
-  newabilname = GameData::Ability.get(newabil[1]).name
-  if scene.pbConfirm(_INTL("Would you like to change {1}'s Ability to {2}?",pkmn.name,newabilname))
+  new_abil = hidden_abils.sample
+  abil_name = GameData::Ability.get(new_abil[0]).name
+  if scene.pbConfirm(_INTL("Would you like to change {1}'s Ability to {2}?",
+                            pkmn.name, abil_name))
     pkmn.ability = nil
-    pkmn.ability_index = newabil[0]
+    pkmn.ability_index = new_abil[1]
     scene.pbRefresh
-    scene.pbDisplay(_INTL("{1}'s Ability changed to {2}!",pkmn.name,newabilname))
+    scene.pbDisplay(_INTL("{1}'s Ability changed to {2}!", pkmn.name, abil_name))
     next true
   end
   next false
