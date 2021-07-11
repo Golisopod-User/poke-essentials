@@ -337,7 +337,7 @@ class PokeBattle_Move
   # Used by Counter/Mirror Coat/Metal Burst/Revenge/Focus Punch/Bide/Assurance.
   def pbRecordDamageLost(user,target)
     damage = target.damageState.hpLost
-    target.damage_done += damage
+    target.damage_done = damage
     # NOTE: In Gen 3 where a move's category depends on its type, Hidden Power
     #       is for some reason countered by Counter rather than Mirror Coat,
     #       regardless of its calculated type. Hence the following two lines of
