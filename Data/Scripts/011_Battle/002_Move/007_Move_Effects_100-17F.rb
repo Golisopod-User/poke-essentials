@@ -2739,7 +2739,7 @@ end
 class PokeBattle_Move_17B < PokeBattle_TargetMultiStatUpMove
   def initialize(battle,move)
     super
-    @statUp = [:ATTACK,2,:SPECIAL_ATTACK,2]
+    @statUp = [:ATTACK, 2, :SPECIAL_ATTACK, 2]
   end
 end
 

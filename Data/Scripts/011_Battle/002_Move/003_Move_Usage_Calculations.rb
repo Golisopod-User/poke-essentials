@@ -55,8 +55,7 @@ class PokeBattle_Move
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING && moveType == :GROUND
     end
     if target.effects[PBEffects::TarShot] && moveType == :FIRE
-      ret = Effectiveness::SUPER_EFFECTIVE_ONE if Effectiveness.normal_type?(moveType,target.type1,target.type2)
-      ret = Effectiveness::NORMAL_EFFECTIVE_ONE if Effectiveness.not_very_effective_type?(moveType,target.type1,target.type2)
+      ret *= Effectiveness::SUPER_EFFECTIVE_ONE / Effectiveness::NORMAL_EFFECTIVE_ONE.to_f
     end
     return ret
   end
