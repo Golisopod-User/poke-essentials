@@ -674,7 +674,7 @@
 655,NAIVEMINT,Naive Mint,Naive Mints,1,20,"When a Pokémon smells this mint, its Speed will grow more easily, but its Sp. Def will grow more slowly.",1,0,0,
 656,SERIOUSMINT,Serious Mint,Serious Mints,1,20,"When a Pokémon smells this mint, all of its stats will grow at an equal rate.",1,0,0,
 #-------------------------------
-657,BLUNDERPOLICY,Blunder Policy,Blunder Policy,1,4000,"An item to be held by a Pokémon. Raises Speed sharply when the holder misses a move because of accuracy.",0,0,0,
+657,BLUNDERPOLICY,Blunder Policy,Blunder Policies,1,4000,"An item to be held by a Pokémon. Raises Speed sharply when the holder misses a move because of accuracy.",0,0,0,
 658,EJECTPACK,Eject Pack,Eject Packs,1,4000,"An item to be held by a Pokémon. When the holder's stats are lowered, it will be switched out of battle.",0,0,0,
 659,HEAVYDUTYBOOTS,Heavy-Duty Boots,Heavy-Duty Boots,1,4000,"An item to be held by a Pokémon. They prevent the effects of hazards on the battlefield.",0,0,0,
 660,ROOMSERVICE,Room Service,Room Services,1,4000,"An item to be held by a Pokémon. Lowers Speed when Trick Room takes effect.",0,0,0,
